@@ -1,3 +1,6 @@
 __pycache__/
 *.pyc
 photorespiration_vs_gravity.csv
+
+# OSDR downloads and KEGG responses are reproducible from the fetch scripts
+osdr/cache/
