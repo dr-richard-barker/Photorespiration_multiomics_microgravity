@@ -34,7 +34,9 @@ conductance is simply  dC [umol mol-1] = A [umol m-2 s-1] / g [mol m-2 s-1].
 
 from __future__ import annotations
 
+import csv
 import math
+import os
 from dataclasses import dataclass
 
 R_GAS = 8.314  # J mol-1 K-1
@@ -157,29 +159,60 @@ def solve_operating_point(g_bl: float, p: LeafParams, Ca: float = 400.0,
     }
 
 
-# --- LunarLeaf-CFD gravity sweep: g_bl (mol CO2 m-2 s-1) from the solver diagnostic ---
-# Values are the converged boundary-layer conductance the CFD reports (README /
-# results/tables/T2), anchored so the Earth single leaf = 1.0 mol m-2 s-1. Replace
-# with a CSV export from LunarLeaf-CFD when sweeping arbitrary gravity/geometry.
-CFD_GBL = [
-    # (scale, gravity label, g/g_earth, g_bl, CFD surface O2 excess umol/mol [T5])
-    ("leaf",    "Earth",  1.00, 1.000, 2.7),
-    ("leaf",    "Mars",   0.38, 0.847, 3.2),
-    ("leaf",    "Moon",   0.17, 0.719, 3.8),
-    ("leaf",    "micro-g",0.00, 0.494, 5.1),
-    ("rosette", "Earth",  1.00, 0.540, 4.8),
-    ("rosette", "micro-g",0.00, 0.291, 8.6),
-    ("canopy",  "Earth",  1.00, 0.148, 5.4),
-    ("canopy",  "micro-g",0.00, 0.109, 7.6),
-]
+# --- LunarLeaf-CFD boundary-layer export ------------------------------------------
+# The gravity/geometry sweep is read from a CSV the CFD produces (its export_cfd.ts
+# writes results/tables/T13_boundary_layer.csv; a snapshot is vendored under data/).
+# Required columns: scenario, scale, gravity_g, g_bl_mol_m2_s, o2_excess_ppm.
+# Any extra columns (delta_mm, Sherwood, dC_CO2_mean) are carried through for display.
+DEFAULT_CFD_CSV = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)), "data", "lunarleaf_gbl_sweep.csv"
+)
+_REQUIRED_COLS = {"scenario", "scale", "gravity_g", "g_bl_mol_m2_s", "o2_excess_ppm"}
 
 
-def run_sweep(p: LeafParams | None = None, **kw) -> list[dict]:
+def _g_label(gravity_g: float) -> str:
+    """Human label for a gravity level (m/s^2) — falls back to the numeric value."""
+    known = {9.81: "Earth", 3.71: "Mars", 1.62: "Moon", 0.0: "micro-g"}
+    for g, name in known.items():
+        if abs(gravity_g - g) < 0.05:
+            return name
+    return f"{gravity_g:.2f} m/s2"
+
+
+def load_cfd_sweep(path: str = DEFAULT_CFD_CSV) -> list[dict]:
+    """Parse a LunarLeaf-CFD boundary-layer export CSV into typed rows."""
+    with open(path, newline="") as fh:
+        reader = csv.DictReader(fh)
+        missing = _REQUIRED_COLS - set(reader.fieldnames or [])
+        if missing:
+            raise ValueError(f"{path}: missing required column(s): {sorted(missing)}")
+        rows = []
+        for raw in reader:
+            gravity_g = float(raw["gravity_g"])
+            rows.append({
+                "scenario": raw["scenario"],
+                "scale": raw["scale"],
+                "gravity_g": gravity_g,
+                "g_ratio": gravity_g / 9.81,
+                "g_label": _g_label(gravity_g),
+                "g_bl": float(raw["g_bl_mol_m2_s"]),
+                "o2_excess_ppm": float(raw["o2_excess_ppm"]),
+                "delta_mm": float(raw["delta_mm"]) if raw.get("delta_mm") else None,
+                "Sherwood": float(raw["Sherwood"]) if raw.get("Sherwood") else None,
+            })
+    if not rows:
+        raise ValueError(f"{path}: no data rows")
+    return rows
+
+
+def run_sweep(p: LeafParams | None = None, cfd_csv: str = DEFAULT_CFD_CSV, **kw) -> list[dict]:
+    """Solve the FvCB operating point for every row of a CFD boundary-layer export."""
     p = p or LeafParams()
     rows = []
-    for scale, glabel, gratio, gbl, o2ex in CFD_GBL:
-        r = solve_operating_point(gbl, p, O_excess=o2ex, **kw)
-        r.update({"scale": scale, "g_label": glabel, "g_ratio": gratio})
+    for cfd in load_cfd_sweep(cfd_csv):
+        r = solve_operating_point(cfd["g_bl"], p, O_excess=cfd["o2_excess_ppm"], **kw)
+        r.update({k: cfd[k] for k in ("scenario", "scale", "g_label", "g_ratio",
+                                      "o2_excess_ppm", "delta_mm", "Sherwood")})
         rows.append(r)
     return rows
 
@@ -198,18 +231,26 @@ def _fmt_table(rows: list[dict]) -> str:
 
 
 if __name__ == "__main__":
-    import csv
+    import argparse
     import sys
 
+    ap = argparse.ArgumentParser(description="FvCB oxygenation calculator driven by a "
+                                             "LunarLeaf-CFD boundary-layer export CSV.")
+    ap.add_argument("--csv", default=DEFAULT_CFD_CSV,
+                    help="LunarLeaf-CFD boundary-layer export (default: data/lunarleaf_gbl_sweep.csv)")
+    ap.add_argument("--out", default="photorespiration_vs_gravity.csv",
+                    help="output CSV path")
+    args = ap.parse_args()
+
     params = LeafParams()
-    rows = run_sweep(params)
+    rows = run_sweep(params, cfd_csv=args.csv)
     print("FvCB oxygenation calculator — photorespiration vs gravity")
     print(f"(Ca=400 umol/mol, Tleaf=25C, Q=1000, g_s={params.g_s}, g_m={params.g_m} "
-          f"mol m-2 s-1; g_bl from LunarLeaf-CFD)\n")
+          f"mol m-2 s-1; g_bl read from {os.path.basename(args.csv)})\n")
     print(_fmt_table(rows))
 
-    out = "photorespiration_vs_gravity.csv"
-    cols = ["scale", "g_label", "g_ratio", "g_bl", "Cc", "Ci", "Gamma_star",
+    out = args.out
+    cols = ["scenario", "scale", "g_label", "g_ratio", "g_bl", "Cc", "Ci", "Gamma_star",
             "Vo_over_Vc", "phi", "A", "Rp", "Rp_over_A", "limiting"]
     with open(out, "w", newline="") as fh:
         w = csv.DictWriter(fh, fieldnames=cols, extrasaction="ignore")
