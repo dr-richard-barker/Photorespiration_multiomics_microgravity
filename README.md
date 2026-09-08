@@ -127,6 +127,34 @@ Rubisco, carbon fixation and starch/sucrose down; carbon-starvation (DIN) marker
 sharpest test, photorespiration sitting above Rubisco, holds in the transcriptome
 (+0.24, p = 6.8e-3) and independently in the proteome (+0.29, p = 0.049).
 
+### What PaintOmics returned
+
+Two jobs, organism `ath`, KEGG + MapMan, AI interpretation off —
+[`m1z16Qg3DK`](https://paintomics.org/?jobID=m1z16Qg3DK) (three layers) and
+[`EVFahRGk7T`](https://paintomics.org/?jobID=EVFahRGk7T) (metabolome-only hardware contrast).
+
+All three layers mapped cleanly: genes 20,456/20,983 in KEGG and 20,983/20,983 in MapMan,
+proteins 5,002/5,160, and all 21 predicted compounds at 100%.
+
+Of 231 pathways tested, 31 are significant. **Photosynthesis (p = 0.008), photosynthesis
+antenna proteins (p = 0.022), MapMan photosynthesis (p = 0.035) and starch/sucrose
+metabolism (p = 0.019) are all enriched — and glyoxylate & dicarboxylate metabolism, the
+photorespiration map, ranks last of all 231 at p = 0.994.** That is the model's central
+prediction, made before any omics were seen, coming back intact.
+
+The metabolite hub analysis is the strongest independent check, because the compounds are
+predicted but the genes counted around them are real: 7 of 15 compounds reach FDR < 0.05 and
+every one is a carbon-starvation or carbon-supply node (Ile, Leu, Val, Glu, Gln, RuBP,
+3-PGA). Not one of the eight C2 photorespiratory intermediates is a significant hub,
+although all eight mapped.
+
+**What the model does not explain:** the strongest signal in the job is protein processing
+in the endoplasmic reticulum at p = 8.6e-9 — the unfolded protein response, a known BRIC
+spaceflight finding. The CO₂-starvation account covers part of this experiment, not all of
+it. The metabolome-only job 2 returned nothing usable, and the metabolite class-activity
+test is close to circular; both are written up as such in
+[`paintomics/results/`](paintomics/results).
+
 ### Running it
 
 ```bash
@@ -146,6 +174,7 @@ python3 results/plot_falsification.py
 | [`metabolome/compound_provenance.tsv`](metabolome/compound_provenance.tsv) | 21 compounds, KEGG IDs from `rest.kegg.jp`, driver and tier per row |
 | [`results/falsification_check.tsv`](results/falsification_check.tsv) | prediction vs measurement, both layers |
 | [`FUTURE_EXPERIMENTS.md`](FUTURE_EXPERIMENTS.md) | what this implies for future flights |
+| [`paintomics/results/RESULTS.md`](paintomics/results/RESULTS.md) | **what PaintOmics returned** — enrichment, hub analysis, and the misses |
 | [`results/CFD_PROVENANCE_CONCERN.md`](results/CFD_PROVENANCE_CONCERN.md) | why `spaceflight-plant-hardware-cfd` was not used |
 
 ## Next steps
