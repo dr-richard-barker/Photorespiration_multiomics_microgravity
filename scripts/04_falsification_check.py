@@ -27,6 +27,7 @@ from __future__ import annotations
 
 import argparse
 import os
+import sys
 import re
 import urllib.request
 
@@ -34,118 +35,18 @@ import numpy as np
 import pandas as pd
 from scipy import stats
 
-HERE = os.path.dirname(os.path.abspath(__file__))
-REPO = os.path.dirname(HERE)
-CACHE = os.path.join(HERE, "cache")
-UPLOAD = os.path.join(REPO, "paintomics", "upload")
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import genesets  # noqa: E402
+from paths import TABLES, UPLOAD, ensure  # noqa: E402
 
-KEGG = "https://rest.kegg.jp/{endpoint}"
-
-# KEGG pathway sets — membership is authoritative, no symbol guessing involved.
-PATHWAY_SETS = {
-    "ath00630": "Glyoxylate & dicarboxylate metabolism (photorespiration)",
-    "ath00710": "Carbon fixation in photosynthetic organisms",
-    "ath00500": "Starch and sucrose metabolism",
-    "ath00010": "Glycolysis / gluconeogenesis",
-}
-
-# Curated marker sets, matched on KEGG's own description text rather than on gene symbols.
-# Symbols are unreliable here: Arabidopsis reuses CAT2 and SEN1 for unrelated genes, and
-# several canonical markers (PDC1, the hypoxia-responsive family) carry no symbol at all in
-# KEGG and are only findable by description. Every member that a regex selects is printed,
-# so the sets can be audited rather than trusted.
-MARKER_SETS = {
-    # The C2 cycle proper. Enzyme families, so a description regex captures all isoforms.
-    "photorespiration_core": r"phosphoglycolate phosphatase|glycolate oxidase|"
-                             r"glycine decarboxylase|transhydroxymethyltransferase|"
-                             r"hydroxypyruvate reductase|glycerate kinase|"
-                             r"glutamate:glyoxylate aminotransferase",
-    # DIN = DARK INDUCED, the canonical Arabidopsis sugar/carbon-starvation marker family.
-    # A coherent, literature-defined family, unlike a hand-mixed starvation list.
-    "carbon_starvation_DIN": r"\bDIN\d+;",
-    # Fermentative entry point. PDC1 (AT4G33070) has no symbol in KEGG, only this description.
-    "fermentation": r"pyruvate decarboxylase|alcohol dehydrogenase 1;|lactate dehydrogenase",
-    "hypoxia_responsive": r"[Hh]ypoxia-responsive",
-    # Light harvesting and photosystem subunits — the photosynthetic apparatus.
-    "photosynthesis_apparatus": r"photosystem I{1,2} subunit|light harvesting complex|"
-                                r"chlorophyll A/B binding",
-    "rubisco": r"ribulose bisphosphate carboxylase",
-}
-
-# Direct set-vs-set contrasts. Every metabolic pathway set turns out to shift down together
-# in this experiment (a global depression of metabolic transcripts in flight), which makes
-# each set's comparison against "all other genes" partly a test of whether the gene is
-# metabolic at all. These pairwise contrasts ask the sharper question the model actually
-# makes a claim about: does photorespiration move differently from carbon fixation?
-CONTRASTS = [
-    ("photorespiration vs carbon fixation", "ath00630", "ath00710",
-     "model: Vo flat while A falls, so photorespiration should sit ABOVE carbon fixation"),
-    ("photorespiration_core vs rubisco", "photorespiration_core", "rubisco",
-     "same claim, on curated enzyme sets rather than whole KEGG maps"),
-    ("starvation vs photosynthesis", "carbon_starvation_DIN", "photosynthesis_apparatus",
-     "model: carbon deficit, so starvation markers should sit ABOVE the apparatus"),
-]
-
-# What the model predicts each set should do in FLT vs GC. "none" = explicitly no change,
-# which is a prediction the data can break just as much as a directional one.
-PREDICTION = {
-    "ath00630": "none",
-    "photorespiration_core": "none",
-    "carbon_starvation_DIN": "up",
-    "fermentation": "none",          # lit canister: photosynthesis releases O2, no hypoxia
-    "hypoxia_responsive": "none",    # same claim, independent gene set
-    "ath00710": "down",
-    "photosynthesis_apparatus": "down",
-    "rubisco": "down",
-    "ath00500": "down",
-    "ath00010": None,      # not predicted; reported for context only
-}
+PATHWAY_SETS = genesets.PATHWAY_SETS
+MARKER_SETS = genesets.MARKER_SETS
+PREDICTION = genesets.PREDICTION
+CONTRASTS = genesets.CONTRASTS
 
 
-def kegg(endpoint: str, cache_name: str) -> str:
-    path = os.path.join(CACHE, cache_name)
-    if os.path.exists(path):
-        return open(path).read()
-    os.makedirs(CACHE, exist_ok=True)
-    url = KEGG.format(endpoint=endpoint)
-    req = urllib.request.Request(url, headers={"User-Agent": "photoresp-multiomics/1.0"})
-    with urllib.request.urlopen(req, timeout=120) as resp:
-        text = resp.read().decode()
-    with open(path, "w") as fh:
-        fh.write(text)
-    return text
 
 
-def load_annotation() -> pd.DataFrame:
-    """AGI -> (symbol, description) from KEGG's own gene list."""
-    rows = []
-    for line in kegg("list/ath", "kegg_ath_genes.tsv").splitlines():
-        parts = line.split("\t")
-        if len(parts) < 4:
-            continue
-        agi = parts[0].replace("ath:", "")
-        desc = parts[3]
-        symbol = desc.split(";")[0].strip() if ";" in desc else ""
-        rows.append((agi, symbol, desc))
-    return pd.DataFrame(rows, columns=["agi", "symbol", "description"]).set_index("agi")
-
-
-def pathway_genes(pid: str) -> set[str]:
-    text = kegg(f"link/ath/path:{pid}", f"kegg_{pid}_genes.tsv")
-    return {ln.split("\t")[1].replace("ath:", "") for ln in text.splitlines() if "\t" in ln}
-
-
-def resolve_markers(ann: pd.DataFrame, verbose: bool) -> dict[str, set[str]]:
-    """Select each marker set by regex over KEGG's description, listing what it caught."""
-    sets: dict[str, set[str]] = {}
-    for set_name, pattern in MARKER_SETS.items():
-        hits = ann[ann["description"].str.contains(pattern, case=False, regex=True, na=False)]
-        sets[set_name] = set(hits.index)
-        print(f"    {set_name}: {len(hits)} genes")
-        if verbose:
-            for agi, row in hits.iterrows():
-                print(f"        {agi}  {row['description'][:72]}")
-    return sets
 
 
 def score(values: pd.Series, members: set[str], label: str, predicted: str | None) -> dict:
@@ -232,14 +133,8 @@ def main() -> int:
 
     print("Falsification check — model prediction vs measured OSD-522 omics")
     print("\n  building gene sets from KEGG (cached in osdr/cache/)")
-    ann = load_annotation()
-    print(f"    KEGG ath annotation: {len(ann):,} genes")
 
-    gene_sets: dict[str, set[str]] = {}
-    for pid, desc in PATHWAY_SETS.items():
-        gene_sets[pid] = pathway_genes(pid)
-        print(f"    {pid}: {len(gene_sets[pid])} genes — {desc}")
-    gene_sets.update(resolve_markers(ann, verbose=not args.quiet_resolution))
+    gene_sets = genesets.build(verbose=not args.quiet_resolution)
 
     # --- transcriptome -------------------------------------------------------------
     genes = pd.read_csv(os.path.join(UPLOAD, "gene_expression_values.tab"),
@@ -248,12 +143,7 @@ def main() -> int:
                 gene_sets)
 
     # --- proteome: map UniProt accessions to AGI via KEGG's own conversion ----------
-    conv = {}
-    for line in kegg("conv/uniprot/ath", "kegg_ath_uniprot.tsv").splitlines():
-        if "\t" not in line:
-            continue
-        agi, up = line.split("\t")
-        conv[up.replace("up:", "")] = agi.replace("ath:", "")
+    conv = genesets.uniprot_to_agi()
 
     prot = pd.read_csv(os.path.join(UPLOAD, "proteomics_values.tab"), sep="\t", index_col=0)
     prot_agi = prot.copy()
@@ -267,7 +157,8 @@ def main() -> int:
     pr = report("PROTEOME — OSD-522 shoots, Space Flight vs Ground Control", per_gene,
                 gene_sets)
 
-    out = os.path.join(REPO, "results", "falsification_check.tsv")
+    ensure(TABLES)
+    out = os.path.join(TABLES, "T07_falsification_osd522.tsv")
     os.makedirs(os.path.dirname(out), exist_ok=True)
     combined = pd.concat([tx.assign(layer="transcriptome"), pr.assign(layer="proteome")])
     combined.to_csv(out, sep="\t", index=False)

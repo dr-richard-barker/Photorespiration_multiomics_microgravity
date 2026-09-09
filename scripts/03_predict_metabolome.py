@@ -41,12 +41,9 @@ import math
 import os
 import sys
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from fvcb import LeafParams, load_cfd_sweep, solve_operating_point  # noqa: E402
-
-HERE = os.path.dirname(os.path.abspath(__file__))
-REPO = os.path.dirname(HERE)
-UPLOAD = os.path.join(REPO, "paintomics", "upload")
+from paths import TABLES, UPLOAD, ensure  # noqa: E402
 
 # Compound set. KEGG identifiers were retrieved from the KEGG REST API
 # (rest.kegg.jp/list/...) on 2026-09-08, not written from memory. The primary name is
@@ -184,7 +181,8 @@ def write_contrast(name: str, a: dict, b: dict, gain: float, threshold: float,
 
 
 def write_provenance(pts: dict, d_flt: dict, d_hw: dict, args) -> None:
-    path = os.path.join(HERE, "compound_provenance.tsv")
+    ensure(TABLES)
+    path = os.path.join(TABLES, "T06_predicted_compounds.tsv")
     with open(path, "w") as fh:
         fh.write("# Predicted metabolite pools for OSD-522 (BRIC-LED-001).\n")
         fh.write("# EVERY VALUE IS MODEL OUTPUT — NOT MEASURED. OSDR has no plant metabolomics.\n")
@@ -199,7 +197,7 @@ def write_provenance(pts: dict, d_flt: dict, d_hw: dict, args) -> None:
             fh.write(f"# - {what}: {why}\n")
 
     gbl = pts["_gbl"]
-    summary = os.path.join(HERE, "operating_points.tsv")
+    summary = os.path.join(TABLES, "T05_operating_points.tsv")
     with open(summary, "w") as fh:
         fh.write("arm\tg_bl_mol_m2_s\tCa_umol_mol\tCc\tphi_percent\tA_umol_m2_s\tVo\tVc\n")
         for arm in ("GC", "FLT", "BRIC", "VENTED"):

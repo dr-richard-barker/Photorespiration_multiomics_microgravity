@@ -165,7 +165,8 @@ def solve_operating_point(g_bl: float, p: LeafParams, Ca: float = 400.0,
 # Required columns: scenario, scale, gravity_g, g_bl_mol_m2_s, o2_excess_ppm.
 # Any extra columns (delta_mm, Sherwood, dC_CO2_mean) are carried through for display.
 DEFAULT_CFD_CSV = os.path.join(
-    os.path.dirname(os.path.abspath(__file__)), "data", "lunarleaf_gbl_sweep.csv"
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+    "data", "lunarleaf_gbl_sweep.csv"
 )
 _REQUIRED_COLS = {"scenario", "scale", "gravity_g", "g_bl_mol_m2_s", "o2_excess_ppm"}
 
@@ -238,7 +239,10 @@ if __name__ == "__main__":
                                              "LunarLeaf-CFD boundary-layer export CSV.")
     ap.add_argument("--csv", default=DEFAULT_CFD_CSV,
                     help="LunarLeaf-CFD boundary-layer export (default: data/lunarleaf_gbl_sweep.csv)")
-    ap.add_argument("--out", default="photorespiration_vs_gravity.csv",
+    default_out = os.path.join(
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+        "results", "tables", "T04_photorespiration_vs_gravity.csv")
+    ap.add_argument("--out", default=default_out,
                     help="output CSV path")
     args = ap.parse_args()
 

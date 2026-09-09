@@ -24,15 +24,14 @@ from __future__ import annotations
 
 import argparse
 import os
+import sys
 import re
 
 import numpy as np
 import pandas as pd
 
-HERE = os.path.dirname(os.path.abspath(__file__))
-REPO = os.path.dirname(HERE)
-CACHE = os.path.join(HERE, "cache")
-UPLOAD = os.path.join(REPO, "paintomics", "upload")
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from paths import CACHE, UPLOAD  # noqa: E402
 
 FRACTIONS = {
     "SOL": "GLDS-522_proteomics_GO_Shoot_SOL_Report_20220223_Proteins.csv",

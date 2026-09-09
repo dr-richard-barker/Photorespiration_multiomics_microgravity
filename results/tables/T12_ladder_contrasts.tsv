@@ -1,0 +1,19 @@
+accession	enclosure_class	carbon_pct_earth	light	hardware	contrast	n_a	n_b	separation	p
+OSD-522	sealed	1	light	BRIC-LED	photorespiration vs carbon fixation	76	66	-0.019978499999999996	0.9494488414673065
+OSD-522	sealed	1	light	BRIC-LED	photorespiration_core vs rubisco	13	5	0.239329	0.00676937441643324
+OSD-522	sealed	1	light	BRIC-LED	starvation vs photosynthesis	5	31	0.922558	5.3051523639758935e-06
+OSD-38	sealed	1	dark	BRIC-PDFU	photorespiration vs carbon fixation	79	70	-0.1132995548919965	0.38687126504750025
+OSD-38	sealed	1	dark	BRIC-PDFU	photorespiration_core vs rubisco	13	5	-0.04640993019657402	0.5662931839402428
+OSD-38	sealed	1	dark	BRIC-PDFU	starvation vs photosynthesis	5	31	-1.950897041934674	1.0610304727951787e-05
+OSD-321	sealed	1	dark	BRIC-PDFU	photorespiration vs carbon fixation	80	70	-0.14680764758293535	0.08412443148141394
+OSD-321	sealed	1	dark	BRIC-PDFU	photorespiration_core vs rubisco	13	5	-1.1301872380416542	0.20751633986928106
+OSD-321	sealed	1	dark	BRIC-PDFU	starvation vs photosynthesis	5	31	-3.2170542717940203	6.366182836771073e-05
+OSD-678-light	tape	90	light	CARA square dish	photorespiration vs carbon fixation	78	70	0.17518854268315512	0.35765590896194455
+OSD-678-light	tape	90	light	CARA square dish	photorespiration_core vs rubisco	13	5	1.74308428213327	0.20751633986928106
+OSD-678-light	tape	90	light	CARA square dish	starvation vs photosynthesis	5	31	2.577351848985346	2.1220609455903574e-05
+OSD-678-dark	tape	90	dark	CARA square dish	photorespiration vs carbon fixation	78	70	0.1794907805066025	0.291762325511405
+OSD-678-dark	tape	90	dark	CARA square dish	photorespiration_core vs rubisco	13	5	-0.605148397675782	0.3359010270774977
+OSD-678-dark	tape	90	dark	CARA square dish	starvation vs photosynthesis	5	31	-0.39344351347748985	0.12245883201765555
+OSD-427	vented	100	light	VEGGIE (VPS)	photorespiration vs carbon fixation	80	70	0.013185134462684489	0.799276938169023
+OSD-427	vented	100	light	VEGGIE (VPS)	photorespiration_core vs rubisco	13	5	0.11680126458446899	0.28874883286647995
+OSD-427	vented	100	light	VEGGIE (VPS)	starvation vs photosynthesis	5	31	0.4141689368524736	6.366182836771073e-05

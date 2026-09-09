@@ -33,7 +33,8 @@ FILES = {
     "prot_shoot_mem": "GLDS-522_proteomics_GO_Shoot_MEM_Report_20220223_Proteins.csv",
 }
 
-CACHE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "cache")
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from paths import CACHE  # noqa: E402
 
 
 def url_for(filename: str) -> str:

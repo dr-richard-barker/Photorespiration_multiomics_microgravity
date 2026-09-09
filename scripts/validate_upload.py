@@ -17,8 +17,8 @@ import math
 import os
 import sys
 
-HERE = os.path.dirname(os.path.abspath(__file__))
-UPLOAD = os.path.join(HERE, "upload")
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from paths import UPLOAD  # noqa: E402
 
 # (values file, relevant file, expected header token, expected id pattern description)
 BUNDLE = [

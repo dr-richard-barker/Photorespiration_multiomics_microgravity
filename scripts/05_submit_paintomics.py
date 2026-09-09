@@ -27,9 +27,8 @@ import time
 import requests
 
 BASE = "https://paintomics.org"
-HERE = os.path.dirname(os.path.abspath(__file__))
-UPLOAD = os.path.join(HERE, "upload")
-RESULTS = os.path.join(HERE, "results")
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from paths import PAINTOMICS_RAW as RESULTS, UPLOAD  # noqa: E402
 
 SPECIE = "ath"
 DATABASES = ["KEGG", "MapMan"]
