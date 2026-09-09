@@ -1,0 +1,343 @@
+%% Springer Nature LaTeX template, npj Microgravity style.
+%% sn-jnl.cls and sn-nature.bst are vendored here; see README.md for the two patches
+%% the class needs on TeX Live 2026.
+\documentclass[pdflatex,sn-nature]{sn-jnl}
+
+\usepackage{graphicx}
+\usepackage{multirow}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{textcomp}
+\usepackage{url}
+
+\graphicspath{{figures/}}
+
+\begin{document}
+
+\title[Hardware atmosphere dominates the spaceflight shoot response]{Growth-hardware
+atmosphere, not microgravity, dominates the \textit{Arabidopsis} spaceflight shoot response}
+
+%% TODO AUTHORSHIP --- every field below except the corresponding author is a placeholder.
+%% See README.md for the full checklist that must be cleared before submission.
+\author*[1]{\fnm{Richard} \sur{Barker}}\email{dr.richard.barker@gmail.com}
+\author[1]{\fnm{[TODO}\sur{ co-author]}}
+\affil[1]{\orgname{[TODO --- affiliation]}, \city{[TODO]}, \country{[TODO]}}
+
+\abstract{Plants flown on the International Space Station are grown inside enclosures, and
+the atmosphere inside those enclosures is rarely measured. We coupled a validated
+lattice-Boltzmann model of leaf boundary-layer gas transport to a Farquhar--von
+Caemmerer--Berry model of C$_3$ photosynthesis and asked what an illuminated, sealed canister
+does to the CO$_2$ reaching Rubisco. The model predicts that photosynthesis draws a sealed
+Biological Research in Canisters (BRIC) enclosure down to near its CO$_2$ compensation point
+within minutes, raising the Rubisco oxygenation fraction from 28\,\% to 54\,\% and reducing
+12\,h carbon gain to 1\,\% of an unenclosed control. Because that drawdown is a mass balance,
+it occurs in the ground control as well as in flight, and so cancels almost entirely out of
+the flight-versus-ground contrast every such experiment reports: we estimate the hardware
+effect on metabolite pools to be 25 times the microgravity effect, and structurally invisible.
+Contrary to our own starting hypothesis, the microgravity boundary-layer penalty does not
+amplify as CO$_2$ falls; it converges, leaving a persistent 5--9\,\% assimilation deficit.
+Fixing these predictions before examining any data, we tested them against OSD-522
+(BRIC-LED), where the model called eight of nine gene-set responses correctly, and against
+five further OSDR studies. Illumination separated the six studies perfectly --- every
+illuminated enclosure showed a carbon-starvation signature and every dark one its inverse ---
+while the predicted gradient across enclosure types did not hold. NASA's Open Science Data
+Repository contains no plant metabolome at all (0 of 66 plant studies), so the third omic
+layer for pathway integration had to be predicted rather than measured. We argue that
+enclosure atmosphere is a first-order, currently unmeasured covariate in plant spaceflight
+biology, and set out the three-arm design and the in-canister measurement that would resolve
+it.}
+
+\keywords{spaceflight, microgravity, photorespiration, \textit{Arabidopsis},
+growth hardware, multi-omics}
+
+\maketitle
+
+\section{Introduction}\label{sec:intro}
+
+Interpreting a plant spaceflight experiment means attributing a molecular difference to
+microgravity. That attribution rests on an assumption that is almost never tested: that the
+flight and ground arms differ in gravity and in nothing else that matters to metabolism.
+
+Plants flown on the International Space Station are grown inside enclosures --- sealed
+Petri Dish Fixation Units in BRIC canisters, micropore-taped dishes in CARA, actively
+ventilated chambers in VEGGIE and the Advanced Plant Habitat. These enclosures differ by
+orders of magnitude in how freely they exchange gas with the cabin, and to our knowledge no
+BRIC-class flight has logged the CO$_2$ concentration its plants actually experienced.
+
+The quantity that matters is not the cabin atmosphere but the CO$_2$ mole fraction reaching
+Rubisco, $C_c$, which sits at the end of a chain of conductances: from bulk air across the
+leaf boundary layer, through the stomata, and through the mesophyll. Only the first of those
+is gravity-dependent, through buoyancy-driven convection. Rubisco partitions between
+carboxylation and oxygenation as $V_o/V_c = 2\Gamma^*/C_c$ \citep{farquhar1980}, so anything
+that lowers $C_c$ raises photorespiration.
+
+Here we ask a question about the enclosure rather than about gravity, and we ask it of the
+model before we ask it of any data.
+
+\section{Results}\label{sec:results}
+
+\subsection{An illuminated sealed canister is a CO\texorpdfstring{$_2$}{2}-starvation chamber}
+
+Gas transport was taken from LunarLeaf-CFD \citep{lunarleaf}, a lattice-Boltzmann solver
+validated against four analytical and empirical gates. Its enclosure mass balance draws a lit
+BRIC canister from 400\,ppm to near zero in approximately seven minutes, and puts 12\,h carbon
+gain at 1\,\% of an unenclosed control against 90\,\% for micropore tape and 100\,\% when
+ventilated (Fig.~\ref{fig:hardware}).
+
+The step that matters for interpretation is that this drawdown is a mass balance between
+photosynthetic uptake and enclosure volume. It is therefore essentially gravity-independent,
+and it happens in the ground control as much as in flight.
+
+\subsection{What that does to Rubisco, and what gravity does not do}
+
+Feeding the boundary-layer conductance into a Farquhar--von Caemmerer--Berry model
+\citep{farquhar1980} with in-vivo Rubisco kinetics \citep{bernacchi2001,bernacchi2003} moves
+the leaf along its CO$_2$ response curve: oxygenation fraction rises from
+28.3\,\% in ventilated hardware at ambient CO$_2$ to 53.7\,\% in a drawn-down canister
+(Fig.~\ref{fig:fvcb}a, Table~\ref{tab:operating}).
+
+We began from the hypothesis that CO$_2$ starvation would \emph{amplify} the microgravity
+boundary-layer penalty. The model says the opposite (Fig.~\ref{fig:fvcb}b). As assimilation
+falls toward the compensation point, the flux through the boundary layer falls with it, so
+the CO$_2$ drop across that layer, $A/g_{bl}$, tends to zero and the two gravities converge.
+What survives is a persistent proportional assimilation deficit of about 5\,\% at leaf scale,
+7\,\% at rosette scale and 9\,\% in a dense canopy, nearly independent of where in the
+drawdown the plant sits (Fig.~\ref{fig:fvcb}c). That insensitivity is the prediction's
+strength: it does not require knowing the canister CO$_2$, which nobody measured.
+
+Propagating both contrasts to metabolite pools makes the asymmetry explicit. The
+sealed-versus-ventilated hardware effect is 25 times the flight-versus-ground effect
+(Fig.~\ref{fig:fvcb}d) --- and because it acts on both arms, it cancels.
+
+\subsection{A metabolite layer that does not exist}
+
+Pathway-level integration needs a metabolome. We queried all 567 OSDR studies and
+cross-tabulated organism against assay type: six are metabolite profiling, and every one is
+mouse, human, rat or microbial. \textbf{None of the 66 plant studies has a metabolome.}
+
+We therefore predicted one (Fig.~\ref{fig:metabolome}), propagating the modelled fluxes to 21
+compounds under one stated assumption --- that at quasi-steady state a pool tracks the flux
+feeding it. Every value is labelled as model output in every file. Compounds the model cannot
+speak to, including all tricarboxylic-acid intermediates and all fermentation products, are
+excluded with the reason recorded rather than filled in.
+
+\subsection{The model called eight of nine gene sets, blind}
+
+OSD-522 \citep{osd522} grew \textit{Arabidopsis} in BRIC-LED hardware under 60\,\textmu mol
+m$^{-2}$\,s$^{-1}$ of red and blue light, with six flight and six ground-control shoot
+samples. We computed differential expression with PyDESeq2 \citep{pydeseq2}, obtaining 1{,}795
+genes at FDR $<0.05$ from 20{,}983 tested, and used the deposited proteomics ratios for 5{,}160
+proteins (Fig.~\ref{fig:omics}).
+
+Scoring these against KEGG-derived gene sets (Fig.~\ref{fig:blind}), the model's predictions
+held for eight of nine sets: the photosystem and light-harvesting apparatus fell
+($-0.238$, $p = 3.8\times10^{-6}$; and in the proteome $-0.820$, $p = 5.0\times10^{-4}$),
+Rubisco fell ($-0.403$, $p = 4.5\times10^{-3}$), carbon fixation and starch/sucrose
+metabolism fell, carbon-starvation DIN markers rose ($+0.686$, $p = 2.6\times10^{-3}$), and
+photorespiratory enzymes were not induced. The one mismatch is the whole KEGG glyoxylate and
+dicarboxylate map, which contains a good deal besides the C$_2$ cycle.
+
+The sharper test is between sets, which is immune to the global depression of metabolic
+transcripts: photorespiratory enzymes sat above Rubisco in the transcriptome
+($+0.239$, $p = 6.8\times10^{-3}$) and independently in the proteome
+($+0.285$, $p = 4.9\times10^{-2}$).
+
+\subsection{Pathway integration ranks photorespiration last of 231}
+
+Submitting all three layers to PaintOmics \citep{paintomics4} against KEGG and MapMan
+(Fig.~\ref{fig:paintomics}), 98--100\,\% of genes, 97\,\% of proteins and all 21 predicted
+compounds mapped. Of 231 pathways tested, 31 reached combined Fisher $p<0.05$, including
+photosynthesis ($p = 0.008$), photosynthesis antenna proteins ($p = 0.022$) and starch and
+sucrose metabolism ($p = 0.019$). Glyoxylate and dicarboxylate metabolism --- the
+photorespiration map --- ranked \emph{last of all 231} at $p = 0.994$.
+
+The metabolite hub analysis is the least circular result available here, because the
+compounds are predicted but the differentially expressed genes counted around them are
+measured. Seven of fifteen compounds reached FDR $<0.05$, and every one was a
+carbon-starvation or carbon-supply node. Not one of the eight C$_2$ photorespiratory
+intermediates was a significant hub, although all eight mapped.
+
+\subsection{Illumination separates six studies; the enclosure gradient does not}
+
+The model's claim is an ordering, so we tested it across six matched flight-versus-ground
+contrasts spanning three enclosure classes \citep{osd38,osd321,osd678,osd427}
+(Fig.~\ref{fig:ladder}; selection and exclusions in Table~\ref{tab:studies}).
+
+Illumination separated them completely. All three illuminated studies showed the
+starvation-over-photosynthesis signature ($+0.41$, $+0.92$, $+2.58$) and all three dark
+studies its inverse ($-0.39$, $-1.95$, $-3.22$); one-sided Mann--Whitney $p = 0.05$, the floor
+attainable at three versus three. The cleanest evidence is internal: OSD-678 light ($+2.58$)
+against OSD-678 dark ($-0.39$) is the same hardware, genotype and flight.
+
+The predicted gradient across enclosure classes did \emph{not} hold (Spearman
+$\rho = -0.50$, $p = 0.67$). Sealed and ventilated fell the right way round but micropore
+tape sat highest, and three studies cannot rank three classes. We report this as a failure of
+that prediction. The driver appears to be illumination inside an enclosure rather than sealing
+as such --- which is mechanistically what the model says, since drawdown requires
+photosynthesis to be running.
+
+\section{Discussion}\label{sec:discussion}
+
+The strongest signal in the OSD-522 integration is one this model does not explain: protein
+processing in the endoplasmic reticulum, at $p = 8.6\times10^{-9}$, the unfolded protein
+response. A gas-transport account explains part of this experiment, not all of it.
+
+What the analysis does support is narrower and, we think, more useful: in an illuminated
+enclosure the atmosphere the plants experience is set by the hardware, it is not measured, it
+is large, and because it acts on both arms it is invisible to the contrast that gets
+published. That is a covariate, not a confound to be dismissed --- and it is measurable with
+a sensor.
+
+\subsection{Limitations}
+
+Cross-study comparison is the weakest joint here: different laboratories, durations,
+genotypes and harvest protocols. We restricted to GeneLab-standard RNA-seq, above-ground
+tissue and matched contrasts, and we report gene-set \emph{ordering} rather than absolute
+effect sizes, but the limitation stands. The illumination result rests on three studies per
+group. The intended ventilated proteome arm does not exist, because OSD-16 has no processed
+files, so the two-layer comparison is confined to sealed hardware. The metabolite layer is
+predicted throughout, and the metabolite class-activity test is close to circular because it
+tests our own predicted list; the hub analysis is not, and is reported as the informative one.
+Finally, $V_{cmax}$, $J_{max}$, $R_d$, $g_s$ and $g_m$ remain literature values for
+\textit{Arabidopsis} rather than fits to flight material, and $g_s$ is held fixed although
+BRIC canisters are humid.
+
+\subsection{What would settle it}
+
+Three things, in increasing cost. First, log CO$_2$ and O$_2$ inside the canister: the central
+assumption of this analysis becomes a measurement, and an entire archive of BRIC-derived
+transcriptomes becomes reinterpretable. Second, run a targeted metabolite panel on archived
+flight material --- roughly twenty compounds would be the first plant spaceflight metabolome
+in existence, and our predicted set is a ready-made target list. Third, fly a three-arm design
+(Fig.~\ref{fig:implications}): flight sealed, ground sealed, ground ventilated. Two arms
+confound hardware with gravity; three separate them, and the third arm never leaves the
+ground.
+
+\section{Methods}\label{sec:methods}
+
+Full methods, every script and every derived table are in the repository accompanying this
+manuscript. Study selection, including each exclusion and its reason, is in
+\texttt{data/study\_registry.tsv}.
+
+\textbf{Gas transport.} Boundary-layer conductance and enclosure mass balances were taken from
+LunarLeaf-CFD \citep{lunarleaf} and vendored into this repository.
+
+\textbf{Photosynthesis model.} A Farquhar--von Caemmerer--Berry C$_3$ model \citep{farquhar1980}
+with the oxygenation term explicit, using in-vivo temperature responses
+\citep{bernacchi2001,bernacchi2003}, solved for the supply-equals-demand operating point.
+
+\textbf{Differential expression.} OSD-522 was processed with PyDESeq2 \citep{pydeseq2}. The
+other five studies use GeneLab's own deposited differential-expression tables, with matched
+flight-versus-ground contrasts selected by pattern and recorded in the registry.
+
+\textbf{Gene sets.} Built from KEGG pathway membership and description regular expressions
+fetched live \citep{kegg}, never typed from memory.
+
+\textbf{Pathway integration.} PaintOmics \citep{paintomics4}, organism \texttt{ath}, KEGG and
+MapMan, with the optional AI interpretation disabled.
+
+\backmatter
+
+\bmhead{Data availability}
+All primary data are public in the NASA Open Science Data Repository \citep{osdr2025}:
+OSD-522, OSD-38, OSD-321, OSD-678 and OSD-427. Derived tables and figures are archived with
+this manuscript. TODO insert the Zenodo DOI on deposit.
+
+\bmhead{Code availability}
+TODO insert the repository URL and archived release DOI.
+
+\bmhead{Acknowledgements}
+TODO.
+
+\bmhead{Author contributions}
+TODO.
+
+\bmhead{Funding}
+TODO.
+
+\bmhead{Competing interests}
+The authors declare no competing interests.
+
+\begin{table}[t]
+\caption{Modelled operating points. Flight and ground control sit at effectively the same
+place because the sealed canister draws both arms down; the ventilated arm does not.}
+\label{tab:operating}
+\begin{tabular}{lrrrrr}
+\toprule
+Arm & $g_{bl}$ & $C_a$ & $C_c$ & $\varphi$ (\%) & $A$ \\
+\midrule
+Ground control (sealed)   & 0.540 & 100 & 75.5  & 53.1 & 2.40 \\
+Flight (sealed)           & 0.291 & 100 & 73.9  & 53.7 & 2.22 \\
+Ventilated (ambient)      & 0.291 & 400 & 216.9 & 28.3 & 15.56 \\
+\botrule
+\end{tabular}
+\footnotetext{$g_{bl}$ in mol m$^{-2}$ s$^{-1}$; $C_a$ and $C_c$ in \textmu mol mol$^{-1}$;
+$A$ in \textmu mol m$^{-2}$ s$^{-1}$. Rosette scale.}
+\end{table}
+
+\begin{table}[t]
+\caption{The six studies analysed, and the six excluded. Tissue is the binding constraint: a
+photosynthesis prediction says nothing about roots.}
+\label{tab:studies}
+\begin{tabular}{llllc}
+\toprule
+Study & Hardware & Class & Tissue & Light \\
+\midrule
+OSD-522 & BRIC-LED       & sealed & shoots          & lit \\
+OSD-38  & BRIC-PDFU      & sealed & whole seedlings & dark \\
+OSD-321 & BRIC-PDFU      & sealed & seedlings       & dark \\
+OSD-678 & CARA           & tape   & leaves          & lit and dark \\
+OSD-427 & VEGGIE         & vented & leaf            & lit \\
+\midrule
+\multicolumn{5}{l}{\textit{Excluded:} OSD-120, OSD-193, OSD-281 (roots);
+OSD-218 (tissue unstated);} \\
+\multicolumn{5}{l}{OSD-16 (no processed files); OSD-7 (microarray, not comparable).} \\
+\botrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[t]\centering
+\includegraphics[width=\textwidth]{fig01_hardware_atmosphere.pdf}
+\caption{Growth hardware, not gravity, sets the atmosphere at the leaf.}
+\label{fig:hardware}\end{figure}
+
+\begin{figure}[t]\centering
+\includegraphics[width=\textwidth]{fig02_fvcb_operating_points.pdf}
+\caption{A drawn-down enclosure, not microgravity, is what reaches Rubisco. Panel b shows the
+refutation of our own starting hypothesis.}
+\label{fig:fvcb}\end{figure}
+
+\begin{figure}[t]\centering
+\includegraphics[width=\textwidth]{fig03_predicted_metabolome.pdf}
+\caption{The metabolite layer had to be predicted. Every value shown is model output.}
+\label{fig:metabolome}\end{figure}
+
+\begin{figure}[t]\centering
+\includegraphics[width=\textwidth]{fig04_osd522_omics.pdf}
+\caption{OSD-522: \textit{Arabidopsis} shoots, six flight against six ground.}
+\label{fig:omics}\end{figure}
+
+\begin{figure}[t]\centering
+\includegraphics[width=\textwidth]{fig05_blind_test.pdf}
+\caption{The model's blind prediction against the measurement.}
+\label{fig:blind}\end{figure}
+
+\begin{figure}[t]\centering
+\includegraphics[width=\textwidth]{fig06_paintomics.pdf}
+\caption{Pathway integration across all three layers.}
+\label{fig:paintomics}\end{figure}
+
+\begin{figure}[t]\centering
+\includegraphics[width=\textwidth]{fig07_hardware_ladder.pdf}
+\caption{Illumination separates the six studies; the enclosure gradient does not.}
+\label{fig:ladder}\end{figure}
+
+\begin{figure}[t]\centering
+\includegraphics[width=\textwidth]{fig08_implications.pdf}
+\caption{Designing the experiment that could tell hardware from gravity.}
+\label{fig:implications}\end{figure}
+
+\bibliography{references}
+
+\end{document}
