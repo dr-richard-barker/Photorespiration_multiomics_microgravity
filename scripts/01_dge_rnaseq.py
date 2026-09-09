@@ -27,7 +27,7 @@ import numpy as np
 import pandas as pd
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from paths import CACHE, UPLOAD  # noqa: E402
+from paths import CACHE, TABLES, UPLOAD, ensure  # noqa: E402
 
 COUNTS = os.path.join(CACHE, "GLDS-522_rna_seq_RSEM_Unnormalized_Counts_GLbulkRNAseq.csv")
 RUNSHEET = os.path.join(CACHE, "GLDS-522_rna_seq_bulkRNASeq_v2_runsheet.csv")
@@ -198,6 +198,15 @@ def write_outputs(res: pd.DataFrame, method: str, alpha: float, min_count: int,
     print(f"  wrote {values_path}  ({len(values):,} genes)")
     print(f"  wrote {relevant_path}  ({len(sig):,} genes at FDR < {alpha}; "
           f"{up:,} up in flight, {down:,} down)")
+
+    # The full statistics, for the volcano and for anyone re-using the contrast. The
+    # PaintOmics .tab files deliberately carry log2FC only, which is all its parser reads.
+    ensure(TABLES)
+    full = res.copy()
+    full.index.name = "TAIR"
+    full["significant"] = full["fdr"] < alpha
+    full.to_csv(os.path.join(TABLES, "T01_osd522_transcriptome.tsv"), sep="\t")
+    print(f"  wrote {TABLES}/T01_osd522_transcriptome.tsv  ({len(full):,} genes with stats)")
 
     # Provenance sits beside the upload files rather than inside them: PaintOmics'
     # parser expects the '#geneID' header line first and nothing else before the data.

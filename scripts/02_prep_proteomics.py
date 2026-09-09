@@ -31,7 +31,7 @@ import numpy as np
 import pandas as pd
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from paths import CACHE, UPLOAD  # noqa: E402
+from paths import CACHE, TABLES, UPLOAD, ensure  # noqa: E402
 
 FRACTIONS = {
     "SOL": "GLDS-522_proteomics_GO_Shoot_SOL_Report_20220223_Proteins.csv",
@@ -156,6 +156,13 @@ def main() -> int:
     print(f"  wrote {values_path}  ({len(prot):,} proteins)")
     print(f"  wrote {relevant_path}  ({len(sig):,} at adj p < {args.alpha}; "
           f"{up:,} up in flight, {down:,} down)")
+
+    ensure(TABLES)
+    out = prot[["log2fc", "pvalue", "adj_p", "gene_name", "fraction", "description"]].copy()
+    out["significant"] = out["adj_p"] < args.alpha
+    out.index.name = "uniprot"
+    out.to_csv(os.path.join(TABLES, "T02_osd522_proteome.tsv"), sep="\t")
+    print(f"  wrote {TABLES}/T02_osd522_proteome.tsv  ({len(out):,} proteins with stats)")
 
     with open(os.path.join(UPLOAD, "proteomics_METHOD.txt"), "w") as fh:
         fh.write(

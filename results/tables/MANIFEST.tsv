@@ -1,0 +1,14 @@
+# Every derived table in this directory, what it holds, and what made it.
+# Regenerate with scripts/make_manifest.py, which fails on an undescribed file.
+file	bytes	generating_script	description	source_data
+T01_osd522_transcriptome.tsv	1542037	scripts/01_dge_rnaseq.py	OSD-522 shoot transcriptome, flight vs ground: log2FC, p, FDR per AGI locus	NASA OSDR OSD-522 RSEM counts
+T02_osd522_proteome.tsv	733332	scripts/02_prep_proteomics.py	OSD-522 shoot proteome, flight vs ground: deposited S/G log2 ratio and adjusted p	NASA OSDR OSD-522 shoot SOL + MEM proteomics reports
+T04_photorespiration_vs_gravity.csv	1652	scripts/fvcb.py	FvCB operating point across the CFD gravity/scale sweep: Cc, phi, A, Rp, Rp/A	data/lunarleaf_gbl_sweep.csv
+T05_operating_points.tsv	253	scripts/03_predict_metabolome.py	The four modelled arms (flight, ground, sealed, vented): g_bl, Ca, Cc, phi, A, Vo, Vc	LunarLeaf-CFD T13 + fvcb.py
+T06_predicted_compounds.tsv	3541	scripts/03_predict_metabolome.py	21 PREDICTED metabolite pools with KEGG id, driver flux, tier and both contrasts. MODEL OUTPUT, NEVER MEASURED.	fvcb.py fluxes; KEGG ids from rest.kegg.jp
+T07_falsification_osd522.tsv	2327	scripts/04_falsification_check.py	Blind prediction vs measurement on OSD-522: gene-set shifts, Mann-Whitney p, verdicts	T01, T02, KEGG gene sets
+T08_paintomics_significant.tsv	2986	scripts/05_submit_paintomics.py (job m1z16Qg3DK)	All 31 pathways significant at combined Fisher p < 0.05, with per-omic p-values	PaintOmics AI
+T09_paintomics_carbon.tsv	1187	scripts/05_submit_paintomics.py (job m1z16Qg3DK)	The carbon pathways the model made claims about, significant or not	PaintOmics AI
+T10_metabolite_hubs.tsv	1263	scripts/05_submit_paintomics.py (job m1z16Qg3DK)	PaintOmics metabolite hub analysis: predicted compounds ranked by REAL DE genes nearby	PaintOmics AI
+T11_hardware_ladder.tsv	7457	scripts/07_hardware_ladder.py	Six OSDR studies x ten gene sets: median shift, Mann-Whitney p, model prediction	data/study_registry.tsv + GeneLab DGE tables
+T12_ladder_contrasts.tsv	2136	scripts/07_hardware_ladder.py	Set-vs-set separations per study — the illumination test and the enclosure test	data/study_registry.tsv + GeneLab DGE tables
