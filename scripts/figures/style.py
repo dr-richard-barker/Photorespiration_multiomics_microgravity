@@ -15,6 +15,11 @@ from __future__ import annotations
 
 import os
 
+# Without a fixed SOURCE_DATE_EPOCH, matplotlib stamps the current time into every PDF, so
+# a rerun that changes nothing still produces a different file. Pinning it makes figure
+# output byte-reproducible, which is the whole point of shipping the scripts.
+os.environ.setdefault("SOURCE_DATE_EPOCH", "1735689600")  # 2025-01-01T00:00:00Z
+
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
