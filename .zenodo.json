@@ -1,0 +1,33 @@
+{
+  "title": "Growth-hardware atmosphere, not microgravity, dominates the Arabidopsis spaceflight shoot response",
+  "upload_type": "software",
+  "license": "MIT",
+  "creators": [
+    {
+      "name": "Barker, Richard"
+    }
+  ],
+  "description": "<p>A validated lattice-Boltzmann model of leaf boundary-layer gas transport coupled to a Farquhar&ndash;von Caemmerer&ndash;Berry model of C<sub>3</sub> photosynthesis, used to predict what an illuminated sealed spaceflight growth canister does to the CO<sub>2</sub> reaching Rubisco, and tested against six matched flight-versus-ground contrasts in the NASA Open Science Data Repository.</p><p>The model predicts that a lit sealed canister draws itself down to the CO<sub>2</sub> compensation point within minutes &mdash; in the ground control as much as in flight &mdash; making the hardware effect roughly 25 times the microgravity effect and structurally invisible to the contrast such experiments report.</p><p><strong>Contents:</strong> analysis scripts, derived tables with a manifest, eight publication figures, the LaTeX manuscript, and an interactive browser implementation of the model whose JavaScript is checked against the Python reference to 1e-6.</p><p><strong>Note:</strong> the metabolite layer throughout is model output, never measured. NASA OSDR contains no plant metabolome (0 of 66 plant studies).</p>",
+  "keywords": [
+    "spaceflight",
+    "microgravity",
+    "photorespiration",
+    "Arabidopsis thaliana",
+    "growth hardware",
+    "multi-omics",
+    "Farquhar-von Caemmerer-Berry",
+    "NASA OSDR",
+    "GeneLab"
+  ],
+  "related_identifiers": [
+    { "identifier": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-522", "relation": "isDerivedFrom", "scheme": "url" },
+    { "identifier": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-38",  "relation": "isDerivedFrom", "scheme": "url" },
+    { "identifier": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-321", "relation": "isDerivedFrom", "scheme": "url" },
+    { "identifier": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-678", "relation": "isDerivedFrom", "scheme": "url" },
+    { "identifier": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-427", "relation": "isDerivedFrom", "scheme": "url" },
+    { "identifier": "https://github.com/dr-richard-barker/LunarLeaf-CFD",  "relation": "requires", "scheme": "url" },
+    { "identifier": "10.1093/nar/gkac352", "relation": "cites", "scheme": "doi" },
+    { "identifier": "10.1007/BF00386231", "relation": "cites", "scheme": "doi" }
+  ],
+  "notes": "TODO before deposit: add ORCID and affiliation to creators; add co-authors; confirm the release version."
+}

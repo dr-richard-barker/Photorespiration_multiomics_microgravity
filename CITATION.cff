@@ -1,0 +1,26 @@
+cff-version: 1.2.0
+message: "If you use this software or its derived data, please cite it as below."
+title: "Growth-hardware atmosphere, not microgravity, dominates the Arabidopsis spaceflight shoot response"
+abstract: >-
+  A validated lattice-Boltzmann model of leaf boundary-layer gas transport coupled to a
+  Farquhar-von Caemmerer-Berry model of C3 photosynthesis, used to predict what an
+  illuminated sealed spaceflight growth canister does to the CO2 reaching Rubisco, and
+  tested against six matched flight-versus-ground contrasts in the NASA Open Science Data
+  Repository. Includes an interactive browser implementation of the model.
+type: software
+authors:
+  - given-names: Richard
+    family-names: Barker
+    email: dr.richard.barker@gmail.com
+    # TODO add ORCID and affiliation before deposit
+repository-code: "https://github.com/dr-richard-barker/Photorespiration_multiomics_microgravity"
+url: "https://dr-richard-barker.github.io/Photorespiration_multiomics_microgravity/"
+license: MIT
+keywords:
+  - spaceflight
+  - microgravity
+  - photorespiration
+  - Arabidopsis thaliana
+  - growth hardware
+  - multi-omics
+  - Farquhar-von Caemmerer-Berry

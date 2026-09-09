@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Growth-hardware atmosphere in plant spaceflight — interactive model &amp; data</title>
+<meta name="description" content="An interactive Farquhar–von Caemmerer–Berry model coupled to
+spaceflight growth-hardware gas transport, with the OSDR omics that test it.">
+<link rel="stylesheet" href="assets/site.css">
+<link rel="stylesheet" href="https://dr-richard-barker.github.io/Plant_response_to_radiation/cose/cose-chrome.css">
+<link rel="stylesheet" href="https://dr-richard-barker.github.io/Plant_response_to_radiation/cose/cose-map.css">
+</head>
+<body data-site-id="Photorespiration_multiomics_microgravity"
+      data-cose-doc="off"
+      data-brand-logo="https://dr-richard-barker.github.io/Plant_response_to_radiation/cose/cose-logo.png">
+
+<header class="hero">
+  <p class="eyebrow">CoSE · plant spaceflight biology</p>
+  <h1>Growth-hardware atmosphere, not microgravity, dominates the
+      <em>Arabidopsis</em> spaceflight shoot response</h1>
+  <p class="lede">
+    Plants flown on the ISS grow inside enclosures, and almost nobody measures the atmosphere
+    inside them. A validated gas-transport model says an illuminated sealed canister draws
+    itself down to the CO<sub>2</sub> compensation point within minutes — in the ground
+    control as much as in flight, which is exactly why it disappears from the contrast that
+    gets published.
+  </p>
+  <p class="lede">
+    Everything below runs in your browser. The model is the same code that produced the
+    figures, ported to JavaScript and checked against the Python to
+    <span class="mono">1e-6</span>.
+  </p>
+  <div class="btns">
+    <a class="btn primary" href="#model">Drive the model</a>
+    <a class="btn" href="Photorespiration_multiomics_microgravity.pdf">Read the manuscript (PDF)</a>
+    <a class="btn" href="https://github.com/dr-richard-barker/Photorespiration_multiomics_microgravity">Code &amp; data</a>
+  </div>
+</header>
+
+<nav class="tabs" id="tabs" role="tablist">
+  <button role="tab" data-tab="model" class="on">Model</button>
+  <button role="tab" data-tab="enclosure">Enclosures</button>
+  <button role="tab" data-tab="omics">Omics</button>
+  <button role="tab" data-tab="pathways">Pathways</button>
+  <button role="tab" data-tab="ladder">Six studies</button>
+</nav>
+
+<!-- ────────────────────────────────────────────────────────── MODEL -->
+<section id="model" class="panel on" role="tabpanel">
+  <h2>The model, live</h2>
+  <p class="note">
+    A Farquhar–von Caemmerer–Berry C<sub>3</sub> model with the Rubisco oxygenation term
+    explicit, solved for the supply-equals-demand operating point. Boundary-layer conductance
+    <span class="mono">g<sub>bl</sub></span> comes from LunarLeaf-CFD; everything else is
+    yours to move.
+  </p>
+
+  <div class="preset-row">
+    <span class="preset-label">Presets</span>
+    <button class="chip" data-preset="vented">Vented hardware, 1 g</button>
+    <button class="chip" data-preset="sealed-ground">Sealed canister, ground</button>
+    <button class="chip" data-preset="sealed-flight">Sealed canister, flight</button>
+    <button class="chip" data-preset="canopy-ug">Dense canopy, microgravity</button>
+  </div>
+
+  <div class="split">
+    <div class="controls" id="controls"></div>
+    <div class="readouts">
+      <div class="cards" id="readout"></div>
+      <figure>
+        <svg id="curve" viewBox="0 0 560 320" role="img"
+             aria-label="Oxygenation fraction and assimilation against canister CO2"></svg>
+        <figcaption>
+          Solid lines use your current settings. The marker is the operating point the model
+          solves for. Drag <strong>canister CO<sub>2</sub></strong> down and watch the
+          oxygenation fraction climb — that is the enclosure effect.
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <div class="callout">
+    <h3>Reproduce the result that refuted our own hypothesis</h3>
+    <p>
+      We expected microgravity's boundary-layer penalty to <em>amplify</em> as CO<sub>2</sub>
+      ran out. Set canister CO<sub>2</sub> high, note the gap between the two gravity traces
+      below, then drag it down to 70. The gap <em>closes</em>: with no assimilation there is
+      no flux across the boundary layer, so there is nothing for gravity to impede.
+    </p>
+    <svg id="gap" viewBox="0 0 560 210" role="img"
+         aria-label="Difference in oxygenation fraction between microgravity and 1 g"></svg>
+  </div>
+</section>
+
+<!-- ──────────────────────────────────────────────────── ENCLOSURES -->
+<section id="enclosure" class="panel" role="tabpanel">
+  <h2>What each enclosure does to the air</h2>
+  <p class="note">
+    From LunarLeaf-CFD, a validated lattice-Boltzmann solver. All runs are in microgravity, so
+    the differences here are hardware, not gravity.
+  </p>
+  <figure>
+    <svg id="encl" viewBox="0 0 620 320" role="img"
+         aria-label="Enclosure CO2 over time by hardware"></svg>
+    <figcaption>Enclosure-mean CO<sub>2</sub> excess. Sealed BRIC drifts; tape and vented hold.</figcaption>
+  </figure>
+  <div id="retention" class="cards wide"></div>
+  <p class="note">
+    The seven-minute drawdown in a lit BRIC canister is a mass balance between photosynthetic
+    uptake and enclosure volume. It is therefore essentially gravity-independent — it happens
+    in the ground control too, and cancels out of flight-versus-ground.
+  </p>
+</section>
+
+<!-- ───────────────────────────────────────────────────────── OMICS -->
+<section id="omics" class="panel" role="tabpanel">
+  <h2>What OSD-522 measured</h2>
+  <div class="preset-row">
+    <span class="preset-label">Layer</span>
+    <button class="chip on" data-layer="transcriptome">Transcriptome</button>
+    <button class="chip" data-layer="proteome">Proteome</button>
+    <span class="preset-label" style="margin-left:1rem">Highlight a gene set</span>
+    <select id="setpick"></select>
+    <input id="genesearch" type="search" placeholder="find a gene, e.g. AT1G11260" size="24">
+  </div>
+  <figure>
+    <svg id="volcano" viewBox="0 0 620 400" role="img" aria-label="Volcano plot"></svg>
+    <figcaption id="volcap"></figcaption>
+  </figure>
+  <p class="note">
+    Non-significant points are subsampled so the page stays quick; every significant feature
+    is plotted. Full tables are in the repository.
+  </p>
+</section>
+
+<!-- ────────────────────────────────────────────────────── PATHWAYS -->
+<section id="pathways" class="panel" role="tabpanel">
+  <h2>Pathway integration</h2>
+  <p class="note">
+    PaintOmics, organism <span class="mono">ath</span>, KEGG + MapMan, all three layers.
+    Of 231 pathways, 31 reach combined <em>p</em> &lt; 0.05 — and glyoxylate and dicarboxylate
+    metabolism, the photorespiration map, ranks <strong>last of all 231</strong>.
+  </p>
+  <input id="pathfilter" type="search" placeholder="filter pathways…" size="30">
+  <div class="tablewrap"><table id="pathtable"></table></div>
+  <h3>Metabolite hubs</h3>
+  <p class="note">
+    The least circular result available: the compounds are predicted, but the differentially
+    expressed genes counted around them are measured.
+  </p>
+  <div class="tablewrap"><table id="hubtable"></table></div>
+</section>
+
+<!-- ───────────────────────────────────────────────────────── LADDER -->
+<section id="ladder" class="panel" role="tabpanel">
+  <h2>Six studies, and the axis that separates them</h2>
+  <p class="note">
+    The model predicted an ordering across enclosure types. Illumination separated the studies
+    perfectly; the enclosure gradient did not. Both are shown.
+  </p>
+  <figure>
+    <svg id="ladderfig" viewBox="0 0 620 300" role="img"
+         aria-label="Starvation over photosynthesis separation by study"></svg>
+    <figcaption>
+      Every illuminated study sits above every dark one. OSD-678 light against OSD-678 dark is
+      the same hardware, genotype and flight — an internal control with no confound.
+    </figcaption>
+  </figure>
+  <h3>Which studies, and which were left out</h3>
+  <div class="tablewrap"><table id="studytable"></table></div>
+</section>
+
+<footer>
+  <p>
+    Model and analysis code:
+    <a href="https://github.com/dr-richard-barker/Photorespiration_multiomics_microgravity">GitHub</a>.
+    Primary data: NASA Open Science Data Repository (OSD-522, OSD-38, OSD-321, OSD-678,
+    OSD-427). Gas transport: LunarLeaf-CFD.
+  </p>
+  <p class="warn">
+    The metabolite layer throughout this site is <strong>model output, never measured</strong>.
+    OSDR contains no plant metabolome — 0 of 66 plant studies.
+  </p>
+</footer>
+
+<script type="module" src="app/app.js"></script>
+<script src="https://dr-richard-barker.github.io/Plant_response_to_radiation/cose/sites.js"></script>
+<script src="https://dr-richard-barker.github.io/Plant_response_to_radiation/cose/theme.js"></script>
+</body>
+</html>

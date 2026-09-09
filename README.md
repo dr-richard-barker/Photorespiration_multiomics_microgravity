@@ -1,191 +1,167 @@
-# Photorespiration multi-omics — microgravity
+# Growth-hardware atmosphere in plant spaceflight
 
-The subcellular photorespiration model that sits **inside the leaf**, downstream of the
-gravity-dependent gas transport solved **outside the leaf** by
-[LunarLeaf-CFD](https://github.com/dr-richard-barker/LunarLeaf-CFD), and upstream of the
-transcriptomic / metabolic response reviewed in
-[Hypoxia_vs_elevated_CO2_in_spaceflight](https://github.com/dr-richard-barker/Hypoxia_vs_elevated_CO2_in_spaceflight).
+**A sealed, illuminated growth canister draws itself down to the CO₂ compensation point
+within minutes — in the ground control as much as in flight. So the largest thing happening
+to the plants cancels out of the contrast every such experiment publishes.**
 
-Photorespiration is the missing middle between those two: it is governed by the O₂/CO₂ ratio
-*at Rubisco*, and that ratio is set by a chain of conductances whose top link — the leaf
-boundary layer — is exactly what LunarLeaf-CFD computes as a function of gravity.
+[**Interactive model and data explorer**](https://dr-richard-barker.github.io/Photorespiration_multiomics_microgravity/)
+· [manuscript PDF](https://dr-richard-barker.github.io/Photorespiration_multiomics_microgravity/Photorespiration_multiomics_microgravity.pdf)
+· [figures](results/figures) · [tables](results/tables)
+
+![The blind test](results/figures/fig05_blind_test.png)
+
+---
+
+## What this is
+
+A validated lattice-Boltzmann model of leaf boundary-layer gas transport
+([LunarLeaf-CFD](https://github.com/dr-richard-barker/LunarLeaf-CFD)) coupled to a
+Farquhar–von Caemmerer–Berry model of C₃ photosynthesis, used to ask what spaceflight
+*growth hardware* — not gravity — does to the CO₂ reaching Rubisco. The predictions were
+fixed before any omics were downloaded, then tested against NASA OSDR.
+
+### The four findings
+
+1. **A lit sealed canister is a CO₂-starvation chamber.** 400 ppm to near zero in about
+   seven minutes; 12 h carbon gain at **1 %** of an unenclosed control, against 90 % under
+   micropore tape and 100 % when vented.
+2. **That effect is ~25× the microgravity effect, and invisible.** Because the drawdown is a
+   mass balance it happens in the ground control too, so it subtracts out of
+   flight-versus-ground.
+3. **Our own starting hypothesis was wrong.** We expected CO₂ starvation to *amplify* the
+   microgravity boundary-layer penalty. It converges instead: with no assimilation there is
+   no flux across the boundary layer for gravity to impede. What survives is a persistent
+   5–9 % assimilation deficit.
+4. **The model predicted the measurement.** Blind, it called **eight of nine** gene-set
+   responses in OSD-522. In PaintOmics, photosynthesis pathways were enriched and
+   photorespiration ranked **last of all 231** pathways tested.
+
+### And what did not work
+
+- **The predicted enclosure gradient does not hold** (Spearman ρ = −0.50, *p* = 0.67). Sealed
+  and vented fall the right way round but micropore tape sits highest, and three studies
+  cannot rank three classes. What *does* separate the six studies is **illumination**, which
+  is mechanistically what the model says — drawdown requires photosynthesis to be running.
+- **The strongest signal in the data is one this model does not explain**: protein processing
+  in the endoplasmic reticulum, *p* = 8.6 × 10⁻⁹, the unfolded protein response.
+- **OSDR has no plant metabolome.** Of 567 studies, six are metabolite profiling and every
+  one is mouse, human, rat or microbial; **0 of 66 plant studies**. The third omic layer had
+  to be predicted, and is labelled as model output everywhere it appears.
+
+---
+
+## Layout
 
 ```
-Bulk air Ca ──[ g_bl : gravity-dependent, from LunarLeaf-CFD ]──▶ leaf surface Cs
-   Cs ──[ g_s stomata ]──▶ intercellular Ci ──[ g_m mesophyll ]──▶ chloroplast Cc, O₂
-                          │
-                          ▼   Rubisco carboxylation vs oxygenation (Vo/Vc = 2Γ*/Cc)
-        CHLOROPLAST → PEROXISOME → MITOCHONDRION   (the C2 photorespiratory cycle)
-                          │
-                          ▼   transcriptomic + metabolic signature (OSD-38 / CO2_RNAseq)
+data/                 inputs only
+  study_registry.tsv    which OSDR studies enter, the exact contrast column, and why
+  lunarleaf/            vendored CFD tables + provenance
+  paintomics_upload/    the validated submission bundle
+  cache/                OSDR + KEGG downloads (git-ignored, regenerated on demand)
+scripts/              every executable, numbered in pipeline order
+  fvcb.py               the model core, importable
+  genesets.py           KEGG-derived gene sets, shared by both analyses
+  figures/              one script per figure + the shared visual system
+  run_all.sh            regenerates everything from a cold cache
+results/tables/       T01…T12 + MANIFEST.tsv (fails if a table lacks provenance)
+results/figures/      eight figures, PNG at 300 dpi and PDF vector
+manuscript/latex/     npj Microgravity style, compiles locally and in CI
+methods/              prose methods and the honest caveats
+docs/                 the interactive site
 ```
 
-## What is here now — `fvcb.py`
-
-`fvcb.py` is the first component: an **FvCB oxygenation calculator**. It takes the
-gravity-dependent boundary-layer conductance `g_bl(g)` reported by LunarLeaf-CFD, pushes it
-through the `Ca → Cs → Ci → Cc` conductance chain, and solves the supply = demand operating
-point of a Farquhar–von Caemmerer–Berry C3 model **with the Rubisco oxygenation term made
-explicit** — so the output is the photorespiratory quantities, not just net assimilation:
-
-| symbol | meaning |
-|---|---|
-| `Cc` | CO₂ mole fraction reaching Rubisco (chloroplast stroma) |
-| `Vo/Vc` | oxygenation : carboxylation ratio = `2Γ*/Cc` |
-| `phi` | oxygenation fraction `Vo/(Vc+Vo)` |
-| `Rp` | photorespiratory CO₂ release = `0.5·Vo` (µmol m⁻² s⁻¹) |
-| `Rp/A` | photorespiration relative to net assimilation |
-
-Run it:
+### Reproducing
 
 ```bash
-python3 fvcb.py                       # uses the vendored CFD snapshot in data/
-python3 fvcb.py --csv path/to/export.csv   # or point at a fresh LunarLeaf-CFD export
+bash scripts/run_all.sh
 ```
 
-It prints the gravity-sweep table, writes `photorespiration_vs_gravity.csv`, and runs physical
-self-checks (Γ*, φ range, monotonic trends). No dependencies beyond the Python standard library.
+Needs network on a cold cache. `python3 scripts/check_js_parity.py` then confirms the
+browser model still agrees with the Python (currently **exact**, 0.000e+00 across 180
+parameter combinations).
 
-### The CFD → FvCB interface (a CSV)
-
-The gravity/geometry sweep is **read from a CSV that LunarLeaf-CFD exports**, not hard-coded. Its
-`validation/export_cfd.ts` writes `results/tables/T13_boundary_layer.csv`; a snapshot is vendored
-here as [`data/lunarleaf_gbl_sweep.csv`](data/lunarleaf_gbl_sweep.csv). Required columns:
-
-| column | meaning |
-|---|---|
-| `scenario`, `scale` | e.g. `leaf-ug`, `canopy` |
-| `gravity_g` | gravity (m s⁻²); 9.81 = Earth, 0 = µg |
-| `g_bl_mol_m2_s` | boundary-layer conductance to CO₂ (the coupling variable) |
-| `o2_excess_ppm` | CFD leaf-surface O₂ build-up (raises Γ\* at Rubisco) |
-| `delta_mm`, `Sherwood` | optional; carried through for display/provenance |
-
-To refresh after re-running the CFD: `cp …/LunarLeaf-CFD/results/tables/T13_boundary_layer.csv data/lunarleaf_gbl_sweep.csv`.
-
-### Result (default parameters: Ca 400 µmol/mol, 25 °C, Q 1000, g_s 0.20, g_m 0.30 mol m⁻² s⁻¹)
-
-| scale | g | g_bl | Cc | φ (%) | A | Rp/A (%) |
-|---|---|---|---|---|---|---|
-| leaf | Earth | 1.000 | 239 | 26.4 | 17.3 | 23.5 |
-| leaf | Mars | 0.847 | 237 | 26.5 | 17.1 | 23.7 |
-| leaf | Moon | 0.719 | 235 | 26.7 | 17.0 | 24.0 |
-| leaf | micro-g | 0.494 | 229 | 27.2 | 16.5 | 24.8 |
-| rosette | micro-g | 0.291 | 217 | 28.3 | 15.6 | 26.7 |
-| canopy | micro-g | 0.109 | 180 | 32.2 | 12.6 | 34.4 |
-
-**Reading it honestly:** at the **single-leaf** scale the boundary-layer effect on
-photorespiration is real but *modest* (Rp/A 23.5 → 24.8 % from 1 g to µg), because the boundary
-layer is a minority of the total CO₂ diffusion resistance (`1/g_bl` vs the larger `1/g_s + 1/g_m`).
-The effect becomes **substantial in a dense microgreen canopy in microgravity** (`g_bl` collapses to
-0.109, Cc falls to 180 µmol/mol, Rp/A rises to 34.4 %) — matching LunarLeaf-CFD's finding that the
-gas-transport penalty amplifies leaf → rosette → canopy.
-
-## Provenance and assumptions (no fabrication)
-
-- **Rubisco kinetics + temperature responses** — in-vivo values of Bernacchi et al. (2001)
-  *Plant Cell Environ.* 24:253–259 (Kc25 404.9, Ko25 278.4 mmol/mol, Γ\*25 42.75 µmol/mol) with
-  their Arrhenius activation energies; Jmax response from Bernacchi et al. (2003).
-- **`g_bl(g)`** — the converged boundary-layer conductance reported by LunarLeaf-CFD
-  (README / `results/tables/T2`), anchored so the Earth single leaf = 1.0 mol m⁻² s⁻¹. The CFD
-  surface O₂ excess (T5) is fed in too; at leaf scale it is small (a few µmol/mol on 210 000) so
-  the coupling is Cc-dominated — stated rather than hidden.
-- **Placeholders, not fits** — `Vcmax25`, `Jmax25`, `Rd25`, `g_s`, `g_m` are mid-range Arabidopsis
-  literature values exposed as `LeafParams`. They are not fitted to spaceflight data yet.
-
-## The multi-omics test — OSD-522 (BRIC-LED-001)
-
-The model above is now closed against real spaceflight data, and tested with PaintOmics.
-
-![model vs measurement](results/F1_model_vs_measurement.png)
-
-**The dataset.** OSD-522, *Integrative Transcriptomics and Proteomics Profiling of
-Arabidopsis thaliana*, BRIC-LED hardware on SpaceX-13/14 — Arabidopsis seedling shoots,
-6 Space Flight vs 6 Ground Control, with both a transcriptome and a proteome.
-
-**The missing layer.** NASA OSDR has no plant metabolomics. All 567 OSDR studies were pulled
-through the search API and cross-tabulated: 6 are metabolite profiling, and every one is
-mouse, human, rat or microbial. **None of the 66 plant studies has a metabolome.** So the
-third omic layer is predicted from the CFD → FvCB chain — labelled `PREDICTED` everywhere,
-and used as a *falsifiable hypothesis* rather than as a substitute for data. See
-[`metabolome/PREDICTION_METHOD.md`](metabolome/PREDICTION_METHOD.md).
-
-**The result we did not expect.** We assumed CO₂ starvation in a sealed canister would
-*amplify* the microgravity boundary-layer penalty. It does the opposite: as assimilation
-falls toward the compensation point the flux through the boundary layer falls with it, so
-`A/g_bl` tends to zero and the two gravities converge on oxygenation fraction. What survives
-is a persistent ~5–9 % assimilation penalty, nearly independent of canister CO₂.
-
-Meanwhile the **enclosure** effect is 25× the gravity effect — but it acts on flight and
-ground alike, so it cancels out of the contrast the experiment can see. The plants were
-carbon-starved by their hardware, in both arms, and the experiment was structurally blind
-to it.
-
-**The model predicted the data.** Built from gas transport and photosynthesis alone, with no
-sight of the omics, it called eight of nine gene-set responses correctly — photosystem,
-Rubisco, carbon fixation and starch/sucrose down; carbon-starvation (DIN) markers up
-(+0.71, p = 2.6e-3); photorespiratory enzymes *not* induced; no fermentation or hypoxia. The
-sharpest test, photorespiration sitting above Rubisco, holds in the transcriptome
-(+0.24, p = 6.8e-3) and independently in the proteome (+0.29, p = 0.049).
-
-### What PaintOmics returned
-
-Two jobs, organism `ath`, KEGG + MapMan, AI interpretation off —
-[`m1z16Qg3DK`](https://paintomics.org/?jobID=m1z16Qg3DK) (three layers) and
-[`EVFahRGk7T`](https://paintomics.org/?jobID=EVFahRGk7T) (metabolome-only hardware contrast).
-
-All three layers mapped cleanly: genes 20,456/20,983 in KEGG and 20,983/20,983 in MapMan,
-proteins 5,002/5,160, and all 21 predicted compounds at 100%.
-
-Of 231 pathways tested, 31 are significant. **Photosynthesis (p = 0.008), photosynthesis
-antenna proteins (p = 0.022), MapMan photosynthesis (p = 0.035) and starch/sucrose
-metabolism (p = 0.019) are all enriched — and glyoxylate & dicarboxylate metabolism, the
-photorespiration map, ranks last of all 231 at p = 0.994.** That is the model's central
-prediction, made before any omics were seen, coming back intact.
-
-The metabolite hub analysis is the strongest independent check, because the compounds are
-predicted but the genes counted around them are real: 7 of 15 compounds reach FDR < 0.05 and
-every one is a carbon-starvation or carbon-supply node (Ile, Leu, Val, Glu, Gln, RuBP,
-3-PGA). Not one of the eight C2 photorespiratory intermediates is a significant hub,
-although all eight mapped.
-
-**What the model does not explain:** the strongest signal in the job is protein processing
-in the endoplasmic reticulum at p = 8.6e-9 — the unfolded protein response, a known BRIC
-spaceflight finding. The CO₂-starvation account covers part of this experiment, not all of
-it. The metabolome-only job 2 returned nothing usable, and the metabolite class-activity
-test is close to circular; both are written up as such in
-[`paintomics/results/`](paintomics/results).
-
-### Running it
+PaintOmics submission is deliberately separate, because it uploads to a third-party server:
 
 ```bash
-python3 osdr/fetch_osd522.py          # 4 processed files from OSDR into osdr/cache/
-python3 osdr/dge_rnaseq.py            # PyDESeq2 flight vs ground -> 1,795 DE genes
-python3 osdr/prep_proteomics.py       # deposited S/G ratios, SOL+MEM reconciled
-python3 metabolome/predict_metabolome.py --sensitivity
-python3 osdr/falsification_check.py   # the real test — can refute the model
-python3 paintomics/validate_upload.py
-python3 results/plot_falsification.py
+python3 scripts/05_submit_paintomics.py --job 1
 ```
 
-| Where | What |
+---
+
+## Progress
+
+| Phase | Status |
 |---|---|
-| [`paintomics/upload/`](paintomics/upload) | the validated PaintOmics input bundle |
-| [`paintomics/SUBMISSION.md`](paintomics/SUBMISSION.md) | how to run the job, and what leaves this machine |
-| [`metabolome/compound_provenance.tsv`](metabolome/compound_provenance.tsv) | 21 compounds, KEGG IDs from `rest.kegg.jp`, driver and tier per row |
-| [`results/falsification_check.tsv`](results/falsification_check.tsv) | prediction vs measurement, both layers |
-| [`FUTURE_EXPERIMENTS.md`](FUTURE_EXPERIMENTS.md) | what this implies for future flights |
-| [`paintomics/results/RESULTS.md`](paintomics/results/RESULTS.md) | **what PaintOmics returned** — enrichment, hub analysis, and the misses |
-| [`results/CFD_PROVENANCE_CONCERN.md`](results/CFD_PROVENANCE_CONCERN.md) | why `spaceflight-plant-hardware-cfd` was not used |
+| Model coupling (CFD → FvCB) | **done** — six physical self-checks pass |
+| Predicted metabolite layer | **done** — 21 compounds, KEGG ids from the REST API |
+| OSD-522 transcriptome + proteome | **done** — PyDESeq2, 1,795 DE genes; 5,160 proteins |
+| Blind falsification test | **done** — 8 of 9 gene sets |
+| PaintOmics integration | **done** — jobs `m1z16Qg3DK` and `EVFahRGk7T` |
+| Cross-study ladder (6 studies) | **done** — illumination separates; enclosure gradient does not |
+| Eight-figure set | **done** |
+| npj manuscript | **compiles** — 12 pages, no unresolved references; author block is placeholders |
+| Interactive site | **done** — model, enclosures, omics, pathways, six studies |
+| FAIR packaging | **done** — manifest, CITATION.cff, .zenodo.json, MIT |
+| Zenodo deposit | **pending** — needs the author fields below |
 
-## Next steps
+### What still needs a human
 
-1. ~~Ingest a LunarLeaf-CFD CSV export directly instead of a hard-coded table.~~ **Done** — see
-   *The CFD → FvCB interface* above.
-2. Make `g_s` CO₂-/humidity-responsive and couple `g_m` — currently fixed (the same limitation
-   LunarLeaf-CFD flags for its own feedback loop). BRIC canisters are humid, so this matters.
-3. Feed the predicted photorespiratory flux into a compartmentalised (chloroplast → peroxisome →
-   mitochondrion) flux model constrained by the OSD-38 / CO2_RNAseq transcriptomics
-   (scFEA/FLUXestimator), closing the loop to the observed spaceflight signature.
-4. Extend the same test to the hardware ladder OSDR already contains — BRIC-16/17/20/22,
-   CARA (OSD-678), APEX/TAGES (OSD-7, OSD-16), VEG-05 (OSD-767) — which is the measurement
-   the 25× hardware prediction really calls for.
+Nothing here was invented to fill a gap, so these remain visibly open:
+
+- **Author block.** Co-authors, affiliation, ORCIDs, funding, contributions —
+  see the checklist in [`manuscript/latex/README.md`](manuscript/latex/README.md).
+- **Zenodo DOI**, then paste it into the manuscript's Data and Code availability sections.
+- **A framing decision.** The hardware-confound headline is stated on the strength of the
+  illumination result; the enclosure-gradient result did not support it. Worth deciding
+  whether the title should soften to the illumination claim.
+- **The ER / unfolded-protein-response result** currently gets one paragraph. It is the
+  largest signal in the data and this model says nothing about it.
+
+### Where it could go next
+
+- **In-canister CO₂ and O₂ logging.** The cheapest and highest-value change: it converts this
+  analysis's central assumption into a measurement, and makes an entire archive of
+  BRIC-derived transcriptomes reinterpretable.
+- **A ~20-compound targeted metabolite panel on archived flight material** — it would be the
+  first plant spaceflight metabolome in existence, and
+  [`results/tables/T06_predicted_compounds.tsv`](results/tables/T06_predicted_compounds.tsv)
+  is a ready-made target list with a quantitative prediction attached to each compound.
+- **A three-arm design** (flight sealed, ground sealed, ground vented). Two arms confound
+  hardware with gravity; three separate them, and the third arm never leaves the ground.
+- **More studies**, if the tissue constraint can be relaxed defensibly — the ladder is
+  currently three lit and three dark, which is too few to rank enclosure classes.
+
+Full reasoning in [`FUTURE_EXPERIMENTS.md`](FUTURE_EXPERIMENTS.md).
+
+---
+
+## Honesty notes
+
+This project has a few standing rules, and they are load-bearing:
+
+- **The metabolite layer is model output and says so** in every file, figure and page that
+  shows it.
+- **Study selection is auditable.** [`data/study_registry.tsv`](data/study_registry.tsv)
+  records each inclusion and each exclusion with its reason. Tissue is the binding
+  constraint: root studies are excluded because a photosynthesis prediction says nothing
+  about roots.
+- **Contrasts are matched.** OSD-678 offers 36 flight-versus-ground contrasts but only six
+  are matched on genotype, ecotype and light; the rest compare flown Col-0 against
+  ground-control *phyD*.
+- **Gene sets come from KEGG, not memory.** An earlier hand-written list here put PGLP1 at
+  the wrong locus, and *Arabidopsis* reuses the symbols CAT2 and SEN1 for unrelated genes.
+- **References were verified against the publisher record**, never recalled.
+- **A sibling CFD repository is deliberately not used.** See
+  [`methods/CFD_PROVENANCE_CONCERN.md`](methods/CFD_PROVENANCE_CONCERN.md).
+- **The metabolite class-activity test is close to circular** and is reported as such; the
+  hub analysis is not, and is the one to read.
+
+## Data sources
+
+NASA Open Science Data Repository — OSD-522 (BRIC-LED-001), OSD-38 (BRIC-20),
+OSD-321 (BRIC-22), OSD-678 (CARA), OSD-427 (APEX-04/VEGGIE).
+Gas transport from LunarLeaf-CFD. Pathways from KEGG and MapMan via PaintOmics.
+
+## Licence
+
+MIT — see [LICENSE](LICENSE).
