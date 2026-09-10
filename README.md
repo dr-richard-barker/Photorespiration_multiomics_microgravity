@@ -1,8 +1,9 @@
-# Growth-hardware atmosphere in plant spaceflight
+# Photosynthesis depletes its own enclosure
 
-**A sealed, illuminated growth canister draws itself down to the CO₂ compensation point
-within minutes — in the ground control as much as in flight. So the largest thing happening
-to the plants cancels out of the contrast every such experiment publishes.**
+**A sealed, illuminated growth canister has its CO₂ consumed by the plants inside it, within
+minutes. That happens in the ground control as much as in flight — so it does not bias the
+flight-versus-ground contrast, it changes what that contrast is about. The spaceflight
+response is being measured in plants their own hardware has already carbon-starved.**
 
 [**Interactive model and data explorer**](https://dr-richard-barker.github.io/Photorespiration_multiomics_microgravity/)
 · [manuscript PDF](https://dr-richard-barker.github.io/Photorespiration_multiomics_microgravity/Photorespiration_multiomics_microgravity.pdf)
@@ -111,9 +112,10 @@ Nothing here was invented to fill a gap, so these remain visibly open:
 - **Author block.** Co-authors, affiliation, ORCIDs, funding, contributions —
   see the checklist in [`manuscript/latex/README.md`](manuscript/latex/README.md).
 - **Zenodo DOI**, then paste it into the manuscript's Data and Code availability sections.
-- **A framing decision.** The hardware-confound headline is stated on the strength of the
-  illumination result; the enclosure-gradient result did not support it. Worth deciding
-  whether the title should soften to the illumination claim.
+- **A framing decision — partly settled.** The title now claims the mechanism (photosynthesis
+  depletes its own enclosure) and its consequence (the response is read out in carbon-starved
+  plants), rather than an enclosure gradient the data did not support. Still worth your call:
+  whether to lead instead with the blind-prediction result, which is the safest claim here.
 - **The ER / unfolded-protein-response result** currently gets one paragraph. It is the
   largest signal in the data and this model says nothing about it.
 

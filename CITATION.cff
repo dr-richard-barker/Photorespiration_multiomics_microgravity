@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 message: "If you use this software or its derived data, please cite it as below."
-title: "Growth-hardware atmosphere, not microgravity, dominates the Arabidopsis spaceflight shoot response"
+title: "Photosynthesis depletes its own enclosure: the Arabidopsis spaceflight response is measured in carbon-starved plants"
 abstract: >-
   A validated lattice-Boltzmann model of leaf boundary-layer gas transport coupled to a
   Farquhar-von Caemmerer-Berry model of C3 photosynthesis, used to predict what an
