@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Image image="" modified="Feb 7, 2007 10:45:43 AM" scaling="1.0" model="0" datasize="7" bgcolor="1" markmode="0" legendX="10" legendY="10">
+  <DataArea x="244" y="170" blockFormat="x5" visualizationType="1" type="">
+    <Identifier id="20.1.02" recursive="true"/>
+  </DataArea>
+  <DataArea x="167" y="284" blockFormat="x10" visualizationType="1" type="">
+    <Identifier id="20.1.99" recursive="true"/>
+  </DataArea>
+  <DataArea x="169" y="352" blockFormat="x10" visualizationType="1" type="">
+    <Identifier id="20.1.06" recursive="true"/>
+  </DataArea>
+  <DataArea x="79" y="285" blockFormat="x15" visualizationType="1" type="">
+    <Identifier id="17.5" recursive="true"/>
+  </DataArea>
+  <DataArea x="79" y="312" blockFormat="x15" visualizationType="1" type="">
+    <Identifier id="17.8" recursive="true"/>
+  </DataArea>
+  <DataArea x="79" y="336" blockFormat="x10" visualizationType="1" type="">
+    <Identifier id="17.7" recursive="true"/>
+  </DataArea>
+  <DataArea x="56" y="390" blockFormat="x10" visualizationType="1" type="">
+    <Identifier id="10" recursive="true"/>
+  </DataArea>
+  <DataArea x="56" y="422" blockFormat="x15" visualizationType="1" type="">
+    <Identifier id="26.04" recursive="true"/>
+  </DataArea>
+  <DataArea x="56" y="452" blockFormat="x10" visualizationType="1" type="">
+    <Identifier id="29.5" recursive="true"/>
+  </DataArea>
+  <DataArea x="338" y="252" blockFormat="x10" visualizationType="1" type="">
+    <Identifier id="20.1.03" recursive="true"/>
+  </DataArea>
+  <DataArea x="337" y="320" blockFormat="x10" visualizationType="1" type="">
+    <Identifier id="20.1.04" recursive="true"/>
+  </DataArea>
+  <DataArea x="346" y="386" blockFormat="x10" visualizationType="1" type="">
+    <Identifier id="20.1.05" recursive="true"/>
+  </DataArea>
+  <DataArea x="256" y="482" blockFormat="x6" visualizationType="1" type="">
+    <Identifier id="20.1.07" recursive="true"/>
+  </DataArea>
+  <DataArea x="374" y="490" blockFormat="x10" visualizationType="1" type="">
+    <Identifier id="20.1.08" recursive="true"/>
+  </DataArea>
+  <DataArea x="525" y="486" blockFormat="x15" visualizationType="1" type="">
+    <Identifier id="20.2.1" recursive="true"/>
+  </DataArea>
+  <DataArea x="524" y="511" blockFormat="x15" visualizationType="1" type="">
+    <Identifier id="16" recursive="true"/>
+  </DataArea>
+  <DataArea x="617" y="439" blockFormat="x10" visualizationType="1" type="">
+    <Identifier id="27.3.08" recursive="true"/>
+  </DataArea>
+  <DataArea x="614" y="341" blockFormat="x10" visualizationType="1" type="">
+    <Identifier id="27.3.03" recursive="true"/>
+  </DataArea>
+  <DataArea x="612" y="364" blockFormat="x10" visualizationType="1" type="">
+    <Identifier id="27.3.35" recursive="true"/>
+  </DataArea>
+  <DataArea x="611" y="388" blockFormat="x10" visualizationType="1" type="">
+    <Identifier id="27.3.32" recursive="true"/>
+  </DataArea>
+  <DataArea x="616" y="414" blockFormat="x10" visualizationType="1" type="">
+    <Identifier id="27.3.25" recursive="true"/>
+  </DataArea>
+  <DataArea x="644" y="414" blockFormat="x10" visualizationType="1" type="">
+    <Identifier id="27.3.26" recursive="true"/>
+  </DataArea>
+  <DataArea x="605" y="107" blockFormat="x12" visualizationType="1" type="">
+    <Identifier id="20.2" recursive="true"/>
+  </DataArea>
+  <DataArea x="445" y="184" blockFormat="x10" visualizationType="1" type="">
+    <Identifier id="20.1.01" recursive="true"/>
+  </DataArea>
+  <DataArea x="541" y="173" blockFormat="x15" visualizationType="1" type="">
+    <Identifier id="21" recursive="true"/>
+  </DataArea>
+  <DataArea x="543" y="198" blockFormat="x10" visualizationType="1" type="">
+    <Identifier id="26.12" recursive="true"/>
+  </DataArea>
+  <DataArea x="543" y="223" blockFormat="x10" visualizationType="1" type="">
+    <Identifier id="26.09" recursive="true"/>
+  </DataArea>
+  <DataArea x="610" y="256" blockFormat="x9" visualizationType="1" type="">
+    <Identifier id="30" recursive="true"/>
+  </DataArea>
+  <DataArea x="614" y="295" blockFormat="x10" visualizationType="1" type="">
+    <Identifier id="30.6" recursive="true"/>
+  </DataArea>
+  <DataArea x="79" y="261" blockFormat="x12" visualizationType="1" type="">
+    <Identifier id="17.1" recursive="true"/>
+  </DataArea>
+  <DataArea x="79" y="213" blockFormat="x12" visualizationType="1" type="">
+    <Identifier id="17.2" recursive="true"/>
+  </DataArea>
+  <DataArea x="78" y="235" blockFormat="x12" visualizationType="1" type="">
+    <Identifier id="17.3" recursive="true"/>
+  </DataArea>
+</Image>

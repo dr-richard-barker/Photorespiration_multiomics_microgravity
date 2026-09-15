@@ -163,3 +163,15 @@ footer a { color: var(--accent); }
 .hm-row:hover text { fill: var(--accent); font-weight: 600; }
 
 #sankey path { transition: fill-opacity .12s ease; }
+
+/* The Sankey's broad-map toggle sits in the same row as its pathway-count select. */
+.inline-check { display: inline-flex; align-items: center; gap: .35rem;
+                font-size: .82rem; color: var(--ink-soft); cursor: pointer; }
+.inline-check input { accent-color: var(--accent); margin: 0; }
+
+/* The heatmap and Sankey carry dense row labels. Letting `svg { width: 100% }` shrink them
+   to a phone width renders that text at about 4.6 px, so below the layout's own breakpoint
+   they keep a legible size and scroll sideways inside the figure instead. The page itself
+   must never scroll horizontally. */
+.chartscroll { overflow-x: auto; overflow-y: hidden; }
+.chartscroll svg { min-width: 560px; }

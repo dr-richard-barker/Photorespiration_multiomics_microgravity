@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Image image="" modified="01-Dec-2005 15:59:45" scaling="1.0" datasize="5" bgcolor="0" legendX="10" legendY="10">
+  <DataArea x="424" y="87" visualizationType="1" type="">
+    <Identifier id="17.7.1.1" recursive="true"/>
+  </DataArea>
+  <DataArea x="425" y="134" visualizationType="1" type="">
+    <Identifier id="17.7.1.2" recursive="true"/>
+  </DataArea>
+  <DataArea x="428" y="184" visualizationType="1" type="">
+    <Identifier id="17.7.1.3" recursive="true"/>
+  </DataArea>
+  <DataArea x="427" y="233" visualizationType="1" type="">
+    <Identifier id="17.7.1.4" recursive="true"/>
+  </DataArea>
+  <DataArea x="429" y="283" visualizationType="1" type="">
+    <Identifier id="17.7.1.5" recursive="true"/>
+  </DataArea>
+</Image>

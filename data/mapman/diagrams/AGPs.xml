@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Image image="" modified="Aug 5, 2010 2:40:07 PM" scaling="1.0" model="1" datasize="5" bgcolor="0" markmode="0" legendX="10" legendY="10" labelX="10" labelY="50">
+  <DataArea x="548" y="227" visualizationType="1" type="">
+    <Identifier id="10.5.1.1" recursive="true"/>
+  </DataArea>
+  <DataArea x="303" y="75" visualizationType="1" type="">
+    <Identifier id="10.5.1.02" recursive="true"/>
+  </DataArea>
+</Image>

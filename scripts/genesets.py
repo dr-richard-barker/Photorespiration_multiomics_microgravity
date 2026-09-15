@@ -156,8 +156,9 @@ def build(verbose: bool = False) -> dict[str, set[str]]:
 #      silently double-counted alongside the genuine KEGG row. Callers must pass KEGG-side
 #      names ONLY, which is why `db` is a required argument rather than a convention.
 #
-# MapMan bins have no KEGG id and no offline membership source (GoMapMan is unreachable),
-# so they cannot be included, and the caller is expected to report the omission.
+# MapMan pathways have no KEGG id and are resolved separately, by `scripts/mapman.py`,
+# from vendored diagram layouts. They come back here as unresolved on purpose: this
+# function answers only for KEGG.
 
 ORGANISM_SUFFIX = re.compile(r"\s*-\s*Arabidopsis thaliana.*$", re.I)
 
@@ -183,8 +184,9 @@ def paintomics_pathway_ids(names, db) -> tuple[dict[str, str], list[str]]:
     `names` and `db` are parallel sequences; only rows whose `db` is "K" are looked up,
     because a MapMan bin name can collide with a KEGG pathway name (see above).
 
-    Returns (resolved, unresolved). Unresolved entries are the MapMan bins plus anything
-    KEGG does not know for this organism — report them, never drop them quietly.
+    Returns (resolved, unresolved). Unresolved entries are the MapMan rows, which
+    `mapman.paintomics_mapman_sets` answers for, plus anything KEGG does not know for this
+    organism — report those, never drop them quietly.
     """
     index = kegg_pathway_name_index()
     resolved, unresolved = {}, []

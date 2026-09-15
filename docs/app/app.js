@@ -289,11 +289,21 @@ async function buildOmics() {
     transcriptome: await json("volcano_transcriptome.json"),
     proteome: await json("volcano_proteome.json"),
   };
-  geneSets = await json("gene_sets.json");
+  // Two membership indexes share one namespace and one control: the curated KEGG-derived
+  // sets, and the pathways PaintOmics called significant. The Sankey below highlights
+  // through the same control, which is why they are merged here rather than kept apart.
+  const curated = await json("gene_sets.json");
+  const sigPaths = await json("pathway_membership.json");
+  geneSets = { ...curated, ...sigPaths };
 
+  const group = (label, keys) => keys.length
+    ? `<optgroup label="${label}">` +
+      keys.map((k) => `<option value="${k}">${k}</option>`).join("") + `</optgroup>`
+    : "";
   const pick = document.getElementById("setpick");
   pick.innerHTML = `<option value="">none</option>` +
-    Object.keys(geneSets).map((k) => `<option value="${k}">${k}</option>`).join("");
+    group("Curated gene sets", Object.keys(curated)) +
+    group("Significant pathways", Object.keys(sigPaths));
   pick.addEventListener("change", () => { highlight = pick.value; drawVolcano(); });
   // The heatmap below also drives this, so keep the two in step.
   window.__setHighlight = (name) => {
@@ -666,17 +676,24 @@ function drawHeatmap() {
 
 /* ────────────────────────────────── sankey: transcript -> protein -> pathway */
 
-let sankeyData = null, sankeyN = 10;
+let sankeyData = null, sankeyN = 10, sankeyBroad = false;
 
 async function buildSankey() {
   sankeyData = await json("sankey.json");
   const sel = document.getElementById("sankeyN");
   if (sel) {
-    sel.innerHTML = [6, 8, 10, 14, 18]
+    sel.innerHTML = [6, 8, 10, 14, 20, 31]
       .filter((n) => n <= sankeyData.pathways.length)
       .map((n) => `<option value="${n}"${n === sankeyN ? " selected" : ""}>` +
                   `top ${n} pathways</option>`).join("");
     sel.addEventListener("change", () => { sankeyN = +sel.value; drawSankey(); });
+  }
+  const broad = document.getElementById("sankeyBroad");
+  if (broad) {
+    broad.checked = sankeyBroad;
+    broad.addEventListener("change", () => {
+      sankeyBroad = broad.checked; drawSankey();
+    });
   }
   drawSankey();
 }
@@ -684,14 +701,22 @@ async function buildSankey() {
 const BIN_COLOUR = { up: () => C.vermilion, down: () => C.accent,
                      "not significant": () => C.grey,
                      "not measured": () => C.line };
+// Pathways come from two databases with two membership sources, so the column says which.
+// Deliberately NOT --green: the shared CoSE kit retints that token onto --accent, which is
+// also the "down" bin, so a green pathway node renders the same blue as the column beside
+// it. Orange and purple are the two Okabe-Ito tokens the kit leaves alone.
+const DB_COLOUR = { KEGG: () => C.orange, MapMan: () => C.purple };
 
 function drawSankey() {
   const svg = document.getElementById("sankey");
   if (!svg || !sankeyData) return;
   clear(svg);
   const d = sankeyData;
-  const paths = d.pathways.slice(0, sankeyN);
+  const v = d.views[sankeyBroad ? "all" : "core"];
+  const eligible = d.pathways.filter((p) => sankeyBroad || !p.broad);
+  const paths = eligible.slice(0, sankeyN);
   const keep = new Set(paths.map((p) => p.name));
+  const byName = new Map(d.pathways.map((p) => [p.name, p]));
 
   const w = 620, pad = { l: 96, r: 210, t: 26, b: 20 };
   const colX = [pad.l, (pad.l + (w - pad.r)) / 2, w - pad.r];
@@ -703,8 +728,8 @@ function drawSankey() {
     p2p.filter((l) => l.to === p.name).reduce((a, l) => a + l.n, 0)]));
 
   const cols = [
-    d.bins.map((b) => ({ key: b, label: b, n: d.tx_bins[b] || 0 })),
-    d.bins.map((b) => ({ key: b, label: b, n: d.pr_bins[b] || 0 })),
+    d.bins.map((b) => ({ key: b, label: b, n: v.tx_bins[b] || 0 })),
+    d.bins.map((b) => ({ key: b, label: b, n: v.pr_bins[b] || 0 })),
     paths.map((p) => ({ key: p.name, label: p.name, n: pathTotals.get(p.name) || 0 })),
   ].map((nodes) => nodes.filter((n) => n.n > 0));
 
@@ -712,13 +737,17 @@ function drawSankey() {
   svg.setAttribute("viewBox", `0 0 ${w} ${h}`);
   const usable = h - pad.t - pad.b;
 
-  // Lay out each column: node height proportional to its share of that column's total.
+  // Lay out each column: node height proportional to its share of that column's total,
+  // on top of a 3px floor so a 17-locus pathway beside a 4,812-locus one is still a
+  // visible target. The floors are subtracted from the free space before it is shared
+  // out — take them afterwards and the column overruns its own box, which it did.
+  const FLOOR = 3;
   const layout = cols.map((nodes) => {
     const total = nodes.reduce((a, n) => a + n.n, 0) || 1;
-    const free = usable - gap * (nodes.length - 1);
+    const free = Math.max(0, usable - gap * (nodes.length - 1) - FLOOR * nodes.length);
     let y = pad.t;
     return nodes.map((n) => {
-      const nh = Math.max(3, (n.n / total) * free);
+      const nh = FLOOR + (n.n / total) * free;
       const box = { ...n, y, h: nh, inUsed: 0, outUsed: 0 };
       y += nh + gap;
       return box;
@@ -743,7 +772,7 @@ function drawSankey() {
   };
 
   const nodeW = 11;
-  for (const l of d.tx_to_pr) {
+  for (const l of v.tx_to_pr) {
     const a = find(0, l.from), b = find(1, l.to);
     if (!a || !b) continue;
     const hh = (l.n / a.n) * a.h, hb = (l.n / b.n) * b.h;
@@ -762,10 +791,39 @@ function drawSankey() {
 
   layout.forEach((nodes, ci) => {
     for (const n of nodes) {
-      svg.append(el("rect", {
+      const meta = ci === 2 ? byName.get(n.key) : null;
+      const rect = el("rect", {
         x: colX[ci], y: n.y, width: nodeW, height: n.h, rx: 2,
-        fill: ci === 2 ? C.green : BIN_COLOUR[n.key](),
-      }));
+        fill: meta ? DB_COLOUR[meta.db]() : BIN_COLOUR[n.key](),
+      });
+      svg.append(rect);
+      if (meta) {
+        // PaintOmics does not publish MapMan membership, so it is reconstructed from the
+        // vendored diagrams. Where that disagrees with the server's own feature count the
+        // node says so rather than presenting one number as settled.
+        const disagrees = Math.abs(meta.measured - meta.features) > 3;
+        const t = `<b>${meta.name}</b><br>${meta.db} · p = ${meta.p.toExponential(1)}` +
+                  `<br>${n.n.toLocaleString()} loci in this view` +
+                  `<br>${meta.measured.toLocaleString()} of ${meta.size.toLocaleString()} ` +
+                  `members measured here` +
+                  (disagrees ? `<br><i>PaintOmics placed ${meta.features.toLocaleString()}` +
+                               ` features on this map</i>` : "") +
+                  (meta.broad ? `<br><i>whole-ontology map: ` +
+                                `${Math.round(100 * meta.measured / d.n_measured)} % of all ` +
+                                `measured loci</i>` : "");
+        rect.addEventListener("mousemove", (e) => {
+          const tt = tip(); tt.innerHTML = t; tt.style.display = "block";
+          tt.style.left = `${e.pageX + 12}px`; tt.style.top = `${e.pageY - 10}px`;
+        });
+        rect.addEventListener("mouseleave", () => { tip().style.display = "none"; });
+        // A pathway node is a control, the same one the heatmap rows and the dropdown
+        // drive. Broad maps are absent from the highlight index on purpose (an overlay
+        // marking 44 % of the points marks nothing), so they stay inert.
+        if (!meta.broad) {
+          rect.style.cursor = "pointer";
+          rect.addEventListener("click", () => window.__setHighlight(meta.name));
+        }
+      }
       const right = ci === 2;
       svg.append(el("text", {
         x: right ? colX[ci] + nodeW + 6 : colX[ci] - 6,
@@ -781,14 +839,42 @@ function drawSankey() {
                             "font-size": 9.5, "font-weight": 600, fill: C.soft }, t));
   });
 
+  // Database key, under the pathway column heading.
+  let kx = colX[2] + nodeW;
+  for (const db of ["KEGG", "MapMan"]) {
+    const n = paths.filter((p) => byName.get(p.name).db === db).length;
+    if (!n) continue;
+    svg.append(el("rect", { x: kx, y: pad.t - 6, width: 7, height: 7, rx: 1.5,
+                            fill: DB_COLOUR[db]() }));
+    svg.append(el("text", { x: kx + 10, y: pad.t, "font-size": 8, fill: C.faint },
+                           `${db} (${n})`));
+    kx += 62;
+  }
+
   const cap = document.getElementById("sankeycap");
   if (cap) {
+    // Columns 1 and 2 cover every pathway in the current view, not just the top N drawn
+    // in column 3, so the caption has to name both numbers or the totals read as wrong.
+    const nk = eligible.filter((p) => p.db === "KEGG").length;
+    const nm = eligible.length - nk;
+    const hidden = d.pathways.filter((p) => p.broad).map((p) => p.name);
     cap.textContent =
-      `${d.n_genes.toLocaleString()} loci in at least one of the ${d.pathways.length} ` +
-      `significant KEGG pathways. Transcript and protein columns conserve loci exactly; ` +
-      `the pathway column counts memberships, so the ${(d.n_memberships - d.n_genes)
-        .toLocaleString()} loci that sit in more than one pathway are counted more than ` +
-      `once. ${d.unresolved.length} of the ${d.n_pathways_total} significant pathways are ` +
-      `MapMan bins with no offline gene membership and are not shown.`;
+      `${v.n_genes.toLocaleString()} loci sit in at least one of the ${eligible.length} ` +
+      `pathways in this view (${nk} KEGG, ${nm} MapMan), out of the ` +
+      `${d.n_pathways_total} PaintOmics called significant; the pathway column draws the ` +
+      `${paths.length} most significant of them. Transcript and protein columns conserve ` +
+      `loci exactly; the pathway column counts memberships, so the ` +
+      `${(v.n_memberships - v.n_genes).toLocaleString()} loci sitting in more than one ` +
+      `pathway are counted more than once. KEGG membership comes from the KEGG REST API; ` +
+      `MapMan publishes none, so it is reconstructed from the diagram layouts — matching ` +
+      `PaintOmics' own feature count for 9 of the 13 MapMan maps and running larger on the ` +
+      `other 4, with both numbers in every node's tooltip. ` +
+      (sankeyBroad
+        ? `Whole-ontology maps are included: ${hidden.join(", ")} each cover more than ` +
+          `${Math.round(100 * d.broad_map_share)} % of the measured loci, so their ribbons ` +
+          `are close to the marginal distribution rather than a statement about them.`
+        : `${hidden.length} whole-ontology MapMan maps — ${hidden.join(", ")} — are off by ` +
+          `default because each covers more than ${Math.round(100 * d.broad_map_share)} % ` +
+          `of the measured loci; tick the box to include them.`);
   }
 }

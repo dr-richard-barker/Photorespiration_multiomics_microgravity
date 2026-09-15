@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Image image="" modified="24-Jan-2005 16:20:57" scaling="3.0" datasize="5" bgcolor="0">
+  <DataArea x="170" y="64" blockFormat="x4" visualizationType="1" >
+    <Identifier id="14.01" recursive="true"/>
+  </DataArea>
+  <DataArea x="279" y="132" blockFormat="" visualizationType="1" >
+    <Identifier id="14.02" recursive="true"/>
+  </DataArea>
+  <DataArea x="303" y="62" blockFormat="x4" visualizationType="1" >
+    <Identifier id="14.15" recursive="true"/>
+  </DataArea>
+  <DataArea x="432" y="173" blockFormat="x3" visualizationType="1" >
+    <Identifier id="14.3" recursive="true"/>
+  </DataArea>
+  <DataArea x="559" y="188" blockFormat="" visualizationType="1" >
+    <Identifier id="13.1.5.3.01" recursive="true"/>
+  </DataArea>
+  <DataArea x="517" y="295" blockFormat="" visualizationType="1" >
+    <Identifier id="13.1.5.3.02" recursive="true"/>
+  </DataArea>
+</Image>

@@ -64,21 +64,49 @@ def main() -> int:
         if got != expect_tx:
             failures.append(f"{name}: expected {expect_tx} plottable transcripts, got {got}")
 
-    # Sankey conservation: columns 1 and 2 are genes and must balance.
+    # Sankey conservation: columns 1 and 2 are genes and must balance, in BOTH views —
+    # the checkbox switches between them, so a view that does not balance is a chart that
+    # silently loses loci when the reader ticks a box.
     s = load("sankey.json")
-    for side, key, bins in (("tx_to_pr out of", "from", s["tx_bins"]),
-                            ("tx_to_pr into", "to", s["pr_bins"])):
-        for b, total in bins.items():
-            flowed = sum(l["n"] for l in s["tx_to_pr"] if l[key] == b)
-            if flowed != total:
-                failures.append(f"sankey {side} '{b}': ribbons sum to {flowed}, node is {total}")
-    print(f"  sankey: {s['n_genes']} genes conserved across transcript and protein columns")
-    print(f"  sankey: {s['n_memberships']} memberships across {len(s['pathways'])} pathways "
-          f"({s['n_memberships'] - s['n_genes']} loci in more than one pathway)")
+    for name, v in s["views"].items():
+        for side, key, bins in (("tx_to_pr out of", "from", v["tx_bins"]),
+                                ("tx_to_pr into", "to", v["pr_bins"])):
+            for b, total in bins.items():
+                flowed = sum(l["n"] for l in v["tx_to_pr"] if l[key] == b)
+                if flowed != total:
+                    failures.append(f"sankey[{name}] {side} '{b}': ribbons sum to "
+                                    f"{flowed}, node is {total}")
+        for bins in ("tx_bins", "pr_bins"):
+            if sum(v[bins].values()) != v["n_genes"]:
+                failures.append(f"sankey[{name}] {bins} sums to {sum(v[bins].values())}, "
+                                f"not the {v['n_genes']} genes in the view")
+        print(f"  sankey[{name}]: {v['n_genes']:,} loci conserved across the transcript and "
+              f"protein columns; {v['n_memberships']:,} memberships "
+              f"({v['n_memberships'] - v['n_genes']:,} in more than one pathway)")
+
+    # Every pathway the Sankey can draw must be sizeable, and every one it can highlight
+    # must be in the membership index the volcano reads.
+    memberships = load("pathway_membership.json")
+    for p in s["pathways"]:
+        if not p["broad"] and p["name"] not in memberships:
+            failures.append(f"sankey pathway '{p['name']}' is clickable but has no entry "
+                            f"in pathway_membership.json")
+        if p["broad"] and p["name"] in memberships:
+            failures.append(f"broad map '{p['name']}' should be out of the highlight index")
+    kegg = sum(1 for p in s["pathways"] if p["db"] == "KEGG")
+    mapman = len(s["pathways"]) - kegg
+    agree = sum(1 for p in s["pathways"]
+                if p["db"] == "MapMan" and abs(p["measured"] - p["features"]) <= 3)
+    print(f"  sankey: {len(s['pathways'])} of {s['n_pathways_total']} significant pathways "
+          f"have membership ({kegg} KEGG, {mapman} MapMan); MapMan reconstruction agrees "
+          f"with PaintOmics' feature count for {agree} of {mapman}")
 
     cov = load("pathway_coverage.json")
+    if cov["resolved"] != cov["total"]:
+        failures.append(f"pathway coverage is {cov['resolved']}/{cov['total']}, not complete")
     print(f"  pathway coverage: {cov['resolved']}/{cov['total']} significant pathways have "
-          f"KEGG membership; {len(cov['unresolved'])} MapMan bins omitted")
+          f"membership ({cov['kegg']} KEGG via REST, {cov['mapman']} MapMan via vendored "
+          f"diagrams); {len(cov['broad'])} broad maps held out of the highlight index")
 
     print()
     if failures:

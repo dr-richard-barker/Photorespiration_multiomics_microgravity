@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Image image="" modified="27-Jan-2005 14:15:56" scaling="3.0" datasize="5" bgcolor="0">
+  <DataArea x="12" y="28" blockFormat="x20" visualizationType="0" >
+    <Identifier id="34.16" recursive="true"/>
+  </DataArea>
+  <DataArea x="304" y="29" blockFormat="x18" visualizationType="0" >
+    <Identifier id="34.02" recursive="true"/>
+  </DataArea>
+  <DataArea x="462" y="28" blockFormat="x8" visualizationType="0" >
+    <Identifier id="34.20" recursive="true"/>
+  </DataArea>
+  <DataArea x="522" y="32" blockFormat="x6" visualizationType="0" >
+    <Identifier id="34.19.1" recursive="true"/>
+  </DataArea>
+  <DataArea x="662" y="30" blockFormat="" visualizationType="0" >
+    <Identifier id="34.01" recursive="true"/>
+  </DataArea>
+  <DataArea x="576" y="110" blockFormat="" visualizationType="0" >
+    <Identifier id="34.8" recursive="true"/>
+  </DataArea>
+  <DataArea x="632" y="181" blockFormat="x5" visualizationType="0" >
+    <Identifier id="34.17" recursive="true"/>
+  </DataArea>
+  <DataArea x="686" y="174" blockFormat="x13" visualizationType="0" >
+    <Identifier id="34.4" recursive="true"/>
+  </DataArea>
+  <DataArea x="703" y="248" blockFormat="x15" visualizationType="0" >
+    <Identifier id="34.5" recursive="true"/>
+  </DataArea>
+  <DataArea x="687" y="332" blockFormat="x15" visualizationType="0" >
+    <Identifier id="34.6" recursive="true"/>
+  </DataArea>
+  <DataArea x="685" y="384" blockFormat="x15" visualizationType="0" >
+    <Identifier id="34.7" recursive="true"/>
+  </DataArea>
+  <DataArea x="680" y="434" blockFormat="x15" visualizationType="0" >
+    <Identifier id="34.18" recursive="true"/>
+  </DataArea>
+  <DataArea x="432" y="493" blockFormat="x10" visualizationType="0" >
+    <Identifier id="34.10" recursive="true"/>
+  </DataArea>
+  <DataArea x="301" y="492" blockFormat="x15" visualizationType="0" >
+    <Identifier id="34.3" recursive="true"/>
+  </DataArea>
+  <DataArea x="164" y="492" blockFormat="x15" visualizationType="0" >
+    <Identifier id="34.13" recursive="true"/>
+  </DataArea>
+  <DataArea x="20" y="492" blockFormat="x15" visualizationType="0" >
+    <Identifier id="34.22" recursive="true"/>
+  </DataArea>
+  <DataArea x="9" y="413" blockFormat="x12" visualizationType="0" >
+    <Identifier id="34.21" recursive="true"/>
+  </DataArea>
+  <DataArea x="20" y="324" blockFormat="x15" visualizationType="0" >
+    <Identifier id="34.12" recursive="true"/>
+  </DataArea>
+  <DataArea x="26" y="244" blockFormat="" visualizationType="0" >
+    <Identifier id="34.14" recursive="true"/>
+  </DataArea>
+  <DataArea x="22" y="156" blockFormat="x15" visualizationType="0" >
+    <Identifier id="34.15" recursive="true"/>
+  </DataArea>
+  <DataArea x="561" y="492" blockFormat="x30" visualizationType="0" >
+    <Identifier id="11.6" recursive="true"/>
+  </DataArea>
+  <DataArea x="181" y="27" blockFormat="x10" visualizationType="0" >
+    <Identifier id="34.99" recursive="true"/>
+  </DataArea>
+  <DataArea x="103" y="100" blockFormat="x10" visualizationType="0" >
+    <Identifier id="34.11" recursive="true"/>
+  </DataArea>
+  <DataArea x="580" y="328" blockFormat="x5" visualizationType="0" >
+    <Identifier id="34.9" recursive="true"/>
+  </DataArea>
+  <DataArea x="572" y="46" blockFormat="x8" visualizationType="1" >
+    <Identifier id="34.19.2" recursive="true"/>
+  </DataArea>
+  <DataArea x="514" y="74" blockFormat="x4" visualizationType="1" >
+    <Identifier id="34.19.3" recursive="true"/>
+  </DataArea>
+  <DataArea x="548" y="56" blockFormat="y5" visualizationType="1" >
+    <Identifier id="34.19.4" recursive="true"/>
+  </DataArea>
+</Image>

@@ -13,6 +13,7 @@ import pandas as pd
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import genesets  # noqa: E402
+import mapman  # noqa: E402
 from paths import DATA, DOCS_DATA, STUDY_REGISTRY, TABLES, ensure  # noqa: E402
 
 
@@ -58,52 +59,83 @@ def _bin(gene, table, pcol, fcol, alpha=0.05):
     return "not significant"
 
 
-def build_sankey(tx, pr, pr_agi, pathways, sig_paths, unresolved):
+# Three MapMan diagrams are whole-ontology maps: `Overview` lists all 36 top-level bins and
+# so covers 99.8 % of the measured loci, and `Regulation overview` and `Biotic Stress` cover
+# 45 % and 44 %. The next largest is 17 %, so the break is a real one rather than a chosen
+# line. Such a map cannot say where anything goes — its Sankey ribbons are the marginal
+# distribution redrawn, and highlighting it on the volcano marks half the plot. They are
+# therefore off by default, in both places, with the reason stated on the page and a
+# checkbox on the Sankey. This is a display rule, not a filter on the result: the nodes
+# ship with their real counts either way.
+BROAD_MAP_SHARE = 0.25
+
+
+def build_sankey(tx, pr, pr_agi, pathways, pathway_db, broad, sig_paths, unresolved):
     """Transcript DEG bin -> protein DEG bin -> pathway, sized by locus count.
 
     Columns 1 and 2 conserve genes exactly: every gene sits in one transcript bin and one
     protein bin. Column 3 counts MEMBERSHIPS, not genes, because a locus can belong to
     several pathways — the page says so, and the counts are integers rather than
     fractional splits because locus counts are what was asked for.
+
+    Pathway nodes carry their database (KEGG membership from the REST API, MapMan from the
+    vendored diagrams) and PaintOmics' own feature count, so a reader can see where the
+    reconstruction and the server disagree instead of being handed one number.
     """
     # Collapse the proteome to one row per gene: mean fold change, strongest adjusted p.
     pr_g = pr.assign(agi=[pr_agi.get(u) for u in pr.index]).dropna(subset=["agi"])
     pr_g = pr_g.groupby("agi").agg(log2fc=("log2fc", "mean"), adj_p=("adj_p", "min"))
 
-    genes = sorted(set().union(*pathways.values())) if pathways else []
     rec = {g: (_bin(g, tx, "fdr", "log2fc"), _bin(g, pr_g, "adj_p", "log2fc"))
-           for g in genes}
+           for g in sorted(set().union(*pathways.values()) if pathways else set())}
 
-    tx_pr = {}
-    for t, p_ in rec.values():
-        tx_pr[(t, p_)] = tx_pr.get((t, p_), 0) + 1
+    def view(names):
+        """Columns 1 and 2 for one set of pathways. Genes are counted once, however many
+        of the pathways they belong to, so the two columns balance."""
+        genes = set().union(*(pathways[n] for n in names)) if names else set()
+        tx_pr = {}
+        for g in genes:
+            tx_pr[rec[g]] = tx_pr.get(rec[g], 0) + 1
+        return {
+            "tx_bins": {b: sum(1 for g in genes if rec[g][0] == b) for b in BINS},
+            "pr_bins": {b: sum(1 for g in genes if rec[g][1] == b) for b in BINS},
+            "tx_to_pr": [{"from": t, "to": p_, "n": n}
+                         for (t, p_), n in sorted(tx_pr.items())],
+            "n_genes": len(genes),
+            "n_memberships": sum(len(pathways[n]) for n in names),
+        }
 
     pr_path = {}
     for name, members in pathways.items():
         for g in members:
-            if g not in rec:
-                continue
             key = (rec[g][1], name)
             pr_path[key] = pr_path.get(key, 0) + 1
 
     order = {n: i for i, n in enumerate(sig_paths.pathway)}
     ranked = sorted(pathways, key=lambda n: order.get(n, 999))
+    t8 = sig_paths.set_index("pathway")
+    measured = set(tx.index) | {a for a in pr_agi.values() if a}
 
     return {
         "bins": BINS,
         "pathways": [{"name": n, "size": len(pathways[n]),
-                      "p": float(sig_paths.set_index("pathway")
-                                 .loc[n, "p_combined_fisher"])}
+                      "db": pathway_db[n],
+                      "measured": len(pathways[n] & measured),
+                      "features": int(t8.loc[n, "features"]),
+                      "broad": n in broad,
+                      "p": float(t8.loc[n, "p_combined_fisher"])}
                      for n in ranked],
-        "tx_bins": {b: sum(1 for t, _ in rec.values() if t == b) for b in BINS},
-        "pr_bins": {b: sum(1 for _, p_ in rec.values() if p_ == b) for b in BINS},
-        "tx_to_pr": [{"from": t, "to": p_, "n": n} for (t, p_), n in sorted(tx_pr.items())],
+        # Columns 1 and 2 depend on which pathways are on screen, so both answers ship and
+        # the checkbox switches between them rather than the page recomputing from a
+        # per-gene table it would otherwise have to download.
+        "views": {"core": view([n for n in ranked if n not in broad]),
+                  "all": view(ranked)},
         "pr_to_path": [{"from": p_, "to": n, "n": c}
                        for (p_, n), c in sorted(pr_path.items())],
-        "n_genes": len(rec),
-        "n_memberships": sum(len(m) for m in pathways.values()),
         "unresolved": sorted(unresolved),
         "n_pathways_total": int(len(sig_paths)),
+        "n_measured": len(measured),
+        "broad_map_share": BROAD_MAP_SHARE,
     }
 
 
@@ -149,10 +181,18 @@ def main() -> int:
 
     sig_paths = pd.read_csv(os.path.join(TABLES, "T08_paintomics_significant.tsv"),
                             sep="\t", comment="#")
-    resolved, unresolved = genesets.paintomics_pathway_ids(sig_paths.pathway, sig_paths.db)
-    pathways = {name: genesets.pathway_genes(pid) for name, pid in resolved.items()}
-    print(f"  pathways resolved to KEGG: {len(resolved)}/{len(sig_paths)} "
-          f"({len(unresolved)} MapMan bins have no offline membership)")
+    # Two databases, two membership sources, and neither may guess which rows are its own:
+    # MapMan's lowercase "photosynthesis" bin collides with KEGG's "Photosynthesis", so both
+    # resolvers take the `db` column and only look up their own rows.
+    kegg_ids, kegg_missing = genesets.paintomics_pathway_ids(sig_paths.pathway, sig_paths.db)
+    mm_sets, mm_missing = mapman.paintomics_mapman_sets(sig_paths.pathway, sig_paths.db)
+    pathways = {name: genesets.pathway_genes(pid) for name, pid in kegg_ids.items()}
+    pathways.update(mm_sets)
+    pathway_db = ({n: "KEGG" for n in kegg_ids} | {n: "MapMan" for n in mm_sets})
+    unresolved = [n for n in kegg_missing if n not in mm_sets] + mm_missing
+    print(f"  pathways with membership: {len(pathways)}/{len(sig_paths)} "
+          f"({len(kegg_ids)} KEGG via REST, {len(mm_sets)} MapMan via vendored diagrams"
+          + (f"; {len(unresolved)} unresolved" if unresolved else "") + ")")
 
     # A volcano needs a y-value, so a feature with no adjusted p cannot be plotted at all.
     # DESeq2's independent filtering leaves 1,658 transcripts with a fold change but no FDR.
@@ -174,15 +214,25 @@ def main() -> int:
                          "proteome": len(upr_all)},
         }
 
+    # Broad maps are excluded from the highlight index (see BROAD_MAP_SHARE): an overlay
+    # that marks 44 % of the points marks nothing, and forcing 21,000 loci through the
+    # volcano thinning would defeat the thinning entirely.
+    universe = tx_measured | {a for a in pr_agi.values() if a}
+    broad = {n for n, m in pathways.items()
+             if len(m & universe) > BROAD_MAP_SHARE * len(universe)}
+    highlightable = {n: m for n, m in pathways.items() if n not in broad}
+
     dump("gene_sets.json", {n: per_layer(m) for n, m in sets.items()})
-    dump("pathway_membership.json", {n: per_layer(m) for n, m in pathways.items()})
+    dump("pathway_membership.json", {n: per_layer(m) for n, m in highlightable.items()})
     dump("pathway_coverage.json",
-         {"resolved": len(resolved), "total": int(len(sig_paths)),
-          "unresolved": sorted(unresolved)})
+         {"resolved": len(pathways), "total": int(len(sig_paths)),
+          "kegg": len(kegg_ids), "mapman": len(mm_sets),
+          "unresolved": sorted(unresolved), "broad": sorted(broad),
+          "broad_share": BROAD_MAP_SHARE})
 
     # Every gene the page can highlight must survive the volcano thinning.
-    must_keep = set().union(*sets.values()) | (set().union(*pathways.values())
-                                               if pathways else set())
+    must_keep = set().union(*sets.values()) | (set().union(*highlightable.values())
+                                               if highlightable else set())
 
     # --- measured omics, thinned for the browser but never below must_keep ------------
     dump("volcano_transcriptome.json",
@@ -192,7 +242,9 @@ def main() -> int:
          volcano(pr, "log2fc", "adj_p", "UniProt", 0.05, must_keep=prot_keep))
 
     # --- sankey: transcript bin -> protein bin -> pathway -----------------------------
-    dump("sankey.json", build_sankey(tx, pr, pr_agi, pathways, sig_paths, unresolved))
+    dump("sankey.json",
+         build_sankey(tx, pr, pr_agi, pathways, pathway_db, broad, sig_paths,
+                      unresolved))
 
     # --- results tables the site tabulates --------------------------------------------
     for name, path, kw in (

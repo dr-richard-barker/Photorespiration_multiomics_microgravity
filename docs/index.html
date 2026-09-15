@@ -142,8 +142,10 @@ spaceflight growth-hardware gas transport, with the OSDR omics that test it.">
     above.</strong> Hover a cell for n, shift and <em>p</em>.
   </p>
   <figure>
-    <svg id="heatmap" viewBox="0 0 620 300" role="img"
-         aria-label="Gene set by study heatmap of median shift"></svg>
+    <div class="chartscroll">
+      <svg id="heatmap" viewBox="0 0 620 300" role="img"
+           aria-label="Gene set by study heatmap of median shift"></svg>
+    </div>
     <figcaption>
       Columns are ordered illuminated first, then dark, matching Figure 7. Values come from
       <span class="mono">results/tables/T11_hardware_ladder.tsv</span>.
@@ -154,11 +156,16 @@ spaceflight growth-hardware gas transport, with the OSDR omics that test it.">
   <div class="preset-row">
     <span class="preset-label">Show</span>
     <select id="sankeyN"></select>
+    <label class="inline-check">
+      <input id="sankeyBroad" type="checkbox"> include whole-ontology MapMan maps
+    </label>
     <span class="note" style="margin:0">ribbon width = number of loci</span>
   </div>
   <figure>
-    <svg id="sankey" viewBox="0 0 620 340" role="img"
-         aria-label="Sankey of transcript bin to protein bin to pathway"></svg>
+    <div class="chartscroll">
+      <svg id="sankey" viewBox="0 0 620 340" role="img"
+           aria-label="Sankey of transcript bin to protein bin to pathway"></svg>
+    </div>
     <figcaption id="sankeycap"></figcaption>
   </figure>
 </section>

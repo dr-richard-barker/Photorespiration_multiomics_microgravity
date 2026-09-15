@@ -57,11 +57,13 @@ fixed before any omics were downloaded, then tested against NASA OSDR.
 data/                 inputs only
   study_registry.tsv    which OSDR studies enter, the exact contrast column, and why
   lunarleaf/            vendored CFD tables + provenance
+  mapman/               vendored MapMan diagrams + gene-to-bin mapping + provenance
   paintomics_upload/    the validated submission bundle
   cache/                OSDR + KEGG downloads (git-ignored, regenerated on demand)
 scripts/              every executable, numbered in pipeline order
   fvcb.py               the model core, importable
   genesets.py           KEGG-derived gene sets, shared by both analyses
+  mapman.py             MapMan pathway membership, rebuilt from the diagram layouts
   figures/              one script per figure + the shared visual system
   run_all.sh            regenerates everything from a cold cache
 results/tables/       T01…T12 + MANIFEST.tsv (fails if a table lacks provenance)
@@ -80,6 +82,11 @@ bash scripts/run_all.sh
 Needs network on a cold cache. `python3 scripts/check_js_parity.py` then confirms the
 browser model still agrees with the Python (currently **exact**, 0.000e+00 across 180
 parameter combinations).
+
+The MapMan inputs under `data/mapman/` are vendored rather than fetched, because
+MapManStore's own published links are already dead and the diagrams are reachable only one
+portlet query at a time. `python3 scripts/mapman.py --fetch` refreshes all 14 files or none;
+`run_all.sh` deliberately does not, since the pathway universe is an enrichment denominator.
 
 PaintOmics submission is deliberately separate, because it uploads to a third-party server:
 
@@ -101,7 +108,7 @@ python3 scripts/05_submit_paintomics.py --job 1
 | Cross-study ladder (6 studies) | **done** — illumination separates; enclosure gradient does not |
 | Eight-figure set | **done** |
 | npj manuscript | **compiles** — 12 pages, no unresolved references; author block is placeholders |
-| Interactive site | **done** — model, enclosures, omics, pathways, six studies |
+| Interactive site | **done** — model, enclosures, omics (volcano, heatmap, Sankey), pathways, six studies |
 | FAIR packaging | **done** — manifest, CITATION.cff, .zenodo.json, MIT |
 | Zenodo deposit | **pending** — needs the author fields below |
 
@@ -152,6 +159,13 @@ This project has a few standing rules, and they are load-bearing:
   ground-control *phyD*.
 - **Gene sets come from KEGG, not memory.** An earlier hand-written list here put PGLP1 at
   the wrong locus, and *Arabidopsis* reuses the symbols CAT2 and SEN1 for unrelated genes.
+- **MapMan membership is a reconstruction and is labelled as one.** PaintOmics publishes
+  enrichment results but not the gene lists behind them, and MapMan has no REST API, so the
+  13 MapMan pathways are rebuilt from the diagram layouts by PaintOmics' own rules. It
+  matches PaintOmics' feature count exactly or within three for 9 of the 13 and runs larger
+  for the four whole-ontology overview maps; the site shows both numbers on every node
+  rather than picking one, and
+  [`data/mapman/PROVENANCE.md`](data/mapman/PROVENANCE.md) says what is not recoverable.
 - **References were verified against the publisher record**, never recalled.
 - **A sibling CFD repository is deliberately not used.** See
   [`methods/CFD_PROVENANCE_CONCERN.md`](methods/CFD_PROVENANCE_CONCERN.md).
@@ -162,7 +176,10 @@ This project has a few standing rules, and they are load-bearing:
 
 NASA Open Science Data Repository — OSD-522 (BRIC-LED-001), OSD-38 (BRIC-20),
 OSD-321 (BRIC-22), OSD-678 (CARA), OSD-427 (APEX-04/VEGGIE).
-Gas transport from LunarLeaf-CFD. Pathways from KEGG and MapMan via PaintOmics.
+Gas transport from LunarLeaf-CFD. Pathway enrichment from KEGG and MapMan via PaintOmics;
+KEGG membership from the KEGG REST API, MapMan membership rebuilt from GoMapMan's gene
+mapping and the MapManStore diagram layouts (see
+[`data/mapman/PROVENANCE.md`](data/mapman/PROVENANCE.md)).
 
 ## Licence
 

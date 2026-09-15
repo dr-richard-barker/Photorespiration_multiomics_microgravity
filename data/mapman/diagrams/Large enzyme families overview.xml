@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Image image="" modified="09-Apr-2005 17:57:52" scaling="3.0" datasize="5" bgcolor="0">
+  <DataArea x="145" y="54" blockFormat="x20" visualizationType="0" type="">
+    <Identifier id="26.10" recursive="true"/>
+  </DataArea>
+  <DataArea x="320" y="55" blockFormat="x20" visualizationType="0" type="">
+    <Identifier id="26.7" recursive="true"/>
+  </DataArea>
+  <DataArea x="501" y="52" blockFormat="x20" visualizationType="0" type="">
+    <Identifier id="26.8" recursive="true"/>
+  </DataArea>
+  <DataArea x="149" y="174" blockFormat="x20" visualizationType="0" type="">
+    <Identifier id="26.5" recursive="true"/>
+  </DataArea>
+  <DataArea x="143" y="311" blockFormat="x20" visualizationType="0" type="">
+    <Identifier id="26.11" recursive="true"/>
+  </DataArea>
+  <DataArea x="140" y="375" blockFormat="x20" visualizationType="0" type="">
+    <Identifier id="26.12" recursive="true"/>
+  </DataArea>
+  <DataArea x="322" y="170" blockFormat="x20" visualizationType="0" type="">
+    <Identifier id="26.2" recursive="true"/>
+  </DataArea>
+  <DataArea x="323" y="287" blockFormat="x20" visualizationType="0" type="">
+    <Identifier id="26.6" recursive="true"/>
+  </DataArea>
+  <DataArea x="322" y="406" blockFormat="x20" visualizationType="0" type="">
+    <Identifier id="26.01" recursive="true"/>
+  </DataArea>
+  <DataArea x="498" y="168" blockFormat="x20" visualizationType="0" type="">
+    <Identifier id="26.9" recursive="true"/>
+  </DataArea>
+  <DataArea x="145" y="455" blockFormat="x20" visualizationType="0" type="">
+    <Identifier id="26.13" recursive="true"/>
+  </DataArea>
+  <DataArea x="500" y="403" blockFormat="x20" visualizationType="0" type="">
+    <Identifier id="26.4" recursive="true"/>
+  </DataArea>
+  <DataArea x="142" y="235" blockFormat="x20" visualizationType="0" type="">
+    <Identifier id="26.3" recursive="true"/>
+  </DataArea>
+  <DataArea x="509" y="289" blockFormat="x20" visualizationType="1" type="">
+    <Identifier id="26.28" recursive="true"/>
+  </DataArea>
+</Image>
