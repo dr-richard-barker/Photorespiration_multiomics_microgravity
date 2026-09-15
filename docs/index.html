@@ -128,9 +128,39 @@ spaceflight growth-hardware gas transport, with the OSDR omics that test it.">
     <figcaption id="volcap"></figcaption>
   </figure>
   <p class="note">
-    Non-significant points are subsampled so the page stays quick; every significant feature
-    is plotted. Full tables are in the repository.
+    Non-significant points are subsampled so the page stays quick — but every member of every
+    gene set and pathway is forced into the plot regardless of significance, so highlighting
+    always shows the whole set. A feature can still be measured without being plottable: a
+    volcano needs a y-value, and DESeq2's independent filtering leaves some transcripts with
+    a fold change but no adjusted <em>p</em>. The caption says when that happens.
   </p>
+
+  <h3>Gene-set response across the six flight experiments</h3>
+  <p class="note">
+    Median shift against all other genes, per set, per study. Blue is down in flight, red is
+    up, white is no change. <strong>Click any row to highlight that set in the volcano
+    above.</strong> Hover a cell for n, shift and <em>p</em>.
+  </p>
+  <figure>
+    <svg id="heatmap" viewBox="0 0 620 300" role="img"
+         aria-label="Gene set by study heatmap of median shift"></svg>
+    <figcaption>
+      Columns are ordered illuminated first, then dark, matching Figure 7. Values come from
+      <span class="mono">results/tables/T11_hardware_ladder.tsv</span>.
+    </figcaption>
+  </figure>
+
+  <h3>Where the loci go: transcript &rarr; protein &rarr; pathway</h3>
+  <div class="preset-row">
+    <span class="preset-label">Show</span>
+    <select id="sankeyN"></select>
+    <span class="note" style="margin:0">ribbon width = number of loci</span>
+  </div>
+  <figure>
+    <svg id="sankey" viewBox="0 0 620 340" role="img"
+         aria-label="Sankey of transcript bin to protein bin to pathway"></svg>
+    <figcaption id="sankeycap"></figcaption>
+  </figure>
 </section>
 
 <!-- ────────────────────────────────────────────────────── PATHWAYS -->

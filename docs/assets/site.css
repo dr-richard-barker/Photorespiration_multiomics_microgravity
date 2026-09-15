@@ -147,3 +147,19 @@ footer {
 }
 footer a { color: var(--accent); }
 .warn { color: var(--vermilion); }
+
+/* Shared tooltip for the heatmap and Sankey. Positioned in page coordinates so it is not
+   clipped by the SVG viewBox. */
+.tooltip {
+  position: absolute; display: none; z-index: 50; pointer-events: none;
+  background: var(--panel); color: var(--ink);
+  border: 1px solid var(--edge); border-radius: 7px;
+  padding: .4rem .55rem; font-size: .76rem; line-height: 1.45;
+  box-shadow: 0 6px 22px rgba(0, 0, 0, .18); max-width: 280px;
+}
+
+/* A heatmap row is a control, so it has to look like one. */
+.hm-row:hover rect { stroke: var(--accent); stroke-width: 1.2; }
+.hm-row:hover text { fill: var(--accent); font-weight: 600; }
+
+#sankey path { transition: fill-opacity .12s ease; }

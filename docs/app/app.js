@@ -43,6 +43,21 @@ const el = (tag, attrs = {}, text) => {
 const clear = (node) => { while (node.firstChild) node.removeChild(node.firstChild); };
 const json = (name) => fetch(`data/${name}`).then((r) => r.json());
 
+/* Human labels for the gene sets. Mirrors PRETTY in scripts/figures/style.py so the site
+ * and the manuscript figures call the same set by the same name. */
+const PRETTY = {
+  ath00630: "Glyoxylate & dicarboxylate",
+  ath00710: "Carbon fixation",
+  ath00500: "Starch & sucrose",
+  ath00010: "Glycolysis",
+  photorespiration_core: "Photorespiration C2 enzymes",
+  carbon_starvation_DIN: "Carbon starvation (DIN)",
+  fermentation: "Fermentation",
+  hypoxia_responsive: "Hypoxia-responsive",
+  photosynthesis_apparatus: "Photosystem & light harvesting",
+  rubisco: "Rubisco",
+};
+
 /* ───────────────────────────────────────────────── a minimal chart helper */
 
 function axes(svg, { w, h, pad, xlim, ylim, xlabel, ylabel, yticks = 5, xticks = 5 }) {
@@ -280,6 +295,14 @@ async function buildOmics() {
   pick.innerHTML = `<option value="">none</option>` +
     Object.keys(geneSets).map((k) => `<option value="${k}">${k}</option>`).join("");
   pick.addEventListener("change", () => { highlight = pick.value; drawVolcano(); });
+  // The heatmap below also drives this, so keep the two in step.
+  window.__setHighlight = (name) => {
+    highlight = name;
+    pick.value = name;
+    drawVolcano();
+    document.getElementById("volcano").scrollIntoView({ block: "center",
+                                                       behavior: "smooth" });
+  };
 
   document.getElementById("genesearch").addEventListener("input", (e) => {
     query = e.target.value.trim().toUpperCase();
@@ -306,10 +329,12 @@ function drawVolcano() {
                          xlabel: "log₂ fold change (flight / ground)",
                          ylabel: layer === "proteome" ? "−log₁₀ adjusted p" : "−log₁₀ FDR" });
 
-  // Highlighted set is drawn last so it is never buried; the gene-set index is keyed on
-  // AGI, so it only applies to the transcriptome layer.
-  const set = highlight && layer === "transcriptome"
-    ? new Set(geneSets[highlight]) : new Set();
+  // Highlighted members are drawn last so they are never buried. The index carries a
+  // separate id list per layer — AGI for transcripts, UniProt for proteins — so the
+  // control works on both. It used to be gated to the transcriptome and did nothing at
+  // all on the proteome tab.
+  const entry = highlight ? geneSets[highlight] : null;
+  const set = entry ? new Set(entry[layer]) : new Set();
   const hits = [];
   const frag = document.createDocumentFragment();
   for (const [id, x, y, sig] of v.points) {
@@ -336,11 +361,20 @@ function drawVolcano() {
                           stroke: C.ink, "stroke-dasharray": "4 3", "stroke-width": 0.8 }));
 
   const matched = query ? hits.filter((hh) => hh[4]).length : 0;
+  let note = "";
+  if (entry) {
+    const measured = entry.measured[layer];
+    const gap = measured - set.size;
+    // Say what is NOT shown as well as what is. A member can be measured but carry no
+    // adjusted p after DESeq2 independent filtering, so it has no y-value to plot.
+    note = measured === 0
+      ? `  ${highlight}: none of its ${entry.total} members was measured on this layer.`
+      : `  Highlighted ${highlight}: ${set.size} of ${measured} measured on this layer` +
+        (gap ? ` (${gap} measured but with no adjusted p, so not plottable)` : "") + ".";
+  }
   document.getElementById("volcap").textContent =
     `${v.n_sig.toLocaleString()} of ${v.n_total.toLocaleString()} features significant at ` +
-    `${v.alpha}. ${v.n_plotted.toLocaleString()} plotted.` +
-    (highlight && layer === "transcriptome"
-      ? `  Highlighted: ${highlight} (${set.size} measured).` : "") +
+    `${v.alpha}. ${v.n_plotted.toLocaleString()} plotted.` + note +
     (query ? `  Search "${query}": ${matched} match${matched === 1 ? "" : "es"}.` : "");
 }
 
@@ -494,6 +528,8 @@ if (window.matchMedia) {
     renderModel();
     buildEnclosure().catch(() => {});
     drawVolcano();
+    drawHeatmap();
+    drawSankey();
     buildLadder().catch(() => {});
   });
 }
@@ -504,3 +540,255 @@ buildEnclosure().catch((e) => console.error("enclosure", e));
 buildOmics().catch((e) => console.error("omics", e));
 buildPathways().catch((e) => console.error("pathways", e));
 buildLadder().catch((e) => console.error("ladder", e));
+buildHeatmap().catch((e) => console.error("heatmap", e));
+buildSankey().catch((e) => console.error("sankey", e));
+
+/* ────────────────────────────────────────────────── heatmap: sets x studies */
+
+let ladderRows = [];
+
+/* Diverging blue -> white -> red, symmetric about zero, in the page's own tokens so it
+ * follows light and dark. Mid-point is white in light mode and the panel colour in dark,
+ * otherwise "no change" cells glow against a dark background. */
+function diverging(v, max) {
+  const t = Math.max(-1, Math.min(1, v / (max || 1)));
+  const mid = C.bg;
+  const end = t >= 0 ? C.vermilion : C.accent;
+  return mix(mid, end, Math.abs(t));
+}
+function mix(a, b, t) {
+  const p = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+  const [ar, ag, ab] = p(a.length === 4 ? `#${a[1]}${a[1]}${a[2]}${a[2]}${a[3]}${a[3]}` : a);
+  const [br, bg, bb] = p(b.length === 4 ? `#${b[1]}${b[1]}${b[2]}${b[2]}${b[3]}${b[3]}` : b);
+  const c = (x, y) => Math.round(x + (y - x) * t);
+  return `rgb(${c(ar, br)},${c(ag, bg)},${c(ab, bb)})`;
+}
+
+const tip = () => {
+  let el = document.getElementById("tooltip");
+  if (!el) {
+    el = document.createElement("div");
+    el.id = "tooltip";
+    el.className = "tooltip";
+    document.body.append(el);
+  }
+  return el;
+};
+
+async function buildHeatmap() {
+  ladderRows = await json("ladder.json");
+  drawHeatmap();
+}
+
+function drawHeatmap() {
+  const svg = document.getElementById("heatmap");
+  if (!svg || !ladderRows.length) return;
+  clear(svg);
+
+  const setOrder = ["carbon_starvation_DIN", "photorespiration_core", "ath00630",
+                    "fermentation", "hypoxia_responsive", "ath00500", "ath00010",
+                    "ath00710", "photosynthesis_apparatus", "rubisco"];
+  const studies = [...new Map(ladderRows.map((r) => [r.accession, r])).values()]
+    .sort((a, b) => (a.light === b.light ? 0 : a.light === "light" ? -1 : 1));
+  const byKey = new Map(ladderRows.map((r) => [`${r.set}|${r.accession}`, r]));
+  const sets = setOrder.filter((s) => ladderRows.some((r) => r.set === s));
+
+  const w = 620, pad = { l: 168, r: 16, t: 34, b: 52 };
+  const cw = (w - pad.l - pad.r) / studies.length;
+  const ch = 21;
+  const h = pad.t + sets.length * ch + pad.b;
+  svg.setAttribute("viewBox", `0 0 ${w} ${h}`);
+
+  const max = Math.max(...ladderRows.map((r) => Math.abs(r.shift || 0)));
+
+  studies.forEach((st, i) => {
+    const label = st.accession.replace("OSD-", "").replace("-light", " lit")
+      .replace("-dark", " dark");
+    svg.append(el("text", {
+      x: pad.l + i * cw + cw / 2, y: pad.t - 10, "text-anchor": "middle",
+      "font-size": 9.5, "font-weight": 600,
+      fill: st.light === "light" ? C.orange : C.accent,
+    }, label));
+  });
+
+  sets.forEach((name, r) => {
+    const y = pad.t + r * ch;
+    const g = el("g", { class: "hm-row", style: "cursor:pointer" });
+    g.append(el("text", {
+      x: pad.l - 8, y: y + ch / 2 + 3.5, "text-anchor": "end", "font-size": 9, fill: C.ink,
+    }, PRETTY[name] || name));
+
+    studies.forEach((st, i) => {
+      const rec = byKey.get(`${name}|${st.accession}`);
+      const cell = el("rect", {
+        x: pad.l + i * cw + 0.6, y: y + 0.6, width: cw - 1.2, height: ch - 1.2, rx: 2,
+        fill: rec && rec.shift !== null ? diverging(rec.shift, max) : "none",
+        stroke: C.line, "stroke-width": 0.6,
+      });
+      if (rec) {
+        cell.addEventListener("mousemove", (e) => {
+          const t = tip();
+          t.innerHTML =
+            `<b>${PRETTY[name] || name}</b><br>${st.accession} · ${st.hardware} · ` +
+            `${st.light}<br>shift ${rec.shift >= 0 ? "+" : ""}${(+rec.shift).toFixed(4)}` +
+            ` · n=${rec.n} · p=${rec.p === null ? "n/a" : (+rec.p).toExponential(2)}`;
+          t.style.display = "block";
+          t.style.left = `${e.pageX + 12}px`;
+          t.style.top = `${e.pageY - 10}px`;
+        });
+        cell.addEventListener("mouseleave", () => { tip().style.display = "none"; });
+      }
+      g.append(cell);
+    });
+
+    // The row doubles as a control for the volcano above — the discoverable route to
+    // the thing that was broken.
+    g.addEventListener("click", () => {
+      if (window.__setHighlight) window.__setHighlight(name);
+    });
+    svg.append(g);
+  });
+
+  // legend
+  const lw = 120, lx = pad.l, ly = pad.t + sets.length * ch + 26;
+  for (let i = 0; i <= 40; i++) {
+    const v = (i / 40) * 2 - 1;
+    svg.append(el("rect", { x: lx + (i / 41) * lw, y: ly - 8, width: lw / 41 + 0.6,
+                            height: 9, fill: diverging(v * max, max) }));
+  }
+  svg.append(el("text", { x: lx - 6, y: ly, "text-anchor": "end", "font-size": 8.5,
+                          fill: C.faint }, `−${max.toFixed(1)}`));
+  svg.append(el("text", { x: lx + lw + 6, y: ly, "font-size": 8.5, fill: C.faint },
+                         `+${max.toFixed(1)}`));
+  svg.append(el("text", { x: lx + lw + 52, y: ly, "font-size": 8.5, fill: C.soft },
+                         "shift vs all other genes (log₂FC) · click a row to highlight it above"));
+}
+
+/* ────────────────────────────────── sankey: transcript -> protein -> pathway */
+
+let sankeyData = null, sankeyN = 10;
+
+async function buildSankey() {
+  sankeyData = await json("sankey.json");
+  const sel = document.getElementById("sankeyN");
+  if (sel) {
+    sel.innerHTML = [6, 8, 10, 14, 18]
+      .filter((n) => n <= sankeyData.pathways.length)
+      .map((n) => `<option value="${n}"${n === sankeyN ? " selected" : ""}>` +
+                  `top ${n} pathways</option>`).join("");
+    sel.addEventListener("change", () => { sankeyN = +sel.value; drawSankey(); });
+  }
+  drawSankey();
+}
+
+const BIN_COLOUR = { up: () => C.vermilion, down: () => C.accent,
+                     "not significant": () => C.grey,
+                     "not measured": () => C.line };
+
+function drawSankey() {
+  const svg = document.getElementById("sankey");
+  if (!svg || !sankeyData) return;
+  clear(svg);
+  const d = sankeyData;
+  const paths = d.pathways.slice(0, sankeyN);
+  const keep = new Set(paths.map((p) => p.name));
+
+  const w = 620, pad = { l: 96, r: 210, t: 26, b: 20 };
+  const colX = [pad.l, (pad.l + (w - pad.r)) / 2, w - pad.r];
+  const gap = 7;
+
+  // Column 3 totals are memberships, not genes, so each column is scaled to its own sum.
+  const p2p = d.pr_to_path.filter((l) => keep.has(l.to));
+  const pathTotals = new Map(paths.map((p) => [p.name,
+    p2p.filter((l) => l.to === p.name).reduce((a, l) => a + l.n, 0)]));
+
+  const cols = [
+    d.bins.map((b) => ({ key: b, label: b, n: d.tx_bins[b] || 0 })),
+    d.bins.map((b) => ({ key: b, label: b, n: d.pr_bins[b] || 0 })),
+    paths.map((p) => ({ key: p.name, label: p.name, n: pathTotals.get(p.name) || 0 })),
+  ].map((nodes) => nodes.filter((n) => n.n > 0));
+
+  const h = Math.max(300, 34 + Math.max(...cols.map((c) => c.length)) * 26);
+  svg.setAttribute("viewBox", `0 0 ${w} ${h}`);
+  const usable = h - pad.t - pad.b;
+
+  // Lay out each column: node height proportional to its share of that column's total.
+  const layout = cols.map((nodes) => {
+    const total = nodes.reduce((a, n) => a + n.n, 0) || 1;
+    const free = usable - gap * (nodes.length - 1);
+    let y = pad.t;
+    return nodes.map((n) => {
+      const nh = Math.max(3, (n.n / total) * free);
+      const box = { ...n, y, h: nh, inUsed: 0, outUsed: 0 };
+      y += nh + gap;
+      return box;
+    });
+  });
+  const find = (ci, key) => layout[ci].find((n) => n.key === key);
+
+  const ribbon = (x0, y0, h0, x1, y1, h1, colour, title) => {
+    const cx = (x0 + x1) / 2;
+    const dd = `M${x0},${y0} C${cx},${y0} ${cx},${y1} ${x1},${y1} ` +
+               `L${x1},${y1 + h1} C${cx},${y1 + h1} ${cx},${y0 + h0} ${x0},${y0 + h0} Z`;
+    const p = el("path", { d: dd, fill: colour, "fill-opacity": 0.34 });
+    p.addEventListener("mousemove", (e) => {
+      const t = tip(); t.innerHTML = title; t.style.display = "block";
+      t.style.left = `${e.pageX + 12}px`; t.style.top = `${e.pageY - 10}px`;
+      p.setAttribute("fill-opacity", 0.62);
+    });
+    p.addEventListener("mouseleave", () => {
+      tip().style.display = "none"; p.setAttribute("fill-opacity", 0.34);
+    });
+    svg.append(p);
+  };
+
+  const nodeW = 11;
+  for (const l of d.tx_to_pr) {
+    const a = find(0, l.from), b = find(1, l.to);
+    if (!a || !b) continue;
+    const hh = (l.n / a.n) * a.h, hb = (l.n / b.n) * b.h;
+    ribbon(colX[0] + nodeW, a.y + a.outUsed, hh, colX[1], b.y + b.inUsed, hb,
+           BIN_COLOUR[l.from](), `${l.from} → ${l.to}<br><b>${l.n}</b> loci`);
+    a.outUsed += hh; b.inUsed += hb;
+  }
+  for (const l of p2p) {
+    const a = find(1, l.from), b = find(2, l.to);
+    if (!a || !b) continue;
+    const hh = (l.n / a.n) * a.h, hb = (l.n / b.n) * b.h;
+    ribbon(colX[1] + nodeW, a.y + a.outUsed, hh, colX[2], b.y + b.inUsed, hb,
+           BIN_COLOUR[l.from](), `${l.from} → ${l.to}<br><b>${l.n}</b> loci`);
+    a.outUsed += hh; b.inUsed += hb;
+  }
+
+  layout.forEach((nodes, ci) => {
+    for (const n of nodes) {
+      svg.append(el("rect", {
+        x: colX[ci], y: n.y, width: nodeW, height: n.h, rx: 2,
+        fill: ci === 2 ? C.green : BIN_COLOUR[n.key](),
+      }));
+      const right = ci === 2;
+      svg.append(el("text", {
+        x: right ? colX[ci] + nodeW + 6 : colX[ci] - 6,
+        y: n.y + n.h / 2 + 3, "text-anchor": right ? "start" : "end",
+        "font-size": 8.6, fill: C.ink,
+      }, `${n.label.length > 30 ? `${n.label.slice(0, 28)}…` : n.label} (${n.n})`));
+    }
+  });
+
+  ["Transcriptome", "Proteome", "Pathway"].forEach((t, i) => {
+    svg.append(el("text", { x: colX[i] + (i === 2 ? nodeW : 0), y: pad.t - 11,
+                            "text-anchor": i === 2 ? "start" : "middle",
+                            "font-size": 9.5, "font-weight": 600, fill: C.soft }, t));
+  });
+
+  const cap = document.getElementById("sankeycap");
+  if (cap) {
+    cap.textContent =
+      `${d.n_genes.toLocaleString()} loci in at least one of the ${d.pathways.length} ` +
+      `significant KEGG pathways. Transcript and protein columns conserve loci exactly; ` +
+      `the pathway column counts memberships, so the ${(d.n_memberships - d.n_genes)
+        .toLocaleString()} loci that sit in more than one pathway are counted more than ` +
+      `once. ${d.unresolved.length} of the ${d.n_pathways_total} significant pathways are ` +
+      `MapMan bins with no offline gene membership and are not shown.`;
+  }
+}

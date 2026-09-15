@@ -16,6 +16,7 @@ carry no gene symbol in KEGG at all and are only findable that way.
 from __future__ import annotations
 
 import os
+import re
 import sys
 import urllib.request
 
@@ -136,6 +137,64 @@ def build(verbose: bool = False) -> dict[str, set[str]]:
         if verbose:
             print(f"    {name}: {len(hits)} genes")
     return sets
+
+
+
+
+# --- PaintOmics significant pathways -> KEGG ath ids --------------------------------
+# The enrichment table (T08) names pathways but does not carry their KEGG ids, and the
+# Sankey needs real gene membership. KEGG's own `list/pathway/ath` supplies the mapping.
+#
+# Two traps, both hit while writing this:
+#
+#   1. KEGG appends " - Arabidopsis thaliana (thale cress)" to every name, and splitting
+#      on the FIRST " - " truncates "Photosynthesis - antenna proteins" to
+#      "Photosynthesis". Strip only the TRAILING organism suffix. With that fixed, all 18
+#      KEGG-side significant pathways resolve.
+#   2. MapMan bin names can collide with KEGG pathway names — MapMan's lowercase
+#      "photosynthesis" bin matched KEGG's "Photosynthesis" (ath00195) and would have been
+#      silently double-counted alongside the genuine KEGG row. Callers must pass KEGG-side
+#      names ONLY, which is why `db` is a required argument rather than a convention.
+#
+# MapMan bins have no KEGG id and no offline membership source (GoMapMan is unreachable),
+# so they cannot be included, and the caller is expected to report the omission.
+
+ORGANISM_SUFFIX = re.compile(r"\s*-\s*Arabidopsis thaliana.*$", re.I)
+
+
+def _norm(name: str) -> str:
+    return re.sub(r"[^a-z0-9]", "", name.lower())
+
+
+def kegg_pathway_name_index() -> dict[str, str]:
+    """Normalised KEGG pathway name -> ath##### id."""
+    out = {}
+    for line in kegg("list/pathway/ath", "kegg_ath_pathway_names.tsv").splitlines():
+        if "\t" not in line:
+            continue
+        pid, name = line.split("\t")
+        out[_norm(ORGANISM_SUFFIX.sub("", name).strip())] = pid.replace("path:", "")
+    return out
+
+
+def paintomics_pathway_ids(names, db) -> tuple[dict[str, str], list[str]]:
+    """Map PaintOmics pathway names to KEGG ath ids.
+
+    `names` and `db` are parallel sequences; only rows whose `db` is "K" are looked up,
+    because a MapMan bin name can collide with a KEGG pathway name (see above).
+
+    Returns (resolved, unresolved). Unresolved entries are the MapMan bins plus anything
+    KEGG does not know for this organism — report them, never drop them quietly.
+    """
+    index = kegg_pathway_name_index()
+    resolved, unresolved = {}, []
+    for name, source in zip(names, db):
+        pid = index.get(_norm(name)) if source == "K" else None
+        if pid:
+            resolved[name] = pid
+        else:
+            unresolved.append(name)
+    return resolved, unresolved
 
 
 if __name__ == "__main__":

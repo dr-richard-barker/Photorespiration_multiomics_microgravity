@@ -33,7 +33,11 @@ python3 scripts/validate_upload.py
 echo "== 8. figures ================================================================"
 for f in scripts/figures/fig*.py; do python3 "$f"; done
 
-echo "== 9. manifest ==============================================================="
+echo "== 9. site data + guard ======================================================"
+python3 scripts/export_site_data.py
+python3 scripts/check_site_data.py
+
+echo "== 10. manifest =============================================================="
 python3 scripts/make_manifest.py
 
 echo
