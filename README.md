@@ -1,4 +1,4 @@
-# Photosynthesis depletes its own enclosure
+# A gas-transport model predicts the *Arabidopsis* spaceflight transcriptome
 
 **A sealed, illuminated growth canister has its CO₂ consumed by the plants inside it, within
 minutes. That happens in the ground control as much as in flight — so it does not bias the

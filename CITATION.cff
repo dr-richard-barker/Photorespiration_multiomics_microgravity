@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 message: "If you use this software or its derived data, please cite it as below."
-title: "Photosynthesis depletes its own enclosure: the Arabidopsis spaceflight response is measured in carbon-starved plants"
+title: "A gas-transport model predicts the Arabidopsis spaceflight transcriptome, and illumination separates six flight experiments"
 abstract: >-
   A validated lattice-Boltzmann model of leaf boundary-layer gas transport coupled to a
   Farquhar-von Caemmerer-Berry model of C3 photosynthesis, used to predict what an
