@@ -238,7 +238,14 @@ flight-versus-ground contrasts selected by pattern and recorded in the registry.
 fetched live \citep{kegg}, never typed from memory.
 
 \textbf{Pathway integration.} PaintOmics \citep{paintomics4}, organism \texttt{ath}, KEGG and
-MapMan, with the optional AI interpretation disabled.
+MapMan, with the optional AI interpretation disabled. PaintOmics reports enrichment but not
+the gene lists behind it, and MapMan has no equivalent of the KEGG REST API, so the gene
+membership used in the accompanying data explorer was reconstructed from GoMapMan's
+Araport11 gene-to-bin mapping and the MapMan diagram layouts, by PaintOmics' own inclusion
+rules. It reproduces PaintOmics' feature count exactly or within three features for 9 of the
+13 significant MapMan diagrams and runs larger for the four whole-ontology overview maps;
+both counts are reported rather than one, and the discrepancy on those four is not
+explained by any rule recoverable from PaintOmics' published sources.
 
 \backmatter
 
@@ -328,7 +335,7 @@ refutation of our own starting hypothesis.}
 
 \begin{figure}[t]\centering
 \includegraphics[width=\textwidth]{fig06_paintomics.pdf}
-\caption{Pathway integration across all three layers.}
+\caption{Pathway integration across all three layers. In \textbf{b} a square marks each pathway's database, in the colours of \textbf{a}: KEGG's \textit{Photosynthesis} and MapMan's \textit{photosynthesis} are different maps that differ only in capitalisation, and both are significant.}
 \label{fig:paintomics}\end{figure}
 
 \begin{figure}[t]\centering

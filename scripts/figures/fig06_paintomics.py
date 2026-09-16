@@ -5,6 +5,11 @@ a  identifier mapping, per omic per database
 b  pathway enrichment: the significant ones, and where photorespiration lands
 c  metabolite hub analysis — predicted compounds ranked by REAL differentially
    expressed genes in their KEGG neighbourhood
+
+Panel b marks each pathway's database, because PaintOmics reports both and the two are
+not interchangeable: KEGG's "Photosynthesis" (ath00195) and MapMan's "photosynthesis"
+diagram are different pathways that differ only in capitalisation, and both are
+significant here. Unmarked, the panel showed them as two bars with the same name.
 """
 from __future__ import annotations
 import os, sys
@@ -76,19 +81,33 @@ def panel_b(ax):
     ax.set_yticks(y)
     ax.set_yticklabels([n if len(n) < 27 else n[:25] + "…" for n in top["pathway"]],
                        fontsize=6.2)
+
+    # A square between the label and the bar says which database the pathway is from,
+    # in the same two colours as panel a. Bar colour is already spoken for (it marks
+    # what the model predicted), so the database gets its own mark rather than a hue.
+    span = float(vals.max()) * 1.55
+    db_colour = {"K": style.BLUE, "M": style.GREEN}
+    for yi, db in zip(y, top["db"]):
+        # Both source tables carry `db`; an unexpected value is a data problem, not
+        # something to paint blue and move on from.
+        ax.plot(-span * 0.022, yi, marker="s", markersize=2.6, clip_on=False,
+                color=db_colour[db])
+    ax.tick_params(axis="y", pad=7)
     ax.set_xlabel("$-$log$_{10}$ combined $p$ (Fisher)")
     ax.axvline(-np.log10(0.05), color=style.INK, linestyle="--", linewidth=0.8)
     ax.text(-np.log10(0.05), len(top) - 0.35, "  $p$ = 0.05", fontsize=6.2,
             va="center", ha="left", color=style.INK)
     ax.tick_params(axis="y", length=0)
     ax.spines["left"].set_visible(False)
-    ax.set_xlim(0, float(vals.max()) * 1.55)
+    ax.set_xlim(0, span)
     ax.annotate("ranks LAST of 231", xy=(vals.iloc[0], 0), xytext=(2.9, 1.15),
                 fontsize=6.5, color=style.INK, va="center",
                 arrowprops=dict(arrowstyle="-|>", color=style.INK, linewidth=0.7))
     ax.text(0.98, 0.60, "red = a pathway the\nmodel predicted would fall",
             transform=ax.transAxes, ha="right", va="top", fontsize=6.4,
             color=style.VERMILION)
+    ax.text(0.98, 0.43, "square = database, as in a", transform=ax.transAxes,
+            ha="right", va="top", fontsize=6.4, color=style.GREY)
 
 
 def panel_c(ax):
@@ -109,8 +128,10 @@ def panel_c(ax):
     ax.tick_params(axis="y", length=0)
     ax.spines["left"].set_visible(False)
     ax.set_xlim(0, float(vals.max()) * 1.75)
-    ax.text(0.99, 0.03, "not one of the eight C2\nphotorespiratory intermediates\n"
-                        "is a significant hub —\nthough all eight mapped",
+    # Right-aligned at 0.99 the old three-line wrap ran left past the axis and over the
+    # bottom compound labels. Narrower lines keep it clear of them.
+    ax.text(0.99, 0.02, "not one of the eight C2\nphotorespiratory\nintermediates is a\n"
+                        "significant hub —\nthough all eight mapped",
             transform=ax.transAxes, ha="right", va="bottom", fontsize=6.4,
             color=style.INK)
 
