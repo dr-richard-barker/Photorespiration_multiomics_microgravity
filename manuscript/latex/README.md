@@ -1,8 +1,13 @@
 # Manuscript — npj Microgravity style
 
 ```bash
-cd manuscript/latex && latexmk -pdf main.tex
+cd manuscript/latex && latexmk -pdf main.tex && latexmk -pdf supplementary.tex
 ```
+
+**In that order.** `supplementary.tex` uses `xr` to read `main.aux`, so that its caption can
+say "Fig. 6a" without anyone typing the number. Build it alone from a clean checkout and the
+reference renders as `??`, which latexmk reports as an undefined reference — loud rather than
+a silently wrong figure number.
 
 Builds locally on TeX Live 2026 (verified: 12 pages, no unresolved references or citations,
 no overfull boxes). Also builds in CI — see `.github/workflows/build-manuscript.yml`.
@@ -63,5 +68,8 @@ fill them, and the manuscript will read as unfinished until they are cleared.
 Regenerate with `bash scripts/run_all.sh` and re-copy:
 
 ```bash
-cp results/figures/fig0*.pdf manuscript/latex/figures/
+cp results/figures/fig*.pdf results/figures/supplementary/fig*.pdf manuscript/latex/figures/
 ```
+
+`scripts/run_all.sh` does this copy itself, so the compiled PDF cannot keep showing a figure
+that has since been regenerated.

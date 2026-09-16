@@ -16,17 +16,27 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Compile with latexmk
+      # main first: supplementary.tex uses xr to read main.aux, so building it alone
+      # would render the cross-reference as "??".
+      - name: Compile the manuscript
         uses: xu-cheng/latex-action@v3
         with:
           working_directory: manuscript/latex
           root_file: main.tex
           latexmk_use_xelatex: false
 
-      - name: Publish the PDF to the Pages site
+      - name: Compile the supplementary information
+        uses: xu-cheng/latex-action@v3
+        with:
+          working_directory: manuscript/latex
+          root_file: supplementary.tex
+          latexmk_use_xelatex: false
+
+      - name: Publish the PDFs to the Pages site
         run: |
           mkdir -p docs
           cp manuscript/latex/main.pdf docs/Photorespiration_multiomics_microgravity.pdf
+          cp manuscript/latex/supplementary.pdf docs/Photorespiration_multiomics_microgravity_SI.pdf
 
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:

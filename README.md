@@ -7,6 +7,7 @@ response is being measured in plants their own hardware has already carbon-starv
 
 [**Interactive model and data explorer**](https://dr-richard-barker.github.io/Photorespiration_multiomics_microgravity/)
 · [manuscript PDF](https://dr-richard-barker.github.io/Photorespiration_multiomics_microgravity/Photorespiration_multiomics_microgravity.pdf)
+· [supplementary PDF](https://dr-richard-barker.github.io/Photorespiration_multiomics_microgravity/Photorespiration_multiomics_microgravity_SI.pdf)
 · [figures](results/figures) · [tables](results/tables)
 
 ![The blind test](results/figures/fig05_blind_test.png)
@@ -69,6 +70,8 @@ scripts/              every executable, numbered in pipeline order
 results/tables/       T01…T12 + MANIFEST.tsv (fails if a table lacks provenance)
 results/figures/      eight figures, PNG at 300 dpi and PDF vector
 manuscript/latex/     npj Microgravity style, compiles locally and in CI
+  main.tex              the manuscript; supplementary.tex is a separate document
+results/figures/supplementary/  Supplementary Figure S1
 methods/              prose methods and the honest caveats
 docs/                 the interactive site
 ```
@@ -108,6 +111,7 @@ python3 scripts/05_submit_paintomics.py --job 1
 | Cross-study ladder (6 studies) | **done** — illumination separates; enclosure gradient does not |
 | Eight-figure set | **done** |
 | npj manuscript | **compiles** — 12 pages, no unresolved references; author block is placeholders |
+| Supplementary information | **compiles** — 2 pages, one figure, cross-referenced to the manuscript |
 | Interactive site | **done** — model, enclosures, omics (volcano, heatmap, Sankey), pathways, six studies |
 | FAIR packaging | **done** — manifest, CITATION.cff, .zenodo.json, MIT |
 | Zenodo deposit | **pending** — needs the author fields below |
