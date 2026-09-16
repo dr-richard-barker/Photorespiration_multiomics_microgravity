@@ -32,6 +32,10 @@ python3 scripts/validate_upload.py
 
 echo "== 8. figures ================================================================"
 for f in scripts/figures/fig*.py; do python3 "$f"; done
+# Fails if any figure carries a legend entry it never draws. Figure 1b shipped for weeks
+# with five legend entries over three lines, because the column it plotted is empty for
+# the two vented cases and matplotlib draws an all-NaN series as nothing, silently.
+python3 scripts/check_figures.py
 # The manuscript reads its own copy, so regenerating a figure without this step leaves
 # the compiled PDF showing the old one — the exact drift the pre-publish check looks for.
 cp results/figures/fig*.pdf results/figures/supplementary/fig*.pdf manuscript/latex/figures/

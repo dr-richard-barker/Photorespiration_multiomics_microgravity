@@ -63,27 +63,26 @@ def panel_a(ax) -> None:
 
 
 def panel_b(ax) -> None:
-    style.panel(ax, "b", "Enclosure CO$_2$ ($\\mu$g)")
+    style.panel(ax, "b", "Leaf-surface CO$_2$, microgravity")
     df = pd.read_csv(os.path.join(LL, "T7_hardware_timeseries.csv"))
-    # VEGGIE and the open reference both sit flat at zero and would hide one another;
-    # the vented trace is drawn slightly thicker and dashed over the reference.
+    # This panel used to plot `dishmean_co2`, the mean over the enclosure volume. That
+    # column is empty for the two vented cases — a vented case has no closed volume to
+    # average — so matplotlib drew nothing for them and the legend carried two entries
+    # with no line, under an annotation saying they "both sit on zero". They do not: at
+    # the leaf surface VEGGIE falls to -0.112 and the open reference to -0.344. The
+    # surface mean is defined for all five cases and is what the FvCB coupling consumes,
+    # so it is what this panel shows.
     for case, g in df.groupby("case"):
-        vented = case in ("VEGGIE vented", "open (ref)")
-        ax.plot(g["step"] / 1000.0, g["dishmean_co2"],
+        ax.plot(g["step"] / 1000.0, g["surf_co2_mean"],
                 label=case, color=HW_COLOUR.get(case, style.GREY),
-                linestyle="--" if vented else "-",
-                linewidth=2.2 if case == "VEGGIE vented" else 1.6,
-                alpha=0.95 if case == "VEGGIE vented" else 1.0,
+                linestyle="--" if case == "open (ref)" else "-",
+                linewidth=2.0 if case == "VEGGIE vented" else 1.6,
                 zorder=3 if case == "VEGGIE vented" else 2)
     ax.set_xlabel("model step ($\\times10^3$)")
-    ax.set_ylabel("enclosure-mean CO$_2$ excess\n(model units)")
-    ax.legend(loc="lower left", ncol=1, handlelength=1.6)
-    ax.annotate("VEGGIE and the open\nreference both sit on zero",
-                xy=(0.80, 0.0), xycoords=("axes fraction", "data"),
-                xytext=(0.42, 0.80), textcoords="axes fraction",
-                fontsize=6.2, color=style.GREY, ha="left", va="top",
-                arrowprops=dict(arrowstyle="-", color=style.GREY, linewidth=0.6,
-                                shrinkB=2))
+    ax.set_ylabel("leaf-surface CO$_2$ excess\n(model units)")
+    # The note about the enclosure-mean series belongs in the caption: every free corner of
+    # this panel is within a line's reach, and it overlapped the legend where it was.
+    ax.legend(loc="lower left", ncol=1, handlelength=1.6, fontsize=6.4)
 
 
 def panel_c(ax) -> None:

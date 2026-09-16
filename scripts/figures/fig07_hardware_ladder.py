@@ -26,9 +26,12 @@ import style  # noqa: E402
 from paths import FIGURES, TABLES  # noqa: E402
 
 KEY = "starvation vs photosynthesis"
+# All ten scored sets, so panel d's "every gene set" is true. ath00010 sits last because
+# it is the one set the model makes no prediction about — it was measured and is reported
+# for context, and leaving it out of a panel titled "every gene set" was simply wrong.
 SET_ORDER = ["carbon_starvation_DIN", "photorespiration_core", "ath00630",
              "fermentation", "hypoxia_responsive", "ath00500", "ath00710",
-             "photosynthesis_apparatus", "rubisco"]
+             "photosynthesis_apparatus", "rubisco", "ath00010"]
 
 
 def short(acc: str) -> str:

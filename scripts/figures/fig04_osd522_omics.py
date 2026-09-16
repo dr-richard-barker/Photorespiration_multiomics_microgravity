@@ -42,7 +42,14 @@ def panel_a(ax):
 
 
 def volcano(ax, letter, title, df, lfc, p, n_label):
+    """A volcano needs both coordinates, so a feature missing either cannot be drawn.
+
+    DESeq2's independent filtering leaves 1,658 OSD-522 transcripts with a fold change but
+    no adjusted p. The panel used to report only how many were significant, which left a
+    reader no way to see either the denominator or that those features are absent.
+    """
     style.panel(ax, letter, title)
+    n_measured = len(df)
     d = df.dropna(subset=[lfc, p]).copy()
     d["y"] = -np.log10(d[p].clip(lower=1e-300))
     sig = d[p] < ALPHA
@@ -55,10 +62,18 @@ def volcano(ax, letter, title, df, lfc, p, n_label):
     ax.axhline(-np.log10(ALPHA), color=style.INK, linewidth=0.7, linestyle="--")
     ax.set_xlabel("log$_2$ fold change (flight / ground)")
     ax.set_ylabel(f"$-$log$_{{10}}$ {n_label}")
-    ax.text(0.98, 0.97, f"{int(sig.sum()):,} at FDR < {ALPHA}\n"
+    dropped = n_measured - len(d)
+    # The cloud reaches the top-right corner, so both notes need a ground of their own.
+    box = dict(boxstyle="round,pad=0.25", facecolor="white", edgecolor="none", alpha=0.85)
+    ax.text(0.98, 0.97, f"{int(sig.sum()):,} of {len(d):,} at FDR < {ALPHA}\n"
                         f"{int((sig & (d[lfc] > 0)).sum()):,} up   "
                         f"{int((sig & (d[lfc] < 0)).sum()):,} down",
-            transform=ax.transAxes, ha="right", va="top", fontsize=6.5)
+            transform=ax.transAxes, ha="right", va="top", fontsize=6.5, bbox=box)
+    if dropped:
+        ax.text(0.98, 0.84, f"{dropped:,} of {n_measured:,} measured have no adjusted\n"
+                            f"$p$ and cannot be placed on a volcano",
+                transform=ax.transAxes, ha="right", va="top", fontsize=5.9,
+                color=style.GREY, bbox=box)
     return d
 
 
