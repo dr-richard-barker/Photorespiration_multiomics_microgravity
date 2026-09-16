@@ -34,11 +34,13 @@ echo "== 8. figures ============================================================
 for f in scripts/figures/fig*.py; do python3 "$f"; done
 # The manuscript reads its own copy, so regenerating a figure without this step leaves
 # the compiled PDF showing the old one — the exact drift the pre-publish check looks for.
-cp results/figures/fig*.pdf manuscript/latex/figures/
+cp results/figures/fig*.pdf results/figures/supplementary/fig*.pdf manuscript/latex/figures/
 
-echo "== 9. site data + guard ======================================================"
+echo "== 9. site data + guards ====================================================="
 python3 scripts/export_site_data.py
 python3 scripts/check_site_data.py
+python3 scripts/check_js_syntax.py
+python3 scripts/check_js_parity.py
 
 echo "== 10. manifest =============================================================="
 python3 scripts/make_manifest.py

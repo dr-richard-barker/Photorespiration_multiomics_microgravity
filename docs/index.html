@@ -33,6 +33,7 @@ spaceflight growth-hardware gas transport, with the OSDR omics that test it.">
   <div class="btns">
     <a class="btn primary" href="#model">Drive the model</a>
     <a class="btn" href="Photorespiration_multiomics_microgravity.pdf">Read the manuscript (PDF)</a>
+    <a class="btn" href="Photorespiration_multiomics_microgravity_SI.pdf">Supplementary (PDF)</a>
     <a class="btn" href="https://github.com/dr-richard-barker/Photorespiration_multiomics_microgravity">Code &amp; data</a>
   </div>
 </header>
@@ -99,10 +100,15 @@ spaceflight growth-hardware gas transport, with the OSDR omics that test it.">
     From LunarLeaf-CFD, a validated lattice-Boltzmann solver. All runs are in microgravity, so
     the differences here are hardware, not gravity.
   </p>
+  <div class="preset-row">
+    <span class="preset-label">Measured at</span>
+    <button class="chip" data-encl="surface">the leaf surface</button>
+    <button class="chip" data-encl="enclosure">the enclosure mean</button>
+  </div>
   <figure>
     <svg id="encl" viewBox="0 0 620 320" role="img"
-         aria-label="Enclosure CO2 over time by hardware"></svg>
-    <figcaption>Enclosure-mean CO<sub>2</sub> excess. Sealed BRIC drifts; tape and vented hold.</figcaption>
+         aria-label="CO2 over time by hardware"></svg>
+    <figcaption id="enclcap"></figcaption>
   </figure>
   <div id="retention" class="cards wide"></div>
   <p class="note">
@@ -195,13 +201,16 @@ spaceflight growth-hardware gas transport, with the OSDR omics that test it.">
     The model predicted an ordering across enclosure types. Illumination separated the studies
     perfectly; the enclosure gradient did not. Both are shown.
   </p>
+  <div class="preset-row">
+    <span class="preset-label">Contrast</span>
+    <span id="ladderpick"></span>
+  </div>
   <figure>
-    <svg id="ladderfig" viewBox="0 0 620 300" role="img"
-         aria-label="Starvation over photosynthesis separation by study"></svg>
-    <figcaption>
-      Every illuminated study sits above every dark one. OSD-678 light against OSD-678 dark is
-      the same hardware, genotype and flight — an internal control with no confound.
-    </figcaption>
+    <div class="chartscroll">
+      <svg id="ladderfig" viewBox="0 0 620 300" role="img"
+           aria-label="Set-vs-set separation by study"></svg>
+    </div>
+    <figcaption id="laddercap"></figcaption>
   </figure>
   <h3>Which studies, and which were left out</h3>
   <div class="tablewrap"><table id="studytable"></table></div>

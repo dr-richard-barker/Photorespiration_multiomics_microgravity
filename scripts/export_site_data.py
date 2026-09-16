@@ -139,6 +139,44 @@ def build_sankey(tx, pr, pr_agi, pathways, pathway_db, broad, sig_paths, unresol
     }
 
 
+def assemble_pathways(verbose: bool = True):
+    """Everything the Sankey needs: the measured layers and both databases' membership.
+
+    Shared by the site export and the supplementary Sankey figure, so the two cannot
+    drift into showing different memberships for the same pathway.
+
+    Two databases, two membership sources, and neither may guess which rows are its own:
+    MapMan's lowercase "photosynthesis" bin collides with KEGG's "Photosynthesis", so both
+    resolvers take the `db` column and only look up their own rows.
+    """
+    tx = pd.read_csv(os.path.join(TABLES, "T01_osd522_transcriptome.tsv"),
+                     sep="\t", index_col=0)
+    pr = pd.read_csv(os.path.join(TABLES, "T02_osd522_proteome.tsv"), sep="\t", index_col=0)
+    conv = genesets.uniprot_to_agi()
+    pr_agi = {u: conv.get(u) for u in pr.index}
+
+    sig_paths = pd.read_csv(os.path.join(TABLES, "T08_paintomics_significant.tsv"),
+                            sep="\t", comment="#")
+    kegg_ids, kegg_missing = genesets.paintomics_pathway_ids(sig_paths.pathway, sig_paths.db)
+    mm_sets, mm_missing = mapman.paintomics_mapman_sets(sig_paths.pathway, sig_paths.db)
+    pathways = {name: genesets.pathway_genes(pid) for name, pid in kegg_ids.items()}
+    pathways.update(mm_sets)
+    pathway_db = {n: "KEGG" for n in kegg_ids} | {n: "MapMan" for n in mm_sets}
+    unresolved = [n for n in kegg_missing if n not in mm_sets] + mm_missing
+
+    universe = set(tx.index) | {a for a in pr_agi.values() if a}
+    broad = {n for n, m in pathways.items()
+             if len(m & universe) > BROAD_MAP_SHARE * len(universe)}
+
+    if verbose:
+        print(f"  pathways with membership: {len(pathways)}/{len(sig_paths)} "
+              f"({len(kegg_ids)} KEGG via REST, {len(mm_sets)} MapMan via vendored diagrams"
+              + (f"; {len(unresolved)} unresolved" if unresolved else "") + ")")
+    return dict(tx=tx, pr=pr, pr_agi=pr_agi, sig_paths=sig_paths, pathways=pathways,
+                pathway_db=pathway_db, broad=broad, unresolved=unresolved,
+                universe=universe, n_kegg=len(kegg_ids), n_mapman=len(mm_sets))
+
+
 def main() -> int:
     ensure(DOCS_DATA)
     written = []
@@ -156,13 +194,18 @@ def main() -> int:
     # --- enclosure behaviour ----------------------------------------------------------
     ll = os.path.join(DATA, "lunarleaf")
     t7 = pd.read_csv(os.path.join(ll, "T7_hardware_timeseries.csv"))
-    # VEGGIE and the open reference carry NaN in dishmean_co2 (they vent, so there is no
-    # enclosure mean to report). json.dump would emit a bare NaN, which JSON.parse rejects,
-    # so they become null and the page skips them.
+    # BOTH CO2 columns ship. The enclosure mean is undefined for a vented case — there is
+    # no closed volume to average — so VEGGIE and the open reference are all-NaN there and
+    # the chart used to draw three lines while its legend named five. The leaf-surface mean
+    # is defined for every case, and is the quantity the FvCB coupling actually consumes,
+    # so it is what the chart shows by default. json.dump would emit a bare NaN, which
+    # JSON.parse rejects, so missing values become null.
     def clean(vals):
         return [None if pd.isna(v) else round(float(v), 5) for v in vals]
     dump("enclosure_timeseries.json",
-         {case: {"step": g["step"].tolist(), "co2": clean(g["dishmean_co2"])}
+         {case: {"step": g["step"].tolist(),
+                 "surface": clean(g["surf_co2_mean"]),
+                 "enclosure": clean(g["dishmean_co2"])}
           for case, g in t7.groupby("case")})
     dump("carbon_retention.json",
          pd.read_csv(os.path.join(ll, "T11_photosynthesis_feedback.csv"))
@@ -173,26 +216,10 @@ def main() -> int:
     # needs a UniProt->AGI map. hypoxia_responsive has 0 measured proteins: that is real
     # biology, and the page reports "0 of 3 measured" rather than silently doing nothing.
     sets = genesets.build()
-    tx = pd.read_csv(os.path.join(TABLES, "T01_osd522_transcriptome.tsv"),
-                     sep="\t", index_col=0)
-    pr = pd.read_csv(os.path.join(TABLES, "T02_osd522_proteome.tsv"), sep="\t", index_col=0)
-    conv = genesets.uniprot_to_agi()
-    pr_agi = {u: conv.get(u) for u in pr.index}
-
-    sig_paths = pd.read_csv(os.path.join(TABLES, "T08_paintomics_significant.tsv"),
-                            sep="\t", comment="#")
-    # Two databases, two membership sources, and neither may guess which rows are its own:
-    # MapMan's lowercase "photosynthesis" bin collides with KEGG's "Photosynthesis", so both
-    # resolvers take the `db` column and only look up their own rows.
-    kegg_ids, kegg_missing = genesets.paintomics_pathway_ids(sig_paths.pathway, sig_paths.db)
-    mm_sets, mm_missing = mapman.paintomics_mapman_sets(sig_paths.pathway, sig_paths.db)
-    pathways = {name: genesets.pathway_genes(pid) for name, pid in kegg_ids.items()}
-    pathways.update(mm_sets)
-    pathway_db = ({n: "KEGG" for n in kegg_ids} | {n: "MapMan" for n in mm_sets})
-    unresolved = [n for n in kegg_missing if n not in mm_sets] + mm_missing
-    print(f"  pathways with membership: {len(pathways)}/{len(sig_paths)} "
-          f"({len(kegg_ids)} KEGG via REST, {len(mm_sets)} MapMan via vendored diagrams"
-          + (f"; {len(unresolved)} unresolved" if unresolved else "") + ")")
+    P = assemble_pathways()
+    tx, pr, pr_agi = P["tx"], P["pr"], P["pr_agi"]
+    sig_paths, pathways = P["sig_paths"], P["pathways"]
+    pathway_db, broad, unresolved = P["pathway_db"], P["broad"], P["unresolved"]
 
     # A volcano needs a y-value, so a feature with no adjusted p cannot be plotted at all.
     # DESeq2's independent filtering leaves 1,658 transcripts with a fold change but no FDR.
@@ -217,16 +244,13 @@ def main() -> int:
     # Broad maps are excluded from the highlight index (see BROAD_MAP_SHARE): an overlay
     # that marks 44 % of the points marks nothing, and forcing 21,000 loci through the
     # volcano thinning would defeat the thinning entirely.
-    universe = tx_measured | {a for a in pr_agi.values() if a}
-    broad = {n for n, m in pathways.items()
-             if len(m & universe) > BROAD_MAP_SHARE * len(universe)}
     highlightable = {n: m for n, m in pathways.items() if n not in broad}
 
     dump("gene_sets.json", {n: per_layer(m) for n, m in sets.items()})
     dump("pathway_membership.json", {n: per_layer(m) for n, m in highlightable.items()})
     dump("pathway_coverage.json",
          {"resolved": len(pathways), "total": int(len(sig_paths)),
-          "kegg": len(kegg_ids), "mapman": len(mm_sets),
+          "kegg": P["n_kegg"], "mapman": P["n_mapman"],
           "unresolved": sorted(unresolved), "broad": sorted(broad),
           "broad_share": BROAD_MAP_SHARE})
 

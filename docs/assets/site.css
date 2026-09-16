@@ -175,3 +175,6 @@ footer a { color: var(--accent); }
    must never scroll horizontally. */
 .chartscroll { overflow-x: auto; overflow-y: hidden; }
 .chartscroll svg { min-width: 560px; }
+
+/* The ladder's contrast chips are injected into a span, which must not collapse the row. */
+#ladderpick { display: contents; }

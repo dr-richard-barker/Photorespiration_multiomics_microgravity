@@ -242,42 +242,80 @@ function drawGap() {
 
 /* ──────────────────────────────────────────────────────── enclosures tab */
 
+let enclosureData = null, enclosureWhere = "surface";
+
 async function buildEnclosure() {
-  const ts = await json("enclosure_timeseries.json");
-  const svg = document.getElementById("encl");
-  const w = 620, h = 320, pad = { l: 62, r: 130, t: 14, b: 42 };
-  const all = Object.values(ts).flatMap((d) => d.co2).filter((v) => v !== null);
-  const ax = axes(svg, { w, h, pad, xlim: [0, 40], ylim: [Math.min(...all) * 1.1,
-                         Math.max(...all) * 1.15],
-                         xlabel: "model step (×10³)",
-                         ylabel: "enclosure CO₂ excess (model units)" });
-  const colour = { "BRIC light": C.vermilion, "BRIC dark": "#8c2e0f",
-                   "CARA tape": C.orange, "VEGGIE vented": C.accent, "open (ref)": C.grey };
-  let i = 0;
-  for (const [name, d] of Object.entries(ts)) {
-    // Vented cases have no enclosure mean to report and arrive as null; they are listed in
-    // the legend as flat-at-zero rather than drawn as a broken line.
-    const pts = d.step.map((s, k) => [s / 1000, d.co2[k]]).filter((p) => p[1] !== null);
-    if (!pts.length) {
-      svg.append(el("text", { x: w - pad.r + 10, y: pad.t + 16 + i * 16, "font-size": 10.5,
-                              fill: colour[name] || C.grey },
-                             `${name} (vents, no drift)`));
-      i++;
-      continue;
-    }
-    svg.append(el("path", { d: path(pts, ax), fill: "none",
-                            stroke: colour[name] || C.grey, "stroke-width": 1.8,
-                            "stroke-dasharray": name.includes("open") ? "5 3" : "" }));
-    svg.append(el("text", { x: w - pad.r + 10, y: pad.t + 16 + i * 16, "font-size": 10.5,
-                            fill: colour[name] || C.grey }, name));
-    i++;
-  }
+  enclosureData = await json("enclosure_timeseries.json");
+  document.querySelectorAll("[data-encl]").forEach((chip) => {
+    chip.classList.toggle("on", chip.dataset.encl === enclosureWhere);
+    chip.addEventListener("click", () => {
+      enclosureWhere = chip.dataset.encl;
+      document.querySelectorAll("[data-encl]").forEach(
+        (c) => c.classList.toggle("on", c.dataset.encl === enclosureWhere));
+      drawEnclosure();
+    });
+  });
+  drawEnclosure();
 
   const ret = await json("carbon_retention.json");
   document.getElementById("retention").innerHTML = ret.map((r) =>
     `<div class="card"><div class="k">${r.enclosure}</div>` +
     `<div class="v">${r["12h carbon (% Earth)"]}%</div>` +
     `<div class="u">of Earth's 12 h carbon gain</div></div>`).join("");
+}
+
+const ENCL_COLOUR = { "BRIC light": () => C.vermilion, "BRIC dark": () => "#8c2e0f",
+                      "CARA tape": () => C.orange, "VEGGIE vented": () => C.accent,
+                      "open (ref)": () => C.grey };
+
+function drawEnclosure() {
+  const svg = document.getElementById("encl");
+  if (!svg || !enclosureData) return;
+  clear(svg);
+  const ts = enclosureData, key = enclosureWhere;
+  const w = 620, h = 320, pad = { l: 62, r: 130, t: 14, b: 42 };
+  const all = Object.values(ts).flatMap((d) => d[key]).filter((v) => v !== null);
+  const ax = axes(svg, { w, h, pad, xlim: [0, 40],
+                         ylim: [Math.min(...all) * 1.1, Math.max(...all) * 1.15],
+                         xlabel: "model step (×10³)",
+                         ylabel: key === "surface" ? "leaf-surface CO₂ excess (model units)"
+                                                   : "enclosure-mean CO₂ excess (model units)" });
+  let i = 0;
+  for (const [name, d] of Object.entries(ts)) {
+    const pts = d.step.map((s, k) => [s / 1000, d[key][k]]).filter((p) => p[1] !== null);
+    const colour = (ENCL_COLOUR[name] || (() => C.grey))();
+    // A vented case has no closed volume, so it has no enclosure mean — not "no drift",
+    // which is what the legend used to say. Say which series is missing, and why.
+    const label = pts.length ? name : `${name} — vents, no enclosure volume`;
+    if (pts.length) {
+      svg.append(el("path", { d: path(pts, ax), fill: "none", stroke: colour,
+                              "stroke-width": 1.8,
+                              "stroke-dasharray": name.includes("open") ? "5 3" : "" }));
+    }
+    svg.append(el("text", { x: w - pad.r + 10, y: pad.t + 16 + i * 16, "font-size": 10.5,
+                            fill: pts.length ? colour : C.faint }, label));
+    i++;
+  }
+
+  const cap = document.getElementById("enclcap");
+  if (cap) {
+    const final = (n) => {
+      const v = ts[n][key].filter((x) => x !== null);
+      return v.length ? v[v.length - 1] : null;
+    };
+    cap.textContent = key === "surface"
+      ? `CO₂ excess at the leaf surface, the quantity the photosynthesis model consumes. `
+        + `All five cases are defined here. By the end of the run the lit sealed canister `
+        + `is lowest (${final("BRIC light").toFixed(3)}), the open reference and taped `
+        + `canister are close behind (${final("open (ref)").toFixed(3)} and `
+        + `${final("CARA tape").toFixed(3)}), VEGGIE is the shallowest drawdown `
+        + `(${final("VEGGIE vented").toFixed(3)}), and the dark canister rises `
+        + `(${final("BRIC dark").toFixed(3)}) because respiration has no uptake to offset it.`
+      : `CO₂ excess averaged over the enclosure volume. Only the three closed cases have `
+        + `one: a vented case has no closed volume to average, so VEGGIE and the open `
+        + `reference are absent here rather than flat. Switch to the leaf surface to see `
+        + `all five.`;
+  }
 }
 
 /* ───────────────────────────────────────────────────────────── omics tab */
@@ -474,31 +512,29 @@ async function buildPathways() {
 
 /* ────────────────────────────────────────────────────────── ladder tab */
 
+let ladderContrasts = null, ladderPick = "starvation vs photosynthesis";
+
 async function buildLadder() {
-  const con = (await json("ladder_contrasts.json"))
-    .filter((r) => r.contrast === "starvation vs photosynthesis" && r.separation !== null)
-    .sort((a, b) => a.separation - b.separation);
-
-  const svg = document.getElementById("ladderfig");
-  const w = 620, h = 300, pad = { l: 108, r: 130, t: 14, b: 44 };
-  const lim = Math.max(...con.map((r) => Math.abs(r.separation))) * 1.15;
-  const ax = axes(svg, { w, h, pad, xlim: [-lim, lim], ylim: [-0.6, con.length - 0.4],
-                         yticks: 1, xlabel: "starvation − photosynthesis (log₂FC difference)" });
-  svg.append(el("line", { x1: ax.X(0), x2: ax.X(0), y1: pad.t, y2: h - pad.b,
-                          stroke: C.ink, "stroke-width": 1 }));
-  con.forEach((r, i) => {
-    const y = ax.Y(i), bw = ax.X(r.separation) - ax.X(0);
-    const col = r.light === "light" ? C.orange : C.accent;
-    svg.append(el("rect", { x: Math.min(ax.X(0), ax.X(r.separation)), y: y - 9,
-                            width: Math.abs(bw), height: 18, fill: col }));
-    svg.append(el("text", { x: pad.l - 9, y: y + 4, "text-anchor": "end", "font-size": 10.5,
-                            fill: C.ink }, r.accession.replace("OSD-", "")));
-    svg.append(el("text", { x: w - pad.r + 10, y: y + 4, "font-size": 10,
-                            fill: C.faint }, `${r.enclosure_class} · ${r.light}`));
-  });
-  svg.append(el("text", { x: pad.l, y: pad.t + 4, "font-size": 10.5, fill: C.soft },
-                         "every lit study sits above every dark study"));
-
+  // Three set-vs-set contrasts ship, and the chart used to draw one of them and discard
+  // the other twelve rows — including both contrasts that test the photorespiration
+  // claim, which is the paper's central one. All three are selectable now.
+  ladderContrasts = await json("ladder_contrasts.json");
+  const names = [...new Set(ladderContrasts.map((r) => r.contrast))];
+  const row = document.getElementById("ladderpick");
+  if (row) {
+    row.innerHTML = names.map((n) =>
+      `<button class="chip${n === ladderPick ? " on" : ""}" data-contrast="${n}">` +
+      `${n}</button>`).join("");
+    row.querySelectorAll("[data-contrast]").forEach((chip) => {
+      chip.addEventListener("click", () => {
+        ladderPick = chip.dataset.contrast;
+        row.querySelectorAll("[data-contrast]").forEach(
+          (c) => c.classList.toggle("on", c.dataset.contrast === ladderPick));
+        drawLadderFig();
+      });
+    });
+  }
+  drawLadderFig();
   const studies = await json("studies.json");
   table(document.getElementById("studytable"), studies, [
     { key: "accession", label: "Study" },
@@ -511,6 +547,59 @@ async function buildLadder() {
                    `${r.include === "yes" ? "yes" : "excluded"}</span>` },
     { key: "reason", label: "Why", get: (r) => r.reason },
   ], { rowClass: (r) => (r.include === "yes" ? "" : "excluded") });
+}
+
+function drawLadderFig() {
+  const svg = document.getElementById("ladderfig");
+  if (!svg || !ladderContrasts) return;
+  clear(svg);
+  const con = ladderContrasts
+    .filter((r) => r.contrast === ladderPick && r.separation !== null)
+    .sort((a, b) => a.separation - b.separation);
+  if (!con.length) return;
+
+  const w = 620, h = 300, pad = { l: 108, r: 130, t: 14, b: 44 };
+  const lim = Math.max(...con.map((r) => Math.abs(r.separation))) * 1.15;
+  const ax = axes(svg, { w, h, pad, xlim: [-lim, lim], ylim: [-0.6, con.length - 0.4],
+                         yticks: 1, xlabel: `${ladderPick} (log₂FC difference)` });
+  svg.append(el("line", { x1: ax.X(0), x2: ax.X(0), y1: pad.t, y2: h - pad.b,
+                          stroke: C.ink, "stroke-width": 1 }));
+  con.forEach((r, i) => {
+    const y = ax.Y(i), bw = ax.X(r.separation) - ax.X(0);
+    const col = r.light === "light" ? C.orange : C.accent;
+    svg.append(el("rect", { x: Math.min(ax.X(0), ax.X(r.separation)), y: y - 9,
+                            width: Math.abs(bw), height: 18, fill: col }));
+    svg.append(el("text", { x: pad.l - 9, y: y + 4, "text-anchor": "end", "font-size": 10.5,
+                            fill: C.ink }, r.accession.replace("OSD-", "")));
+    svg.append(el("text", { x: w - pad.r + 10, y: y + 4, "font-size": 10,
+                            fill: C.faint }, `${r.enclosure_class} · ${r.light}`));
+  });
+
+  // Whether illumination separates the studies is TRUE for two of the three contrasts and
+  // false for the third, so it is read off the data rather than asserted.
+  const lit = con.filter((r) => r.light === "light").map((r) => r.separation);
+  const dark = con.filter((r) => r.light === "dark").map((r) => r.separation);
+  const clean = lit.length && dark.length && Math.min(...lit) > Math.max(...dark);
+  svg.append(el("text", { x: pad.l, y: pad.t + 4, "font-size": 10.5,
+                          fill: clean ? C.soft : C.vermilion },
+                         clean ? "every lit study sits above every dark study"
+                               : "lit and dark overlap on this contrast"));
+
+  const cap = document.getElementById("laddercap");
+  if (cap) {
+    const f = (v) => v.toFixed(2);
+    // .sort() on the formatted strings orders "-0.05" before "-1.13"; sort the numbers.
+    const list = (v) => [...v].sort((a, b) => a - b).map(f).join(", ");
+    cap.textContent = clean
+      ? `Every illuminated study sits above every dark one on this contrast `
+        + `(lit ${list(lit)}; dark ${list(dark)}). `
+        + `OSD-678 light against OSD-678 dark is the same hardware, genotype and flight — `
+        + `an internal control with no confound.`
+      : `Illumination does NOT separate the studies on this contrast: lit spans `
+        + `${f(Math.min(...lit))} to ${f(Math.max(...lit))} and dark `
+        + `${f(Math.min(...dark))} to ${f(Math.max(...dark))}, so they overlap. `
+        + `The separation the paper reports is on the other two contrasts.`;
+  }
 }
 
 /* ────────────────────────────────────────────────────────────── wiring */
