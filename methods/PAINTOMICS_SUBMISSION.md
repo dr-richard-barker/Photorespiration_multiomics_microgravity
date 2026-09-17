@@ -50,7 +50,7 @@ model-uncertainty draws as if they were replicates would misrepresent them.
   these should map essentially one-to-one;
 - proteins as **UniProt accessions**, which PaintOmics converts to Entrez itself;
 - metabolites as **names**, which PaintOmics matches to KEGG compound IDs. Check its
-  assignments against `../metabolome/compound_provenance.tsv`, which carries the KEGG ID we
+  assignments against `results/tables/T06_predicted_compounds.tsv`, which carries the KEGG ID we
   intend for each of the 21 compounds. Ambiguous names can be corrected on that screen.
 
 ## Job 2 — the hardware contrast (metabolome only)
@@ -85,7 +85,7 @@ on the same neighbourhood — the most interesting kind of hit this job can prod
 ## Expected outcome, written down before running
 
 Recorded in advance so the run cannot be read retrospectively.
-`osdr/falsification_check.py` has already tested the prediction directly against the data:
+`scripts/04_falsification_check.py` has already tested the prediction directly against the data:
 
 - carbon fixation, starch/sucrose, photosystem and Rubisco genes **down** — confirmed
   (p = 1.3e-4, 3.5e-6, 3.8e-6, 4.5e-3);

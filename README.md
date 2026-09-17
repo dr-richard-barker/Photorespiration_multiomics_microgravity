@@ -36,7 +36,8 @@ fixed before any omics were downloaded, then tested against NASA OSDR.
    5–9 % assimilation deficit.
 4. **The model predicted the measurement.** Blind, it called **eight of nine** gene-set
    responses in OSD-522. In PaintOmics, photosynthesis pathways were enriched and
-   photorespiration ranked **last of all 231** pathways tested.
+   photorespiration ranked **214th of 232** pathways tested — bottom 8 %, and the least
+   enriched of any pathway the model made a claim about.
 
 ### And what did not work
 

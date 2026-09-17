@@ -30,6 +30,11 @@ python3 scripts/07_hardware_ladder.py
 echo "== 7. validate the PaintOmics upload bundle =================================="
 python3 scripts/validate_upload.py
 
+echo "== 7b. PaintOmics result tables ==============================================="
+# T08/T09/T10 come from the saved job record, not from the web interface. They used to be
+# transcribed by hand, with the manifest crediting a script that only submits the job.
+python3 scripts/06_paintomics_tables.py
+
 echo "== 8. figures ================================================================"
 for f in scripts/figures/fig*.py; do python3 "$f"; done
 # Fails if any figure carries a legend entry it never draws. Figure 1b shipped for weeks

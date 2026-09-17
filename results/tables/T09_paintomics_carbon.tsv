@@ -1,5 +1,10 @@
-# The carbon-metabolism pathways the model made predictions about, significant or not.
-# Same job m1z16Qg3DK. "predicted" is what the CFD/FvCB model said before any omics were seen.
+# PaintOmics AI job m1z16Qg3DK — OSD-522 (BRIC-LED-001) Arabidopsis shoots, Space Flight vs Ground Control
+# organism ath; databases KEGG + MapMan; AI interpretation off
+# 3 omics: gene expression (real, OSDR), proteomics (real, OSDR), metabolomics (PREDICTED, model output)
+# The carbon pathways the model made claims about, significant or not.
+# Glyoxylate and dicarboxylate metabolism (photorespiration) ranks 214 of 232 by combined p,
+# at p = 0.99367: in the bottom 8% but NOT last — 18 pathways rank below it.
+# Derived from results/paintomics_raw/ by scripts/06_paintomics_tables.py.
 db	pathway	features	unique_metabolites	p_gene	p_protein	p_metabolite	p_combined_fisher	predicted	outcome
 K	Photosynthesis	72	0	0.10688	0.00944	-	0.00797	down	significant
 K	Starch and sucrose metabolism	144	5	0.01213	0.64420	0.06325	0.01857	down	significant

@@ -34,13 +34,21 @@ photosynthesis and carbon supply fell. The enrichment table says exactly that.
 | Carbon fixation by Calvin cycle | 0.64351 | down ✘ (see below) |
 | **Glyoxylate and dicarboxylate metabolism** (photorespiration) | **0.99367** | no change ✔ |
 
-231 pathways tested; 31 significant at combined p < 0.05. **Photorespiration ranks last** —
-it is the least enriched pathway in the entire table, and it is the one the model
-specifically predicted would not move.
+232 pathways tested; 32 significant at combined p < 0.05. **Photorespiration ranks 214th of
+232** — in the bottom 8 %, and the least enriched of any pathway the model made a claim
+about, which is the pathway it specifically predicted would not move. It is *not* last:
+eighteen pathways rank below it, nine of them at p = 1.
+
+*This corrects an earlier reading of this table.* "Last of 231" was written from the web
+interface and was wrong in both numbers. The full job record, recovered afterwards with
+`POST /pa_recover_job` and vendored at
+`results/paintomics_raw/job1_m1z16Qg3DK_full.json.gz`, carries 232 pathway records, all
+with matched features, and puts glyoxylate and dicarboxylate metabolism at p = 0.99367,
+rank 214. The p-value itself was transcribed correctly; the rank and the total were not.
 
 *The Calvin-cycle miss is a difference of test, not of direction.* PaintOmics tests whether a
 pathway is **over-represented in the relevant-features list**; our own gene-set test
-(`results/falsification_check.tsv`) asks whether the pathway is **shifted** against
+(`results/tables/T07_falsification_osd522.tsv`) asks whether the pathway is **shifted** against
 background, and there KEGG ath00710 is significantly down (p = 1.3e-4). A pathway can be
 coherently shifted without being enriched among the FDR < 0.05 genes.
 
@@ -83,10 +91,10 @@ circadian rhythm.
 
 ## The two weaker analyses, reported honestly
 
-- **Metabolite class activity** (`metabolite_class_activity_job1.md`) returns amino acids at
+- **Metabolite class activity** (`methods/PAINTOMICS_CLASS_ACTIVITY.md`) returns amino acids at
   FDR 2.0e-6 — but the list it tests is our own prediction, so it largely restates how the
   prediction was built. Not evidence for the model.
-- **Job 2, the hardware contrast** (`job2_hardware_contrast_OUTCOME.md`) returned 57 KEGG
+- **Job 2, the hardware contrast** (`methods/PAINTOMICS_JOB2_OUTCOME.md`) returned 57 KEGG
   pathways, **0 significant**, no MapMan hits and no hub analysis. A metabolome-only
   submission cannot use PaintOmics' best tools. The 25× hardware effect stands as a model
   result; this job adds nothing to it.
@@ -95,11 +103,11 @@ circadian rhythm.
 
 | File | Contents |
 |---|---|
-| `enrichment_job1_significant.tsv` | all 31 significant pathways, with per-omic p-values |
-| `enrichment_job1_carbon_pathways.tsv` | the carbon pathways the model made claims about |
-| `metabolite_hub_job1.tsv` | all 15 ranked hub compounds |
-| `metabolite_class_activity_job1.md` | class test, with its circularity spelled out |
-| `job2_hardware_contrast_OUTCOME.md` | why job 2 returned nothing |
+| `results/tables/T08_paintomics_significant.tsv` | all 31 significant pathways, with per-omic p-values |
+| `results/tables/T09_paintomics_carbon.tsv` | the carbon pathways the model made claims about |
+| `results/tables/T10_metabolite_hubs.tsv` | all 15 ranked hub compounds |
+| `methods/PAINTOMICS_CLASS_ACTIVITY.md` | class test, with its circularity spelled out |
+| `methods/PAINTOMICS_JOB2_OUTCOME.md` | why job 2 returned nothing |
 | `job{1,2}_step1_response.json`, `job{1,2}_status.json` | raw server responses |
 
 Reproduce with `python3 paintomics/submit_job.py --job 1`.

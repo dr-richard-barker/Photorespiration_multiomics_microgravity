@@ -1,6 +1,6 @@
 # The predicted metabolite layer — what it is, and what it is not
 
-**Every number in `metabolomics_*.tab` and `compound_provenance.tsv` is model output.
+**Every number in `metabolomics_*.tab` and `results/tables/T06_predicted_compounds.tsv` is model output.
 Nothing here was measured.** The files are labelled `PREDICTED` and this document exists so
 that the label cannot be lost when the data is.
 
@@ -23,7 +23,7 @@ is either predicted or absent.
 
 It is a **falsifiable hypothesis**, not a stand-in for missing data. It is generated
 without ever looking at the OSD-522 omics, so the real transcriptome and proteome in the
-same PaintOmics job can contradict it. `osdr/falsification_check.py` performs exactly that
+same PaintOmics job can contradict it. `scripts/04_falsification_check.py` performs exactly that
 test, and its result is reported whichever way it comes out.
 
 ## The chain
@@ -155,8 +155,8 @@ Stated so that the omissions read as decisions rather than oversights.
 ## Reproducing
 
 ```bash
-python3 metabolome/predict_metabolome.py --sensitivity
+python3 scripts/03_predict_metabolome.py --sensitivity
 ```
 
 KEGG compound identifiers were retrieved from `rest.kegg.jp` on 2026-09-08 and are recorded
-per compound in `compound_provenance.tsv`. They were not written from memory.
+per compound in `results/tables/T06_predicted_compounds.tsv`. They were not written from memory.

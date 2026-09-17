@@ -30,7 +30,7 @@ almost nothing to work with:
 ## What this means
 
 The 25× hardware effect is a result of the **model**, and it is in
-`metabolome/compound_provenance.tsv` and `metabolome/operating_points.tsv`
+`results/tables/T06_predicted_compounds.tsv` and `results/tables/T05_operating_points.tsv`
 (photosynthate −2.81 log2FC, photorespiratory +0.24). PaintOmics adds nothing to it, and
 this job should not be presented as independent support for it.
 

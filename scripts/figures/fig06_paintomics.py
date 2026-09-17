@@ -100,7 +100,7 @@ def panel_b(ax):
     ax.tick_params(axis="y", length=0)
     ax.spines["left"].set_visible(False)
     ax.set_xlim(0, span)
-    ax.annotate("ranks LAST of 231", xy=(vals.iloc[0], 0), xytext=(2.9, 1.15),
+    ax.annotate("214th of 232", xy=(vals.iloc[0], 0), xytext=(2.9, 1.15),
                 fontsize=6.5, color=style.INK, va="center",
                 arrowprops=dict(arrowstyle="-|>", color=style.INK, linewidth=0.7))
     ax.text(0.98, 0.60, "red = a pathway the\nmodel predicted would fall",
@@ -143,7 +143,7 @@ def main():
                                           "wspace": 1.15})
     panel_a(axes[0]); panel_b(axes[1]); panel_c(axes[2])
     fig.subplots_adjust(top=0.83, bottom=0.24, left=0.085, right=0.985)
-    fig.suptitle("PaintOmics: photosynthesis enriched, photorespiration last of 231",
+    fig.suptitle("PaintOmics: photosynthesis enriched, photorespiration near the bottom",
                  fontsize=11, fontweight="bold", x=0.008, ha="left", y=0.985)
     style.predicted_note(fig, "Job m1z16Qg3DK, organism ath, KEGG + MapMan, AI interpretation "
                               "off. Hub analysis counts REAL differentially expressed genes.")

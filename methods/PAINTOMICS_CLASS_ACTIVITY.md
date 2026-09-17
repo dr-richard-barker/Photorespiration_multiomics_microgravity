@@ -28,5 +28,5 @@ It becomes a real test only when the metabolite layer is measured. That is
 recommendation 2 in `FUTURE_EXPERIMENTS.md`.
 
 The genuinely informative metabolomics output from this job is the **hub analysis**
-(`metabolite_hub_job1.tsv`), which is *not* circular: it ranks our compounds by the density
+(`results/tables/T10_metabolite_hubs.tsv`), which is *not* circular: it ranks our compounds by the density
 of **measured, real** differentially expressed genes around them in the KEGG network.

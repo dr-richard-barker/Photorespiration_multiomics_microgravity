@@ -1,0 +1,12 @@
+db	pathway	predicted	outcome
+K	Photosynthesis	down	significant
+K	Starch and sucrose metabolism	down	significant
+K	Photosynthesis - antenna proteins	down	significant
+M	photosynthesis	down	significant
+K	Nitrogen metabolism	not predicted	ns
+K	Glycolysis / Gluconeogenesis	not predicted	ns
+K	Biosynthesis of amino acids	not predicted	ns
+K	Carbon fixation by Calvin cycle	down	NOT significant
+M	Plant glycolysis	not predicted	ns
+K	Carbon metabolism	not predicted	ns
+K	Glyoxylate and dicarboxylate metabolism	no change	confirmed, ranks last

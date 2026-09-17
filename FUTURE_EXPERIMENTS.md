@@ -56,7 +56,7 @@ The gap does not need a new flight to start closing. A **targeted GC-MS or LC-MS
 20–30 compounds** — the C2 photorespiratory intermediates, soluble sugars, starch, and the
 starvation amino acids — run on **archived material from flights already flown** would be
 the first plant spaceflight metabolome in existence. The 21-compound predicted set in
-`metabolome/compound_provenance.tsv` is a ready-made target list, and each compound comes
+`results/tables/T06_predicted_compounds.tsv` is a ready-made target list, and each compound comes
 with a quantitative prediction to test against.
 
 ## 3. Fly sealed and vented hardware side by side

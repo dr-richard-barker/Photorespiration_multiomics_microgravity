@@ -1,0 +1,16 @@
+kegg_id	compound	block
+C00407	L-Isoleucine (2-Amino-3-methylvaleric acid)	carbon starvation
+C01182	D-Ribulose 1,5-bisphosphate	Calvin-Benson
+C00025	L-Glutamate	carbon starvation
+C00123	L-Leucine	carbon starvation
+C00183	L-Valine	carbon starvation
+C00197	3-Phospho-D-glycerate	photosynthate
+C00064	L-Glutamine	carbon starvation
+C00095	D-Fructose	photosynthate
+C00089	Sucrose	photosynthate
+C00152	L-Asparagine	carbon starvation
+C00221	beta-D-Glucopyranose	photosynthate
+C00031	D-Glucose	photosynthate
+C00267	alpha-D-Glucose	photosynthate
+C00208	Maltose	photosynthate
+C00369	Glycogen (Starch)	photosynthate
