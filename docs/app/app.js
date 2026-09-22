@@ -265,7 +265,7 @@ async function buildEnclosure() {
 }
 
 const ENCL_COLOUR = { "BRIC light": () => C.vermilion, "BRIC dark": () => "#8c2e0f",
-                      "CARA tape": () => C.orange, "VEGGIE vented": () => C.accent,
+                      "CARA light": () => C.orange, "CARA dark": () => "#b05a00", "VEGGIE vented": () => C.accent,
                       "open (ref)": () => C.grey };
 
 function drawEnclosure() {
@@ -308,9 +308,9 @@ function drawEnclosure() {
         + `All five cases are defined here. By the end of the run the lit sealed canister `
         + `is lowest (${final("BRIC light").toFixed(3)}), the open reference and taped `
         + `canister are close behind (${final("open (ref)").toFixed(3)} and `
-        + `${final("CARA tape").toFixed(3)}), VEGGIE is the shallowest drawdown `
+        + `${final("CARA light").toFixed(3)}), VEGGIE is the shallowest drawdown `
         + `(${final("VEGGIE vented").toFixed(3)}), and the dark canister rises `
-        + `(${final("BRIC dark").toFixed(3)}) because respiration has no uptake to offset it.`
+        + `(${final("BRIC dark").toFixed(3)} and ${final("CARA dark").toFixed(3)}) because respiration has no uptake to offset it.`
       : `CO₂ excess averaged over the enclosure volume. Only the three closed cases have `
         + `one: a vented case has no closed volume to average, so VEGGIE and the open `
         + `reference are absent here rather than flat. Switch to the leaf surface to see `

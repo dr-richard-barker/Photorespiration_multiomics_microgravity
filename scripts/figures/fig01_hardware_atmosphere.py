@@ -23,8 +23,8 @@ from paths import DATA, FIGURES  # noqa: E402
 
 LL = os.path.join(DATA, "lunarleaf")
 HW_COLOUR = {"BRIC light": style.VERMILION, "BRIC dark": "#8C2E0F",
-             "CARA tape": style.ORANGE, "VEGGIE vented": style.BLUE,
-             "open (ref)": style.GREY}
+             "CARA light": style.ORANGE, "CARA dark": "#b05a00",
+             "VEGGIE vented": style.BLUE, "open (ref)": style.GREY}
 
 
 def panel_a(ax) -> None:
