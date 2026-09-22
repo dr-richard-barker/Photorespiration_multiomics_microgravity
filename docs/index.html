@@ -14,7 +14,38 @@ spaceflight growth-hardware gas transport, with the OSDR omics that test it.">
       data-cose-doc="off"
       data-brand-logo="https://dr-richard-barker.github.io/Plant_response_to_radiation/cose/cose-logo.png">
 
+
+<div style="position: absolute; top: 20px; right: 20px;">
+  <button id="theme-toggle" class="btn" style="padding: 6px 12px; font-size: 14px; border-radius: 6px; cursor: pointer;">
+    ◐ Theme
+  </button>
+</div>
+<script>
+  (function() {
+    const html = document.documentElement;
+    const btn = document.getElementById('theme-toggle');
+    const lsKey = 'barker.theme';
+    
+    // Set initial theme
+    const saved = localStorage.getItem(lsKey);
+    if (saved) {
+      html.setAttribute('data-theme', saved);
+    } else {
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      html.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+    }
+    
+    // Toggle on click
+    btn.addEventListener('click', () => {
+      const current = html.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      localStorage.setItem(lsKey, next);
+    });
+  })();
+</script>
 <header class="hero">
+
   <p class="eyebrow">CoSE · plant spaceflight biology</p>
   <h1>A gas-transport model predicts the <em>Arabidopsis</em> spaceflight
       transcriptome, and illumination separates six flight experiments</h1>
@@ -231,8 +262,6 @@ spaceflight growth-hardware gas transport, with the OSDR omics that test it.">
 </footer>
 
 <script type="module" src="app/app.js"></script>
-<script src="https://dr-richard-barker.github.io/Plant_response_to_radiation/cose/sites.js"></script>
-<script src="https://dr-richard-barker.github.io/Plant_response_to_radiation/cose/theme.js"></script>
   <script defer src="https://visitor-analytics.astrobotany.workers.dev/a.js"></script>
 </body>
 </html>
