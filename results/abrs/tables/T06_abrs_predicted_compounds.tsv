@@ -1,0 +1,24 @@
+# Predicted metabolite pools for ABRS (TAGES / OSD-7).
+# MODEL OUTPUT under ABRS boundary conditions (ISS cabin CO2 ~3500 ppm, active ventilation).
+kegg_id	compound	driver	tier	log2FC_FLT_vs_GC_ABRS	log2FC_ABRS_vs_BRIC	status	basis
+C00988	2-Phosphoglycolate	Vo	1	+0.020125	-3.566613	PREDICTED	First product of Rubisco oxygenation
+C00160	Glycolate	Vo	1	+0.020125	-3.566613	PREDICTED	2-PG dephosphorylated by PGLP1; exported to peroxisome
+C00048	Glyoxylate	Vo	1	+0.020125	-3.566613	PREDICTED	Glycolate oxidised by GOX in the peroxisome
+C00037	Glycine	Vo	1	+0.020125	-3.566613	PREDICTED	Glyoxylate transaminated; mitochondrial C2 cycle input
+C00065	L-Serine	Vo	1	+0.020125	-3.566613	PREDICTED	Product of GDC/SHMT reaction, 2 Gly -> 1 Ser
+C00168	Hydroxypyruvate	Vo	1	+0.020125	-3.566613	PREDICTED	Serine transaminated in peroxisome
+C00258	D-Glycerate	Vo	1	+0.020125	-3.566613	PREDICTED	Hydroxypyruvate reduced by HPR1; returns to chloroplast
+C00014	Ammonia	Vo	1	+0.020125	-3.566613	PREDICTED	Photorespiratory NH3 release at glycine decarboxylase
+C00197	3-Phospho-D-glycerate	A	1	-0.000860	+3.699487	PREDICTED	First stable product of carboxylation
+C00089	Sucrose	A	1	-0.000860	+3.699487	PREDICTED	Principal export product of net assimilation
+C00031	D-Glucose	A	1	-0.000860	+3.699487	PREDICTED	Hexose pool fed by sucrose cleavage
+C00095	D-Fructose	A	1	-0.000860	+3.699487	PREDICTED	Hexose pool fed by sucrose cleavage
+C00208	Maltose	A	1	-0.000860	+3.699487	PREDICTED	Product of nocturnal starch turnover
+C00369	Starch	A	1	-0.000860	+3.699487	PREDICTED	Transitory reserve; fills from surplus assimilate
+C01182	D-Ribulose 1,5-bisphosphate	RuBP	2	+0.020639	-5.419122	PREDICTED	Substrate upstream of Rubisco; moves inversely with log2(Cc)
+C00152	L-Asparagine	starvation	2	+0.000860	-3.699487	PREDICTED	Canonical carbon-starvation marker (ASN1/DIN6), inversely proportional to A
+C00183	L-Valine	starvation	2	+0.000860	-3.699487	PREDICTED	BCAA released by protein turnover during starvation
+C00123	L-Leucine	starvation	2	+0.000860	-3.699487	PREDICTED	BCAA released by protein turnover during starvation
+C00407	L-Isoleucine	starvation	2	+0.000860	-3.699487	PREDICTED	BCAA released by protein turnover during starvation
+C00064	L-Glutamine	starvation	2	+0.000860	-3.699487	PREDICTED	N re-assimilation pool; rises as protein turnover outpaces growth
+C00025	L-Glutamate	starvation	2	+0.000860	-3.699487	PREDICTED	Amino donor for transamination and N remobilisation hub

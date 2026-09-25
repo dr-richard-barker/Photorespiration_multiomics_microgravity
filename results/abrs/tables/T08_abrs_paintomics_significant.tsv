@@ -1,0 +1,11 @@
+# ABRS (OSD-7 Shoot) Pathway Enrichment in Spaceflight
+# Total pathways tested: 171, Significant at p < 0.05: 8
+db	pathway	features	relevant_features	median_log2FC	direction	p_gene
+K	Cysteine and methionine metabolism	120	19	-0.0393	down	0.00145
+K	Proteasome	55	11	-0.1058	down	0.00221
+K	Pentose and glucuronate interconversions	100	16	-0.0440	down	0.00298
+K	Carbon fixation by Calvin cycle	64	11	-0.0071	up	0.00741
+M	Raffinose metabolism	3286	280	-0.0051	up	0.00806
+M	Biotic Stress	10071	795	-0.0081	up	0.01511
+K	Sulfoquinovose metabolism	11	3	-0.0253	down	0.04372
+K	Lipopolysaccharide biosynthesis	5	2	+0.2693	up	0.04799

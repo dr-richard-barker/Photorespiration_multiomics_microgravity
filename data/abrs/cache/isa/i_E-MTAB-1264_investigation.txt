@@ -1,0 +1,114 @@
+ONTOLOGY SOURCE REFERENCE
+Term Source Name	NCBITAXON	OBI_IEE	EFO	OBI	PO	MESH	NCIT	UO	RBO	OSD
+Term Source File	http://data.bioontology.org/ontologies/NCBITAXON	https://data.bioontology.org/ontologies/OBI_IEE	http://data.bioontology.org/ontologies/EFO	http://data.bioontology.org/ontologies/OBI	http://data.bioontology.org/ontologies/PO	http://data.bioontology.org/ontologies/MESH	https://data.bioontology.org/ontologies/NCIT	http://data.bioontology.org/ontologies/UO		https://osdr.nasa.gov/
+Term Source Version	2	1	166	32	15	5	101	43		1
+Term Source Description	National Center for Biotechnology Information (NCBI) Organismal Classification	The Ontology for Biomedical Investigation based Inner Ear Electrophysiology	Experimental Factor Ontology	Ontology for Biomedical Investigations	Plant Ontology	Medical Subject Headings	National Cancer Institute Thesaurus	Units of Measurement Ontology		User defined terms
+INVESTIGATION
+Investigation Identifier	
+Investigation Title	
+Investigation Description	
+Investigation Submission Date	
+Investigation Public Release Date	
+INVESTIGATION PUBLICATIONS
+Investigation PubMed ID
+Investigation Publication DOI
+Investigation Publication Author List
+Investigation Publication Title
+Investigation Publication Status
+Investigation Publication Status Term Accession Number
+Investigation Publication Status Term Source REF
+INVESTIGATION CONTACTS
+Investigation Person Last Name
+Investigation Person First Name
+Investigation Person Mid Initials
+Investigation Person Email
+Investigation Person Phone
+Investigation Person Fax
+Investigation Person Address
+Investigation Person Affiliation
+Investigation Person Roles
+Investigation Person Roles Term Accession Number
+Investigation Person Roles Term Source REF
+STUDY
+Study Identifier	OSD-7
+Study Title	The Arabidopsis spaceflight transcriptome: a comparison of whole plants to discrete root, hypocotyl and shoot responses to the orbital environment
+Study Description	Arabidopsis thaliana was evaluated for its response to the spaceflight environment in three replicated experiments on the International Space Station. Two approaches were used; GFP reporter genes were used to collect gene expression data in real time within unique GFP imaging hardware, and plants were harvested on orbit to RNAlater for subsequent analyses of gene expression with using Affymetrix and SAGE transcriptome analyses. Three tissue types were examined (leaves, hypocotyls and roots) and compared to analyses conducted with whole plants. Transcriptome analyses with whole plants suggested that the spaceflight environment had little impact on the transcriptome of Arabidopsis, however, closer examination of selected tissues revealed that there are a number of tissue-specific responses that Arabidopsis employs to respond to this novel environment.
+Study Submission Date	04-Oct-2013
+Study Public Release Date	04-Oct-2013
+Study File Name	s_OSD-7.txt
+Comment[Acknowledgments]	
+Comment[DOI]	10.25966/7f77-hw17
+Comment[DOI]	10.25966/7f77-hw17
+Comment[Data Source Accession]	E-MTAB-1264
+Comment[Data Source Link]	http://www.ebi.ac.uk/arrayexpress/experiments/E-MTAB-1264/
+Comment[Experiment Platform]	Advanced Plant Experiment (APEX), The Transgenic Arabidopsis Gene Expression System (TAGES), Orbital Environmental Simulator (OES)
+Comment[Flight Program]	Space Shuttle, International Space Station (ISS)
+Comment[Funding]	This work was supported by NASA grants NNX07AH270 and NNX09AL96G to R.J.F. and A.-L.P. This manuscript is dedicated to the memory of Guy Etheridge.
+Comment[Identifiers]	
+Comment[Managing NASA Center]	Kennedy Space Center (KSC)
+Comment[Mission End]	11/27/09
+Comment[Mission Link]	https://osdr.nasa.gov/bio/repo/data/missions/STS-129
+Comment[Mission Name]	STS-129
+Comment[Mission Start]	11/16/09
+Comment[Project Identifier]	TAGES
+Comment[Project Link]	https://taskbook.nasaprs.com/tbp/index.cfm?action=public_query_taskbook_content&TASKID=8691
+Comment[Project Title]	Transgenic Plant Biomonitors of Space Flight Exposure
+Comment[Project Type]	Spaceflight Study
+Comment[Space Program]	NASA
+Comment[Study Funding Agency]	NASA
+Comment[Study Grant Number]	NNX07AH27G
+STUDY DESIGN DESCRIPTORS
+Study Design Type	transcription profiling by array	Space Shuttle	Orbital Environmental Simulator (OES)
+Study Design Type Term Accession Number	http://www.ebi.ac.uk/efo/EFO_0002768	http://purl.obolibrary.org/obo/RBO_00000036	https://osdr.nasa.gov/
+Study Design Type Term Source REF	EFO	RBO	OSD
+STUDY PUBLICATIONS
+Study PubMed ID	23919896
+Study Publication DOI	10.1186/1471-2229-13-112
+Study Publication Author List	Anna-Lisa Paul, Agata K. Zupanska,  Robert J. Ferl
+Study Publication Title	Organ-specific remodeling of the Arabidopsis transcriptome in response to spaceflight.
+Study Publication Status	published
+Study Publication Status Term Accession Number	
+Study Publication Status Term Source REF	
+Comment[Study Publication Link]	https://bmcplantbiol.biomedcentral.com/articles/10.1186/1471-2229-13-112
+STUDY FACTORS
+Study Factor Name	Spaceflight	Organism Part
+Study Factor Type	Space Flight	organism part
+Study Factor Type Term Accession Number	http://purl.bioontology.org/ontology/MESH/D013026	http://www.ebi.ac.uk/efo/EFO_0000635
+Study Factor Type Term Source REF	MESH	EFO
+STUDY ASSAYS
+Study Assay File Name	a_OSD-7_transcription-profiling_dna-microarray_affymetrix.txt
+Study Assay Measurement Type	transcription profiling
+Study Assay Measurement Type Term Accession Number	http://purl.obolibrary.org/obo/OBI_0000424
+Study Assay Measurement Type Term Source REF	OBI
+Study Assay Technology Type	DNA microarray
+Study Assay Technology Type Term Accession Number	http://purl.obolibrary.org/obo/OBI_0400148
+Study Assay Technology Type Term Source REF	OBI
+Study Assay Technology Platform	Affymetrix
+STUDY PROTOCOLS
+Study Protocol Name	growth protocol	sample collection	RNA Extraction	Reverse Transcription	Labeling	Nucleic Acid Hybridization	Data Collection	GeneLab microarray data processing protocol
+Study Protocol Type	growth protocol	sample collection protocol	nucleic acid extraction protocol	Reverse Transcription	nucleic acid labeling protocol	nucleic acid hybridization to array protocol	bioassay data transformation	data transformation
+Study Protocol Type Term Accession Number	http://www.ebi.ac.uk/efo/EFO_0003789	http://www.ebi.ac.uk/efo/EFO_0005518	http://www.ebi.ac.uk/efo/EFO_0002944	http://purl.bioontology.org/ontology/MESH/D048348	http://www.ebi.ac.uk/efo/EFO_0003813	http://www.ebi.ac.uk/efo/EFO_0003815		http://purl.obolibrary.org/obo/OBI_0200000
+Study Protocol Type Term Source REF	EFO	EFO	EFO	MESH	EFO	EFO	EFO	OBI
+Study Protocol Description	Plant Lines and Seed Dormancy: Arabidopsis thaliana (Arabidopsis) plants were grown in a vertical configuration on the surface of 10 cm2 solid media plates.  Three GFP (Green fluorescent Protein reporter gene lines were used:  Adh::GFP (alcohol dehydrogenase promoter), DR5::GFP (synthetic auxin response element) and UB::GFP (35sCaMV constitutive promoter). Seeds, and the seeded plates, were prepared in such a way as to maintain dormancy until the initiation of the experiment on orbit. Seeds were surface sterilized with 75% ethanol for 10 minutes, dried on sterile filter paper and stored at 4C until use. Immediately before planting onto media plates, a small amount of seed was suspended in sterile water and the seeds were dispersed individually to the surface of the plate.  The plate was then immediately wrapped in light-tight black cloth (Duvatyne) and stored at room temperature until launch. After launch (Shuttle launch STS-131, Orbiter Discovery, April, 2010) and transition to the International Space Station (ISS), the wrapped plates were stowed at ambient temperature for 12 days until the initiation of the experiment on orbit.  The dry-sterilized seeds remained dormant until activated by exposure to light. Experiment Unique Equipment and Environmental Conditions: Both the flight and ground control components of the experiment were grown in specialized growth chamber units developed by Kennedy Space Center referred to as ABRS (Advanced Biological Research System) growth chamber.  Seeded plates were unwrapped from their light-tight coverings and installed in a specialized GFP imaging system (GIS) designed to hold six plates ÔøΩ one in the direct line of fluorescent excitation LEDs and the imaging camera, plus five additional plates. GFP expression data were collected on orbit form the imaging plate, and after 12 days of growth, all plates were harvested on orbit to RNAlater-filled KSC Fixation Tubes (KFTs) and then stowed below -40C on station.  The Ground Control was housed in the Orbital Environmental Simulator (OES) chamber in the Spaceflight Life Sciences Laboratory at Kennedy Space Center. The Ground Control was initiated with a precise 48 hour delay to enable the OES environment to be programed with those environmental conditions that can be replicated on the ground, such as cabin temperature and CO2 levels, taken from ISS telemetry.	After growth, all plates were harvested on orbit to RNAlater-filled KSC Fixation Tubes (KFTs) and then stowed below -40°C on the ISS before return. Plants harvested to RNAlater-filled KFTs were returned from ISS stowage with Orbiter Atlantis for the return flight of STS-132 and transferred to the PIs.	Total RNA was isolated form sets of intact 12 day old seedlings, and from seedlings separated into three tissue types: leaves (cut from the plant at base of each petiole), hypocotyls (the region between the root/shoot junction and the start of the leaf rosette) and roots. Total cellular RNA was extracted using RNeasy Mini Kit (QIAGEN).	The first method (6 arrays total): cDNA was synthesized using Ovation Pico WTA System (NuGEN Technologies Inc.). The second method (30 arrays total): cDNA was synthesized using Affymetrix 3'IVT kit for cDNA synthesis and labeling, using reverse transcription-IVT (RT-IVT) method, known as Eberwine method. Reverse Transcription to Synthesize First-Strand cDNA is primed with T7 oligo(dT) primer to synthesize cDNA containing a T7 promoter sequence.Second-Strand cDNA Synthesis converts the single-stranded cDNA into a doublestranded DNA (dsDNA) template for transcription. The reaction employs DNA polymerase and RNaseH to simultaneously degrade the RNA and synthesize second strand cDNA.	The first method (6 arrays total): cDNA was labeled using Encore Biotin Module (NuGEN Technologies Inc.). The second method (30 arrays total): cDNA was labeled using Affymetrix 3'IVT kit for cDNA synthesis and labeling. In Vitro Transcription to Synthesize Biotin-Modified aRNA with IVT Labeling Master Mix generates multiple copies of biotin-modified aRNA from the doublestranded cDNA templates.	Amplified and labeled cDNA (5 ug/sample) was fragmented and hybridized with rotation onto Affymetrix GeneChip Arabidopsis ATH1 Genome Arrays for 16h at 45C. Arrays were washed on a Fluidics Station 450 (Affymetrix) with the Hybridization Wash and Stain Kit (Affymetrix) and the Washing Procedure FS450_0004.	The MAS5 data was generated by using the Affymetrix Expression Console software. The console is a widely used standard software for Affymatrix arrays.	Data were processed as described in GL-DPPD-7114 (https://github.com/nasa/GeneLab_Data_Processing/blob/master/Microarray/Affymetrix/Pipeline_GL-DPPD-7114_Versions/GL-DPPD-7114.md) using NF_MAAffymetrix version 1.0.5 (https://github.com/nasa/GeneLab_Data_Processing/tree/NF_MAAffymetrix_1.0.5/Microarray/Affymetrix/Workflow_Documentation/NF_MAAffymetrix). In short, a RunSheet containing raw data file location and processing metadata from the study's *ISA.zip file was generated using dp_tools (version 1.3.4). The raw array data files were loaded into R (version 4.1.3) using oligo (version 1.58.0). Raw data quality assurance density plot, pseudo images, MA plots, and boxplots were generated using oligo (version 1.58.0). The raw probe level intensity data was background corrected and normalized across arrays via the oligo (version 1.58.0) quantile method. Normalized probe level data quality assurance density plot, pseudo images, MA plots, and boxplots were generated using oligo (version 1.58.0). Normalized probe level data was summarized to the probeset level using the oligo (version 1.58.0) RMA method. Ensembl gene ID mappings were retrieved for each probeset using the Plants Ensembl database ftp server (plants.ensembl.org, release 54). Gene annotations were assigned for every probeset that mapped to exactly one Ensembl gene ID using the custom annotation tables generated in-house as detailed in GL-DPPD-7110 (https://github.com/nasa/GeneLab_Data_Processing/blob/GL_RefAnnotTable_1.0.0/GeneLab_Reference_Annotations/Pipeline_GL-DPPD-7110_Versions/GL-DPPD-7110/GL-DPPD-7110.md), with STRINGdb (version 2.8.4), PANTHER.db (version 1.0.11), and org.At.tair.db (version 3.15.0).
+Study Protocol URI								
+Study Protocol Version								
+Study Protocol Parameters Name	Hardware;growth environment;Growth Medium;Mean Growth Temperature;light cycle;Light Color;Growth Time	Age at sample harvest;Sample Preservation Method;Sample Preservation Temperature	Amount of RNA used			Hybridization Temperature;Hybridization Duration		Raw Intensities Table;Normalized Expression Table
+Study Protocol Parameters Name Term Accession Number	;http://purl.obolibrary.org/obo/OBI_0000997;http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl;https://osdr.nasa.gov/;http://purl.obolibrary.org/obo/NCIT_C90419;https://osdr.nasa.gov/;https://osdr.nasa.gov/	https://osdr.nasa.gov/;https://osdr.nasa.gov/;https://osdr.nasa.gov/	https://osdr.nasa.gov/			;		https://osdr.nasa.gov/;https://osdr.nasa.gov/
+Study Protocol Parameters Name Term Source REF	;OBI;NCIT;OSD;NCIT;OSD;OSD	;;	OSD			;		OSD;OSD
+Study Protocol Components Name								
+Study Protocol Components Type								
+Study Protocol Components Type Term Accession Number								
+Study Protocol Components Type Term Source REF								
+STUDY CONTACTS
+Study Person Last Name	Ferl	Zupanska	Paul
+Study Person First Name	Robert	Agata	Anna-Lisa
+Study Person Mid Initials	J	K	
+Study Person Email	robferl@ufl.edu	zupanska@ufl.edu	alp@ufl.edu
+Study Person Phone	352-273-8029	352-273-8029	
+Study Person Fax	352-392-5653		
+Study Person Address	1301 Fifield Hall, Horticultural Sciences		
+Study Person Affiliation	University of Florida	University of Florida	University of Florida
+Study Person Roles	investigator	submitter	investigator
+Study Person Roles Term Accession Number			
+Study Person Roles Term Source REF			
+Comment[Study Person REF]			

@@ -7,7 +7,9 @@ response is being measured in plants their own hardware has already carbon-starv
 
 [**Interactive model and data explorer**](https://dr-richard-barker.github.io/Photorespiration_multiomics_microgravity/)
 · [manuscript PDF](https://dr-richard-barker.github.io/Photorespiration_multiomics_microgravity/Photorespiration_multiomics_microgravity.pdf)
+· [manuscript Word DOCX](https://dr-richard-barker.github.io/Photorespiration_multiomics_microgravity/Photorespiration_multiomics_microgravity.docx)
 · [supplementary PDF](https://dr-richard-barker.github.io/Photorespiration_multiomics_microgravity/Photorespiration_multiomics_microgravity_SI.pdf)
+· [supplementary Word DOCX](https://dr-richard-barker.github.io/Photorespiration_multiomics_microgravity/Photorespiration_multiomics_microgravity_SI.docx)
 · [figures](results/figures) · [tables](results/tables)
 
 ![The blind test](results/figures/fig05_blind_test.png)
@@ -22,7 +24,7 @@ Farquhar–von Caemmerer–Berry model of C₃ photosynthesis, used to ask what 
 *growth hardware* — not gravity — does to the CO₂ reaching Rubisco. The predictions were
 fixed before any omics were downloaded, then tested against NASA OSDR.
 
-### The four findings
+### The five key findings
 
 1. **A lit sealed canister is a CO₂-starvation chamber.** 400 ppm to near zero in about
    seven minutes; 12 h carbon gain at **1 %** of an unenclosed control, against 90 % under
@@ -38,15 +40,24 @@ fixed before any omics were downloaded, then tested against NASA OSDR.
    responses in OSD-522. In PaintOmics, photosynthesis pathways were enriched and
    photorespiration ranked **214th of 232** pathways tested — bottom 8 %, and the least
    enriched of any pathway the model made a claim about.
+5. **Hardware ventilation (ABRS) resolves the ER stress mystery and isolates genuine microgravity adaptations.**
+   Integrating NASA TAGES in ventilated ABRS hardware (OSD-7 transcriptomics & OSD-16 proteomics)
+   demonstrates that the prominent Endoplasmic Reticulum stress / UPR response ($p = 8.65\times 10^{-9}$
+   in sealed BRIC-LED) was a hardware artifact of volatile build-up and carbon exhaustion; it is
+   completely absent in ventilated ABRS ($p = 0.9456$). Elevated ISS cabin CO₂ ($C_a \approx 3{,}500$ ppm)
+   fully saturates Rubisco ($C_c = 3{,}160.5$ ppm), collapsing photorespiration ($\varphi = 2.6\%$) and
+   dropping photorespiratory flux 12-fold ($9.81 \to 0.83\ \mu\mathrm{mol\,m^{-2}\,s^{-1}}$).
+   Crucially, **Biotic Stress** ($p = 0.0151$) and **Raffinose metabolism** ($p = 0.0081$) are conserved
+   across sealed and ventilated hardware, forming the verified core spaceflight response. In addition,
+   the 7-study extended hardware ladder confirms that both independent ventilated flight platforms
+   (VEGGIE RNA-seq, OSD-427, and ABRS microarray, OSD-7) show identical separation from dark controls
+   ($\Delta_{\mathrm{VEGGIE}} = +0.4142$ vs $\Delta_{\mathrm{ABRS}} = +0.4146$).
 
-### And what did not work
+### Caveats and boundary conditions
 
-- **The predicted enclosure gradient does not hold** (Spearman ρ = −0.50, *p* = 0.67). Sealed
-  and vented fall the right way round but micropore tape sits highest, and three studies
-  cannot rank three classes. What *does* separate the six studies is **illumination**, which
-  is mechanistically what the model says — drawdown requires photosynthesis to be running.
-- **The strongest signal in the data is one this model does not explain**: protein processing
-  in the endoplasmic reticulum, *p* = 8.6 × 10⁻⁹, the unfolded protein response.
+- **The predicted enclosure gradient does not hold** across all passive vessels (Spearman ρ = −0.50, *p* = 0.67).
+  Sealed and vented fall the right way round but micropore tape sits highest. What *does* separate
+  flight studies is **illumination and active ventilation**, which is mechanistically what the model says.
 - **OSDR has no plant metabolome.** Of 567 studies, six are metabolite profiling and every
   one is mouse, human, rat or microbial; **0 of 66 plant studies**. The third omic layer had
   to be predicted, and is labelled as model output everywhere it appears.

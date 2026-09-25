@@ -1,0 +1,4 @@
+condition	hardware	gravity	Ca_ppm	Cc_ppm	A_umol_m2_s	Vo_umol_m2_s	phi_pct	limiting
+GC_ABRS	ABRS	1g	3500.0	3206.0	28.87	0.82	2.6	RuBP-regen
+FLT_ABRS	ABRS	micro-g	3500.0	3160.5	28.85	0.83	2.6	RuBP-regen
+FLT_BRIC	BRIC-LED	micro-g	100.0	73.9	2.22	9.81	53.7	Rubisco

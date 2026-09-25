@@ -63,8 +63,10 @@ spaceflight growth-hardware gas transport, with the OSDR omics that test it.">
   </p>
   <div class="btns">
     <a class="btn primary" href="#model">Drive the model</a>
-    <a class="btn" href="Photorespiration_multiomics_microgravity.pdf">Read the manuscript (PDF)</a>
+    <a class="btn" href="Photorespiration_multiomics_microgravity.pdf">Manuscript (PDF)</a>
+    <a class="btn" href="Photorespiration_multiomics_microgravity.docx">Manuscript (DOCX)</a>
     <a class="btn" href="Photorespiration_multiomics_microgravity_SI.pdf">Supplementary (PDF)</a>
+    <a class="btn" href="Photorespiration_multiomics_microgravity_SI.docx">Supplementary (DOCX)</a>
     <a class="btn" href="https://github.com/dr-richard-barker/Photorespiration_multiomics_microgravity">Code &amp; data</a>
   </div>
 </header>
@@ -75,6 +77,7 @@ spaceflight growth-hardware gas transport, with the OSDR omics that test it.">
   <button role="tab" data-tab="omics">Omics</button>
   <button role="tab" data-tab="pathways">Pathways</button>
   <button role="tab" data-tab="ladder">Six studies</button>
+  <button role="tab" data-tab="abrs">ABRS Validation</button>
 </nav>
 
 <!-- ────────────────────────────────────────────────────────── MODEL -->
@@ -248,12 +251,91 @@ spaceflight growth-hardware gas transport, with the OSDR omics that test it.">
   <div class="tablewrap"><table id="studytable"></table></div>
 </section>
 
+<!-- ─────────────────────────────────────────────────────────── ABRS -->
+<section id="abrs" class="panel" role="tabpanel">
+  <h2>Hardware Ventilation: Sealed BRIC-LED vs Ventilated ABRS</h2>
+  <p class="note">
+    Direct comparison between sealed canisters (BRIC-LED, OSD-522) and actively ventilated flight chambers (ABRS, OSD-7 transcriptomics &amp; OSD-16 proteomics) on the International Space Station. Active ventilation with cabin air resolves genuine microgravity adaptations from enclosed hardware artifacts.
+  </p>
+
+  <div class="cards wide">
+    <div class="card">
+      <h4>Rubisco Saturated ($C_a \approx 3{,}500$ ppm)</h4>
+      <p>Elevated ISS cabin CO<sub>2</sub> saturates Rubisco ($C_c = 3{,}160.5$ ppm), collapsing the photorespiratory oxygenation fraction from <strong>53.7%</strong> down to <strong>2.6%</strong> and dropping photorespiratory flux 12-fold ($9.81 \to 0.83\ \mu\mathrm{mol\,m^{-2}\,s^{-1}}$).</p>
+    </div>
+    <div class="card">
+      <h4>ER Stress / UPR is a Hardware Artifact</h4>
+      <p><em>Protein processing in endoplasmic reticulum</em>, the top enriched pathway in sealed BRIC-LED ($p = 8.65\times 10^{-9}$), disappears completely in ventilated ABRS ($p = 0.9456$). The unfolded protein response is triggered by trapped volatiles, ethylene, and CO<sub>2</sub> starvation in sealed canisters.</p>
+    </div>
+    <div class="card">
+      <h4>Conserved Spaceflight Core</h4>
+      <p><strong>Biotic Stress</strong> ($p = 0.0151$ in ABRS; $p = 2.10\times 10^{-4}$ in BRIC-LED), <strong>Raffinose oligosaccharide metabolism</strong> ($p = 0.0081$), and light-harvesting complex repression ($p = 6.58\times 10^{-6}$) are robustly conserved across sealed and ventilated hardware.</p>
+    </div>
+    <div class="card">
+      <h4>7-Study Ladder Parity</h4>
+      <p>Across 7 independent flight experiments, both ventilated platforms—VEGGIE RNA-seq and ABRS microarray—converge on an identical separation from dark controls: $\Delta_{\mathrm{VEGGIE}} = +0.4142$ vs $\Delta_{\mathrm{ABRS}} = +0.4146$.</p>
+    </div>
+  </div>
+
+  <figure style="margin: 2rem 0;">
+    <img src="assets/fig09_abrs_comparison.png" alt="Cross-hardware validation: Sealed BRIC-LED vs Ventilated ABRS" style="width: 100%; border-radius: 8px; border: 1px solid var(--line); display: block;">
+    <figcaption style="margin-top: 0.75rem; font-size: 0.9rem; color: var(--ink-soft);">
+      <strong>Figure 9 | Ventilated flight hardware (ABRS) resolves true microgravity responses from sealed canister artifacts.</strong>
+      <strong>a</strong>, FvCB photosynthesis assimilation curves ($A$ vs $C_a$). Elevated ISS cabin CO<sub>2</sub> drives ABRS into the RuBP-regeneration ($J$-limited) plateau ($A \approx 28.85\ \mu\mathrm{mol\,m^{-2}\,s^{-1}}$), eliminating boundary-layer penalties.
+      <strong>b</strong>, Cross-hardware pathway comparison showing complete elimination of ER stress ($p=0.9456$) and preservation of biotic stress ($p=0.0151$) and raffinose metabolism ($p=0.0081$).
+      <strong>c</strong>, Organ-specific transcriptomics in ABRS across leaves, roots, hypocotyls, and whole shoots.
+      <strong>d</strong>, Extended 7-study hardware ladder placing ABRS alongside VEGGIE at the ventilated, illuminated apex.
+    </figcaption>
+  </figure>
+
+  <h3>Cross-Hardware Pathway Comparison (Table S1)</h3>
+  <div class="tablewrap">
+    <table>
+      <thead>
+        <tr>
+          <th>DB</th>
+          <th>Pathway</th>
+          <th>BRIC-LED $p$</th>
+          <th>ABRS $p$</th>
+          <th>ABRS Dir</th>
+          <th>Classification</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>KEGG</td><td>Protein processing in endoplasmic reticulum</td><td>8.65e-9</td><td>0.9456</td><td>Flat</td><td>Hardware artifact (volatiles / starvation)</td></tr>
+        <tr><td>MapMan</td><td>Cellular response overview</td><td>2.33e-6</td><td>0.6111</td><td>Down</td><td>Hardware artifact</td></tr>
+        <tr><td>MapMan</td><td><strong>Biotic Stress</strong></td><td>2.10e-4</td><td>0.0151</td><td>Up</td><td><span class="tag sig">Conserved microgravity response</span></td></tr>
+        <tr><td>KEGG</td><td>Glucosinolate biosynthesis</td><td>6.02e-4</td><td>0.8453</td><td>Up</td><td>Hardware artifact</td></tr>
+        <tr><td>KEGG</td><td>Plant hormone signal transduction</td><td>0.0011</td><td>0.0516</td><td>Up</td><td>Borderline conserved</td></tr>
+        <tr><td>KEGG</td><td>Photosynthesis</td><td>0.0080</td><td>0.8512</td><td>Down</td><td>Hardware-modulated</td></tr>
+        <tr><td>KEGG</td><td>MAPK signaling pathway</td><td>0.0094</td><td>0.2322</td><td>Up</td><td>Hardware-modulated</td></tr>
+        <tr><td>KEGG</td><td>Starch and sucrose metabolism</td><td>0.0186</td><td>0.5428</td><td>Down</td><td>Hardware-modulated</td></tr>
+        <tr><td>KEGG</td><td>Photosynthesis - antenna proteins</td><td>0.0217</td><td>1.0000</td><td>Down</td><td>Hardware-modulated</td></tr>
+        <tr><td>MapMan</td><td><strong>Raffinose metabolism</strong></td><td>0.0274</td><td>0.0081</td><td>Up</td><td><span class="tag sig">Conserved microgravity response</span></td></tr>
+        <tr><td>KEGG</td><td>Carbon fixation by Calvin cycle</td><td>0.1420</td><td>0.0074</td><td>Up</td><td>ABRS-specific (CO<sub>2</sub> saturated)</td></tr>
+        <tr><td>KEGG</td><td>Cysteine and methionine metabolism</td><td>0.2110</td><td>0.0015</td><td>Down</td><td>ABRS-specific</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout" style="margin-top: 2rem;">
+    <h3>Manuscript &amp; Supplementary Downloads</h3>
+    <p>The complete manuscript and supplementary information incorporating both BRIC-LED and ABRS analyses are available in both PDF and Word (.docx) formats:</p>
+    <div class="btns" style="margin-top: 1rem;">
+      <a class="btn primary" href="Photorespiration_multiomics_microgravity.pdf">Manuscript (PDF)</a>
+      <a class="btn" href="Photorespiration_multiomics_microgravity.docx">Manuscript (Word DOCX)</a>
+      <a class="btn" href="Photorespiration_multiomics_microgravity_SI.pdf">Supplementary Info (PDF)</a>
+      <a class="btn" href="Photorespiration_multiomics_microgravity_SI.docx">Supplementary Info (Word DOCX)</a>
+    </div>
+  </div>
+</section>
+
 <footer>
   <p>
     Model and analysis code:
     <a href="https://github.com/dr-richard-barker/Photorespiration_multiomics_microgravity">GitHub</a>.
     Primary data: NASA Open Science Data Repository (OSD-522, OSD-38, OSD-321, OSD-678,
-    OSD-427). Gas transport: LunarLeaf-CFD.
+    OSD-427, OSD-7, OSD-16). Gas transport: LunarLeaf-CFD.
   </p>
   <p class="warn">
     The metabolite layer throughout this site is <strong>model output, never measured</strong>.

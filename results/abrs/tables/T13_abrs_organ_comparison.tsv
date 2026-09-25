@@ -1,0 +1,49 @@
+accession	organ	set	n	median	shift	p	enclosure_class	carbon_pct_earth	light	hardware	tissue	predicted
+OSD-7-shoot	shoot	ath00630	73	0.047062	0.0561315	0.05444899007799271	vented	100	light	ABRS	shoots	none
+OSD-7-shoot	shoot	ath00710	64	-0.007068	0.001963000000000001	0.8406792603196811	vented	100	light	ABRS	shoots	down
+OSD-7-shoot	shoot	ath00500	174	-0.027874	-0.018985000000000002	0.07354233814863105	vented	100	light	ABRS	shoots	down
+OSD-7-shoot	shoot	ath00010	114	-0.0131795	-0.004205500000000001	0.8698609129819912	vented	100	light	ABRS	shoots	
+OSD-7-shoot	shoot	photorespiration_core	13	0.00634	0.015382999999999999	0.42225229386887886	vented	100	light	ABRS	shoots	none
+OSD-7-shoot	shoot	carbon_starvation_DIN	5	0.268801	0.27784400000000004	0.004223505670321853	vented	100	light	ABRS	shoots	up
+OSD-7-shoot	shoot	fermentation	4	-0.0393045	-0.0302805	0.6200777017108865	vented	100	light	ABRS	shoots	none
+OSD-7-shoot	shoot	hypoxia_responsive	2				vented	100	light	ABRS	shoots	none
+OSD-7-shoot	shoot	photosynthesis_apparatus	28	-0.1457945	-0.1368925	6.576239436861453e-06	vented	100	light	ABRS	shoots	down
+OSD-7-shoot	shoot	rubisco	1				vented	100	light	ABRS	shoots	down
+OSD-7-shoot	shoot	ath04141	204	0.0007695	0.009823499999999999	0.20666123336186426	vented	100	light	ABRS	shoots	
+OSD-7-shoot	shoot	cell_wall	295	-0.05396	-0.0455645	3.684124329544334e-07	vented	100	light	ABRS	shoots	
+OSD-7-root	root	ath00630	73	0.029942	0.0255405	0.06271545361098028	vented	100	light	ABRS	roots	none
+OSD-7-root	root	ath00710	64	0.007863	0.0034130000000000002	0.48284293981478366	vented	100	light	ABRS	roots	down
+OSD-7-root	root	ath00500	174	0.020063499999999998	0.015691499999999997	0.07763153446919166	vented	100	light	ABRS	roots	down
+OSD-7-root	root	ath00010	114	0.0085985	0.0041485	0.9572496626221385	vented	100	light	ABRS	roots	
+OSD-7-root	root	photorespiration_core	13	0.131648	0.12724649999999998	0.012392507722726001	vented	100	light	ABRS	roots	none
+OSD-7-root	root	carbon_starvation_DIN	5	-0.200797	-0.205259	0.34783287448128375	vented	100	light	ABRS	roots	up
+OSD-7-root	root	fermentation	4	-0.155074	-0.159571	0.052162692793460363	vented	100	light	ABRS	roots	none
+OSD-7-root	root	hypoxia_responsive	2				vented	100	light	ABRS	roots	none
+OSD-7-root	root	photosynthesis_apparatus	28	0.1004945	0.09613050000000001	6.288865489972418e-05	vented	100	light	ABRS	roots	down
+OSD-7-root	root	rubisco	1				vented	100	light	ABRS	roots	down
+OSD-7-root	root	ath04141	204	-0.0049185	-0.0094175	0.6291007127155801	vented	100	light	ABRS	roots	
+OSD-7-root	root	cell_wall	295	0.002632	-0.0018660000000000005	0.5741850090981022	vented	100	light	ABRS	roots	
+OSD-7-hypocotyl	hypocotyl	ath00630	73	-0.05469	-0.038908	0.12261624532611919	vented	100	light	ABRS	hypocotyls	none
+OSD-7-hypocotyl	hypocotyl	ath00710	64	-0.09911400000000001	-0.08342400000000001	3.895189916742333e-05	vented	100	light	ABRS	hypocotyls	down
+OSD-7-hypocotyl	hypocotyl	ath00500	174	-0.038802	-0.023003000000000003	0.05908935784240245	vented	100	light	ABRS	hypocotyls	down
+OSD-7-hypocotyl	hypocotyl	ath00010	114	-0.091723	-0.076135	6.572176004892891e-08	vented	100	light	ABRS	hypocotyls	
+OSD-7-hypocotyl	hypocotyl	photorespiration_core	13	-0.05469	-0.038788500000000004	0.06382922238105365	vented	100	light	ABRS	hypocotyls	none
+OSD-7-hypocotyl	hypocotyl	carbon_starvation_DIN	5	0.215877	0.23185450000000002	0.03944209328735522	vented	100	light	ABRS	hypocotyls	up
+OSD-7-hypocotyl	hypocotyl	fermentation	4	-0.34136750000000005	-0.3254155	0.04293966424002086	vented	100	light	ABRS	hypocotyls	none
+OSD-7-hypocotyl	hypocotyl	hypoxia_responsive	2				vented	100	light	ABRS	hypocotyls	none
+OSD-7-hypocotyl	hypocotyl	photosynthesis_apparatus	28	-0.13540200000000002	-0.11964300000000003	9.62403587146365e-06	vented	100	light	ABRS	hypocotyls	down
+OSD-7-hypocotyl	hypocotyl	rubisco	1				vented	100	light	ABRS	hypocotyls	down
+OSD-7-hypocotyl	hypocotyl	ath04141	204	-0.034567	-0.018768	0.229620589948755	vented	100	light	ABRS	hypocotyls	
+OSD-7-hypocotyl	hypocotyl	cell_wall	295	-0.016417	-0.0004590000000000011	0.9022789120626833	vented	100	light	ABRS	hypocotyls	
+OSD-7-whole_plant	whole_plant	ath00630	73	-0.102271	-0.0975315	0.006855245249094691	vented	100	light	ABRS	whole plant	none
+OSD-7-whole_plant	whole_plant	ath00710	64	-0.1466175	-0.1419995	9.291838294030931e-05	vented	100	light	ABRS	whole plant	down
+OSD-7-whole_plant	whole_plant	ath00500	174	-0.0344295	-0.0295235	0.4776467225793619	vented	100	light	ABRS	whole plant	down
+OSD-7-whole_plant	whole_plant	ath00010	114	-0.045315	-0.040581	0.005857604248308748	vented	100	light	ABRS	whole plant	
+OSD-7-whole_plant	whole_plant	photorespiration_core	13	-0.317283	-0.3123515	0.04696384692204388	vented	100	light	ABRS	whole plant	none
+OSD-7-whole_plant	whole_plant	carbon_starvation_DIN	5	0.284663	0.289751	0.010152562257992563	vented	100	light	ABRS	whole plant	up
+OSD-7-whole_plant	whole_plant	fermentation	4	-0.008717000000000003	-0.003735000000000002	0.9007286324781458	vented	100	light	ABRS	whole plant	none
+OSD-7-whole_plant	whole_plant	hypoxia_responsive	2				vented	100	light	ABRS	whole plant	none
+OSD-7-whole_plant	whole_plant	photosynthesis_apparatus	28	-0.377482	-0.372811	6.163026014290911e-09	vented	100	light	ABRS	whole plant	down
+OSD-7-whole_plant	whole_plant	rubisco	1				vented	100	light	ABRS	whole plant	down
+OSD-7-whole_plant	whole_plant	ath04141	204	0.0253465	0.0306745	0.04605393320270619	vented	100	light	ABRS	whole plant	
+OSD-7-whole_plant	whole_plant	cell_wall	295	0.040715	0.046144000000000004	0.03423071068641343	vented	100	light	ABRS	whole plant	

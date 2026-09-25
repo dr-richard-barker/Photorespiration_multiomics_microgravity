@@ -1,0 +1,12 @@
+db	pathway	predicted	features	relevant	median_log2FC	p_gene	abrs_rank	bric_outcome	abrs_outcome
+K	Photosynthesis	down	44	2	-0.1128	0.85116	116/171	significant	ns
+K	Starch and sucrose metabolism	down	174	13	-0.0279	0.54277	62/171	significant	ns
+K	Photosynthesis - antenna proteins	down	17	0	-0.0882	1.00000	164/171	significant	ns
+M	photosynthesis	down	1694	107	-0.0220	0.97593	142/171	significant	ns
+K	Nitrogen metabolism	not predicted	41	0	+0.0074	1.00000	152/171	ns	ns
+K	Glycolysis / Gluconeogenesis	not predicted	114	6	-0.0132	0.86293	119/171	ns	ns
+K	Biosynthesis of amino acids	not predicted	216	18	-0.0253	0.35108	38/171	ns	ns
+K	Carbon fixation by Calvin cycle	down	64	11	-0.0071	0.00741	4/171	NOT significant	significant
+M	Plant glycolysis	not predicted	-	-	-	-	-	ns	not in local map
+K	Carbon metabolism	not predicted	256	25	-0.0072	0.10311	12/171	ns	ns
+K	Glyoxylate and dicarboxylate metabolism	no change	73	8	+0.0471	0.17756	16/171	confirmed, ranks last	ns

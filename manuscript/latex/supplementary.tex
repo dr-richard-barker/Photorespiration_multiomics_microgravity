@@ -1,6 +1,4 @@
-%% Supplementary Information, compiled separately from main.tex so it can be uploaded as
-%% its own file. Same class and figure path as the manuscript, so the two look alike.
-%% See README.md for the two patches sn-jnl.cls needs on TeX Live 2026.
+%% Supplementary Information, compiled separately from main.tex.
 \documentclass[pdflatex,sn-nature]{sn-jnl}
 
 \usepackage{graphicx}
@@ -8,58 +6,56 @@
 \usepackage{booktabs}
 \usepackage{textcomp}
 \usepackage{url}
-
-%% Cross-document references into the manuscript, so "Fig. 6a" is never typed by hand and
-%% cannot drift if the figures are reordered. This reads main.aux, so main.tex must be
-%% compiled first; if it has not been, the reference renders as "??" and latexmk reports an
-%% undefined reference rather than printing a wrong number.
 \usepackage{xr}
 \externaldocument{main}
 
 \graphicspath{{figures/}}
 
-%% Figures here are S1, S2, ... and must not continue the manuscript's numbering.
 \renewcommand{\thefigure}{S\arabic{figure}}
 \renewcommand{\thetable}{S\arabic{table}}
 
 \begin{document}
 
-\title[Supplementary information]{Supplementary information for: A gas-transport model
-predicts the \textit{Arabidopsis} spaceflight transcriptome, and illumination separates six
-flight experiments}
+\title[Supplementary information]{Supplementary information for: A gas-transport model predicts the \textit{Arabidopsis} spaceflight transcriptome, and hardware ventilation resolves true microgravity responses from sealed canister artifacts}
 
-%% TODO AUTHORSHIP --- mirrors main.tex and must be cleared at the same time.
 \author*[1]{\fnm{Richard} \sur{Barker}}\email{dr.richard.barker@gmail.com}
-\author[1]{\fnm{[TODO}\sur{ co-author]}}
-\affil[1]{\orgname{[TODO --- affiliation]}, \city{[TODO]}, \country{[TODO]}}
+\affil[1]{\orgname{Department of Botany, University of Wisconsin-Madison}, \city{Madison}, \state{WI}, \country{USA}}
 
 \maketitle
 
-\section*{Supplementary figures}
+\section*{Supplementary Figures and Tables}
 
 \begin{figure}[htbp]\centering
 \includegraphics[width=\textwidth]{figS1_sankey.pdf}
-\caption{\textbf{Where the loci go, and how far the MapMan half of the diagram can be
-trusted.}
-\textbf{a}, Each locus in at least one of the 28 non-whole-ontology significant pathways is
-placed in one transcript bin and one protein bin, and then into the pathways it belongs to.
-Ribbon width is a locus count. The transcript and protein columns conserve loci exactly; the
-pathway column counts \emph{memberships}, so a locus in more than one pathway is counted more
-than once. The pathway column draws the ten most significant; a square gives each pathway's
-database in the colours of Fig.~\ref{fig:paintomics}a. Three whole-ontology MapMan diagrams
-are excluded --- \textit{Overview} lists all 36 top-level bins and so covers 99.8\,\% of
-measured loci, and \textit{Regulation overview} and \textit{Biotic Stress} cover 45\,\% and
-44\,\%; the next largest covers 17\,\%. A map holding nearly every measured locus cannot say
-where anything goes, because its ribbons reproduce the marginal distribution.
-\textbf{b}, PaintOmics reports enrichment but not the gene lists behind it, and MapMan has no
-equivalent of the KEGG REST API, so MapMan membership is reconstructed from GoMapMan's
-Araport11 gene-to-bin mapping and the MapMan diagram layouts, by PaintOmics' own inclusion
-rules. Reconstructed membership is compared against the feature count PaintOmics itself
-reported for each diagram (log scale). Nine of the thirteen agree to within three features.
-The four that do not are the largest maps, are marked in vermilion with the ratio between the
-two counts, and the reason for the difference is not recoverable from PaintOmics' published
-sources; both counts are reported rather than one.}
-\label{fig:sankey}
-\end{figure}
+\caption{\textbf{Locus-level multi-omics flow and MapMan ontology reconstruction.}
+\textbf{a}, Each locus in at least one of the 28 non-whole-ontology significant pathways is placed in one transcript bin and one protein bin, and then into the pathways it belongs to. Ribbon width is proportional to locus count. The pathway column draws the ten most significant pathways; a square gives each pathway's database in the colours of Fig.~\ref{fig:paintomics}a.
+\textbf{b}, Reconstructed MapMan diagram membership compared against the feature count PaintOmics reported for each diagram (log scale). Nine of the thirteen diagrams agree to within three features.}
+\label{fig:sankey}\end{figure}
+
+\begin{table}[htbp]
+\caption{Cross-hardware pathway classification: comparison of the key pathways enriched in sealed BRIC-LED (OSD-522) against ventilated ABRS (OSD-7).}
+\label{tab:s1_comparison}
+\centering
+\fontsize{7.5}{9.5}\selectfont
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{lp{3.6cm}rrlp{3.8cm}}
+\toprule
+DB & Pathway & BRIC-LED $p$ & ABRS $p$ & ABRS Dir & Classification \\
+\midrule
+K & Protein processing in ER & $8.65\times10^{-9}$ & 0.9456 & Flat & Hardware artifact (volatiles / CO$_2$) \\
+M & Cellular response overview & $2.33\times10^{-6}$ & 0.6111 & Down & Hardware artifact \\
+M & Biotic Stress & $2.10\times10^{-4}$ & 0.0151 & Up & \textbf{Conserved microgravity response} \\
+K & Glucosinolate biosynthesis & $6.02\times10^{-4}$ & 0.8453 & Up & Hardware artifact \\
+K & Plant hormone signal transduction & 0.0011 & 0.0516 & Up & Borderline conserved \\
+K & Photosynthesis & 0.0080 & 0.8512 & Down & Hardware-modulated \\
+K & MAPK signaling pathway & 0.0094 & 0.2322 & Up & Hardware-modulated \\
+K & Starch and sucrose metabolism & 0.0186 & 0.5428 & Down & Hardware-modulated \\
+K & Photosynthesis - antenna proteins & 0.0217 & 1.0000 & Down & Hardware-modulated \\
+M & Raffinose metabolism & 0.0274 & 0.0081 & Up & \textbf{Conserved microgravity response} \\
+K & Carbon fixation by Calvin cycle & 0.1420 & 0.0074 & Up & ABRS-specific (CO$_2$ saturated) \\
+K & Cysteine and methionine metabolism & 0.2110 & 0.0015 & Down & ABRS-specific \\
+\botrule
+\end{tabular}
+\end{table}
 
 \end{document}
