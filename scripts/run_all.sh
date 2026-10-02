@@ -45,6 +45,17 @@ python3 scripts/check_figures.py
 # the compiled PDF showing the old one — the exact drift the pre-publish check looks for.
 cp results/figures/fig*.pdf results/figures/supplementary/fig*.pdf manuscript/latex/figures/
 
+echo "== 8b. PhysioSpace Projection ================================================"
+# Note: Requires PlantPhysioSpace R packages to be installed
+if command -v Rscript &> /dev/null; then
+    Rscript scripts/08_physiospace_projection.R || echo "PhysioSpace R script failed/skipped. Make sure PlantPhysioSpace is installed."
+else
+    echo "Rscript not found. Skipping PhysioSpace projection."
+fi
+
+echo "== 8c. PhysioSpace Heatmap ==================================================="
+python3 scripts/figures/fig09_physiospace.py
+
 echo "== 9. site data + guards ====================================================="
 python3 scripts/export_site_data.py
 python3 scripts/check_site_data.py
@@ -58,3 +69,4 @@ echo
 echo "done. Tables in results/tables/, figures in results/figures/."
 echo "PaintOmics submission is a separate, network-and-consent step:"
 echo "  python3 scripts/05_submit_paintomics.py --job 1"
+

@@ -18,3 +18,6 @@ manuscript/latex/*.synctex.gz
 
 # ABAI attestations (local evidence record)
 .abai/
+
+# Local slide decks and conference presentations
+presentation/

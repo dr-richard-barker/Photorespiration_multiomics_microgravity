@@ -81,8 +81,8 @@ def panel_b(ax) -> None:
     ax.set_xlabel("model step ($\\times10^3$)")
     ax.set_ylabel("leaf-surface CO$_2$ excess\n(model units)")
     # The note about the enclosure-mean series belongs in the caption: every free corner of
-    # this panel is within a line's reach, and it overlapped the legend where it was.
-    ax.legend(loc="lower left", ncol=1, handlelength=1.6, fontsize=6.4)
+    ax.legend(loc="lower left", ncol=1, handlelength=1.6, fontsize=6.4,
+              frameon=True, facecolor="white", edgecolor=style.GREY_LIGHT, framealpha=0.92)
 
 
 def panel_c(ax) -> None:

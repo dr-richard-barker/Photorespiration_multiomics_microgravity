@@ -56,22 +56,22 @@ def plot_panel_a(ax):
 
     # Mark BRIC operating point (100 ppm)
     ax.axvline(100, color=style.VERMILION, ls="--", alpha=0.7, lw=1.5)
-    ax.text(105, 22, "Sealed BRIC\n(~100 ppm)", color=style.VERMILION, fontsize=8.5, weight="bold")
+    ax.text(105, 23, "Sealed BRIC\n(~100 ppm)", color=style.VERMILION, fontsize=8.5, weight="bold")
 
     # Mark Ambient Earth (400 ppm)
     ax.axvline(400, color=style.GREY, ls=":", alpha=0.7, lw=1.2)
-    ax.text(420, 22, "Earth Ambient\n(400 ppm)", color=style.GREY, fontsize=8)
+    ax.text(420, 26, "Earth Ambient\n(400 ppm)", color=style.GREY, fontsize=8)
 
     # Mark ABRS operating point (3500 ppm)
     ax.axvline(3500, color=style.BLUE, ls="--", alpha=0.7, lw=1.5)
-    ax.text(1800, 10, "Ventilated ABRS\n(~3500 ppm ISS cabin)", color=style.BLUE, fontsize=8.5, weight="bold")
+    ax.text(3200, 12, "Ventilated ABRS\n(~3500 ppm ISS cabin)", color=style.BLUE, fontsize=8.5, weight="bold", ha="right")
 
     ax.set_xscale("log")
     ax.set_xlabel(r"Canister $CO_2$ ($C_a$, $\mu$mol mol$^{-1}$)", fontsize=9.5)
     ax.set_ylabel(r"Flux ($\mu$mol m$^{-2}$ s$^{-1}$)", fontsize=9.5)
     ax.set_title("A. FvCB Photosynthesis & Photorespiration Operating Range", fontsize=10, weight="bold", loc="left")
-    ax.legend(loc="center right", frameon=False, fontsize=8.5)
-    ax.set_ylim(-1, 32)
+    ax.legend(loc="center right", frameon=True, facecolor="white", edgecolor="none", framealpha=0.9, fontsize=8.5)
+    ax.set_ylim(-1, 33)
 
 
 def plot_panel_b(ax):
@@ -109,6 +109,7 @@ def plot_panel_b(ax):
     ax.set_xticklabels(["Shoots\n(Leaves)", "Hypocotyls", "Roots", "Whole\nPlant"], fontsize=9)
     ax.set_ylabel(r"Median Shift ($\log_2$FC vs background)", fontsize=9.5)
     ax.set_title("B. ABRS Organ-Specific Transcriptome Remodeling", fontsize=10, weight="bold", loc="left")
+    ax.set_ylim(-0.45, 0.42)
     ax.legend(loc="upper left", frameon=False, fontsize=8)
 
 
@@ -186,8 +187,9 @@ def plot_panel_d(ax):
     ax.barh(y - height / 2, abrs_p, height, color=style.BLUE, alpha=0.85, label="Ventilated ABRS")
 
     # Threshold line at p = 0.05 (-log10 = 1.30)
-    ax.axvline(-np.log10(0.05), color=style.GREY, ls=":", lw=1.2)
-    ax.text(-np.log10(0.05) + 0.1, len(sub) - 0.5, "p = 0.05", color=style.GREY, fontsize=8)
+    thresh = -np.log10(0.05)
+    ax.axvline(thresh, color=style.GREY, ls=":", lw=1.2)
+    ax.text(thresh + 0.1, -0.4, "p = 0.05", color=style.GREY, fontsize=8, va="bottom")
 
     ylabels = [
         p.replace("Protein processing in endoplasmic reticulum", "Protein processing in\nendoplasmic reticulum")
@@ -199,7 +201,8 @@ def plot_panel_d(ax):
     ax.set_yticklabels(ylabels, fontsize=8)
     ax.set_xlabel(r"$-\log_{10}(p\text{-value})$", fontsize=9.5)
     ax.set_title("D. Pathway Significance: Sealed Hardware vs Controlled Airflow", fontsize=10, weight="bold", loc="left")
-    ax.legend(loc="lower right", frameon=False, fontsize=8)
+    ax.set_ylim(-0.7, len(sub) - 0.2)
+    ax.legend(loc="upper right", frameon=True, facecolor="white", edgecolor="none", framealpha=0.9, fontsize=8)
 
 
 def main():

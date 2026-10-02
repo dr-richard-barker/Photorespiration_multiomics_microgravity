@@ -1,18 +1,18 @@
 # ABAI Quality Control Audit Report
 
-**Date:** 2026-09-25 15:43:19  
+**Date:** 2026-10-02 19:43:45  
 **Audit Verdict:** **CLEAR**  
-**Repository Digest:** `8488af5bb86f0a1f9c205750e108246b795277a1efc69a55b4cf902e329e6f21`  
-**Tracked Files Audited:** 297  
-**Git HEAD:** `edb9068e4b2bbffa7e977747fa02f6d0e7bd7065`
+**Repository Digest:** `32c7cef132917a91c1e7ec5cfe7f11635164ffcc00e80006b2d9dc31760e491e`  
+**Tracked Files Audited:** 299  
+**Git HEAD:** `aef7f97050e2469ca4ba587e119d8b96b91600b4`
 
 ---
 
 ## 1. Document & Figure Artifacts
-- **Manuscript PDF:** `manuscript/latex/main.pdf` (Found manuscript/latex/main.pdf (777,286 bytes))
+- **Manuscript PDF:** `manuscript/latex/main.pdf` (Found manuscript/latex/main.pdf (775,549 bytes))
 - **Supplementary PDF:** `manuscript/latex/supplementary.pdf` (Found manuscript/latex/supplementary.pdf (220,227 bytes))
-- **Manuscript Word (.docx):** `manuscript/latex/main.docx` (Found manuscript/latex/main.docx (337,453 bytes))
-- **Supplementary Word (.docx):** `manuscript/latex/supplementary.docx` (Found manuscript/latex/supplementary.docx (68,804 bytes))
+- **Manuscript Word (.docx):** `manuscript/latex/main.docx` (Found manuscript/latex/main.docx (335,557 bytes))
+- **Supplementary Word (.docx):** `manuscript/latex/supplementary.docx` (Found manuscript/latex/supplementary.docx (68,803 bytes))
 - **Figures:** All 10 figures (Figures 1–9 and Figure S1) present in `manuscript/latex/figures/` and confirmed non-empty.
 
 ## 2. LaTeX Compilation & Typography Audit

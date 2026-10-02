@@ -62,15 +62,16 @@ def volcano(ax, letter, title, df, lfc, p, n_label):
     ax.axhline(-np.log10(ALPHA), color=style.INK, linewidth=0.7, linestyle="--")
     ax.set_xlabel("log$_2$ fold change (flight / ground)")
     ax.set_ylabel(f"$-$log$_{{10}}$ {n_label}")
+    ax.set_ylim(top=max(ax.get_ylim()[1], d["y"].max() * 1.25))
     dropped = n_measured - len(d)
-    # The cloud reaches the top-right corner, so both notes need a ground of their own.
-    box = dict(boxstyle="round,pad=0.25", facecolor="white", edgecolor="none", alpha=0.85)
+    # The cloud reaches the top-right corner, so both notes need an opaque background.
+    box = dict(boxstyle="round,pad=0.3", facecolor="white", edgecolor=style.GREY_LIGHT, linewidth=0.5, alpha=0.95)
     ax.text(0.98, 0.97, f"{int(sig.sum()):,} of {len(d):,} at FDR < {ALPHA}\n"
                         f"{int((sig & (d[lfc] > 0)).sum()):,} up   "
                         f"{int((sig & (d[lfc] < 0)).sum()):,} down",
             transform=ax.transAxes, ha="right", va="top", fontsize=6.5, bbox=box)
     if dropped:
-        ax.text(0.98, 0.84, f"{dropped:,} of {n_measured:,} measured have no adjusted\n"
+        ax.text(0.98, 0.81, f"{dropped:,} of {n_measured:,} measured have no adjusted\n"
                             f"$p$ and cannot be placed on a volcano",
                 transform=ax.transAxes, ha="right", va="top", fontsize=5.9,
                 color=style.GREY, bbox=box)
@@ -96,9 +97,10 @@ def panel_d(ax):
     ax.set_xlim(-lim, lim); ax.set_ylim(-lim, lim)
     ax.set_xlabel("transcript log$_2$FC")
     ax.set_ylabel("protein log$_2$FC")
+    d_box = dict(boxstyle="round,pad=0.25", facecolor="white", edgecolor=style.GREY_LIGHT, linewidth=0.5, alpha=0.92)
     ax.text(0.03, 0.97, f"{len(both):,} genes on both layers\nSpearman $\\rho$ = {r:+.2f}"
                         f"  ($p$ = {p:.1e})",
-            transform=ax.transAxes, ha="left", va="top", fontsize=6.5)
+            transform=ax.transAxes, ha="left", va="top", fontsize=6.5, bbox=d_box)
 
 
 def main():

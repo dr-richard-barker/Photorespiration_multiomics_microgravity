@@ -25,20 +25,20 @@ def box(ax, x, y, w, h, label, fc, ec, fontsize=6.9):
 def panel_a(ax):
     style.panel(ax, "a", "What the standard contrast cannot see")
     ax.set_xlim(0, 10); ax.set_ylim(0, 6.4); ax.axis("off"); ax.grid(False)
-    box(ax, 0.4, 4.3, 3.9, 1.3, "FLIGHT\nsealed, lit, microgravity", "#FBD5BC", "#8C5A3C")
-    box(ax, 0.4, 2.1, 3.9, 1.3, "GROUND CONTROL\nsealed, lit, 1 g", "#E4E7EB", "#5A6169")
-    ax.add_patch(FancyArrowPatch((4.5, 4.95), (5.6, 3.9), arrowstyle="-|>",
+    box(ax, 0.3, 4.25, 4.3, 1.4, "FLIGHT\nsealed, lit, $\\mu$g", "#FBD5BC", "#8C5A3C", fontsize=6.8)
+    box(ax, 0.3, 2.05, 4.3, 1.4, "GROUND CONTROL\nsealed, lit, 1 $g$", "#E4E7EB", "#5A6169", fontsize=6.8)
+    ax.add_patch(FancyArrowPatch((4.75, 4.95), (5.75, 3.95), arrowstyle="-|>",
                                  mutation_scale=12, color=style.INK, linewidth=1.3))
-    ax.add_patch(FancyArrowPatch((4.5, 2.75), (5.6, 3.6), arrowstyle="-|>",
+    ax.add_patch(FancyArrowPatch((4.75, 2.75), (5.75, 3.55), arrowstyle="-|>",
                                  mutation_scale=12, color=style.INK, linewidth=1.3))
-    box(ax, 5.7, 3.1, 4.0, 1.3, "the published\nflight-vs-ground contrast", "white",
-        style.INK)
-    ax.text(2.35, 6.05, "CO$_2$ drawn down in BOTH arms", ha="center", fontsize=7.2,
+    box(ax, 5.85, 3.0, 4.0, 1.5, "the published\nflight-vs-ground\ncontrast", "white",
+        style.INK, fontsize=6.8)
+    ax.text(2.45, 6.05, "CO$_2$ drawn down in BOTH arms", ha="center", fontsize=7.2,
             color=style.VERMILION, fontweight="bold")
-    ax.text(7.7, 2.75, "hardware effect\nsubtracts out —\n25$\\times$ the gravity\n"
-                       "effect, invisible", ha="center", va="top", fontsize=6.6,
+    ax.text(7.85, 2.65, "hardware effect\nsubtracts out —\n25$\\times$ the gravity\n"
+                        "effect, invisible", ha="center", va="top", fontsize=6.6,
             color=style.VERMILION)
-    ax.text(0.4, 1.55, "What survives is a persistent ~5–9 %\n"
+    ax.text(0.3, 1.55, "What survives is a persistent ~5–9 %\n"
                        "assimilation penalty, and downstream\n"
                        "of it a carbon-starvation signature —\n"
                        "which is what the omics show.",

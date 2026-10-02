@@ -235,7 +235,10 @@ function drawGap() {
   const here = (solveAt(0.291, state.Ca).phi - solveAt(0.540, state.Ca).phi) * 100;
   svg.append(el("circle", { cx: ax.X(state.Ca), cy: ax.Y(here), r: 5,
                             fill: C.accent, stroke: C.bg, "stroke-width": 1.5 }));
-  svg.append(el("text", { x: ax.X(state.Ca) + 9, y: ax.Y(here) - 7, "font-size": 10.5,
+  const anchorRight = state.Ca > 280;
+  svg.append(el("text", { x: ax.X(state.Ca) + (anchorRight ? -9 : 9), y: ax.Y(here) - 7,
+                          "text-anchor": anchorRight ? "end" : "start",
+                          "font-size": 10.5,
                           fill: C.accent, "font-weight": 600 },
                          `${here.toFixed(2)} pp at your CO₂`));
 }
@@ -399,7 +402,10 @@ function drawVolcano() {
                               fill: isHit ? C.green : C.purple,
                               stroke: C.bg, "stroke-width": isHit ? 1.4 : 0.7 }));
     if (isHit) {
-      svg.append(el("text", { x: ax.X(x) + 8, y: ax.Y(y) - 6, "font-size": 10.5,
+      const nearRight = ax.X(x) > w - pad.r - 45;
+      svg.append(el("text", { x: ax.X(x) + (nearRight ? -8 : 8), y: ax.Y(y) - 6,
+                              "text-anchor": nearRight ? "end" : "start",
+                              "font-size": 10.5,
                               fill: C.green, "font-weight": 600 }, id));
     }
   }
@@ -558,7 +564,7 @@ function drawLadderFig() {
     .sort((a, b) => a.separation - b.separation);
   if (!con.length) return;
 
-  const w = 620, h = 300, pad = { l: 108, r: 130, t: 14, b: 44 };
+  const w = 620, h = 300, pad = { l: 108, r: 130, t: 26, b: 44 };
   const lim = Math.max(...con.map((r) => Math.abs(r.separation))) * 1.15;
   const ax = axes(svg, { w, h, pad, xlim: [-lim, lim], ylim: [-0.6, con.length - 0.4],
                          yticks: 1, xlabel: `${ladderPick} (log₂FC difference)` });
@@ -580,7 +586,7 @@ function drawLadderFig() {
   const lit = con.filter((r) => r.light === "light").map((r) => r.separation);
   const dark = con.filter((r) => r.light === "dark").map((r) => r.separation);
   const clean = lit.length && dark.length && Math.min(...lit) > Math.max(...dark);
-  svg.append(el("text", { x: pad.l, y: pad.t + 4, "font-size": 10.5,
+  svg.append(el("text", { x: pad.l, y: 15, "font-size": 10.5,
                           fill: clean ? C.soft : C.vermilion },
                          clean ? "every lit study sits above every dark study"
                                : "lit and dark overlap on this contrast"));

@@ -70,16 +70,18 @@ def panel_a(ax, gbl, p) -> None:
     ax.annotate("flight AND ground control\nboth sit here, in the sealed\ncanister",
                 xy=(ops.loc["FLT", "Ca_umol_mol"], ops.loc["FLT", "phi_percent"]),
                 xytext=(168, 47), fontsize=6.7, color=style.VERMILION, ha="left",
-                arrowprops=dict(arrowstyle="-|>", color=style.VERMILION, linewidth=0.8))
+                arrowprops=dict(arrowstyle="-|>", color=style.VERMILION, linewidth=0.8),
+                bbox=dict(boxstyle="round,pad=0.2", facecolor="white", edgecolor="none", alpha=0.85))
     ax.annotate("vented hardware\nholds ambient", xy=(ops.loc["VENTED", "Ca_umol_mol"],
                                                       ops.loc["VENTED", "phi_percent"]),
-                xytext=(-14, 20), textcoords="offset points",
+                xytext=(-15, 22), textcoords="offset points",
                 fontsize=6.7, color=style.BLUE, ha="right",
-                arrowprops=dict(arrowstyle="-|>", color=style.BLUE, linewidth=0.8))
+                arrowprops=dict(arrowstyle="-|>", color=style.BLUE, linewidth=0.8),
+                bbox=dict(boxstyle="round,pad=0.2", facecolor="white", edgecolor="none", alpha=0.9))
 
     ax.set_xlabel("canister CO$_2$ ($\\mu$mol mol$^{-1}$)")
     ax.set_ylabel("oxygenation fraction $\\varphi$ (%)")
-    ax.legend(loc="upper right")
+    ax.legend(loc="upper right", frameon=True, facecolor="white", edgecolor="none", framealpha=0.9)
 
 
 def panel_b(ax, gbl, p) -> None:
@@ -92,12 +94,13 @@ def panel_b(ax, gbl, p) -> None:
     ax.set_xlabel("canister CO$_2$ ($\\mu$mol mol$^{-1}$)")
     ax.set_ylabel("$\\varphi$ in $\\mu$g $-$ $\\varphi$ at 1 g\n(percentage points)")
     ax.legend(loc="upper left", title="canopy scale", title_fontsize=6.8,
-              bbox_to_anchor=(0.0, 1.02))
+              bbox_to_anchor=(0.0, 1.02), frameon=True, facecolor="white", edgecolor="none", framealpha=0.9)
     ax.set_ylim(-0.12, 1.95)
     ax.annotate("as CO$_2$ runs out, so does the flux\nthrough the boundary layer —\n"
                 "the two gravities converge",
                 xy=(78, 0.06), xytext=(175, 0.42), fontsize=6.6, color=style.INK,
-                arrowprops=dict(arrowstyle="-|>", color=style.INK, linewidth=0.7))
+                arrowprops=dict(arrowstyle="-|>", color=style.INK, linewidth=0.7),
+                bbox=dict(boxstyle="round,pad=0.2", facecolor="white", edgecolor="none", alpha=0.85))
     ax.text(0.98, 0.02, "we expected this to widen", transform=ax.transAxes,
             ha="right", va="bottom", fontsize=6.6, color=style.VERMILION, style="italic")
 
@@ -112,7 +115,8 @@ def panel_c(ax, gbl, p) -> None:
         ax.plot(CA_GRID, pen, color=SCALE_COLOUR[scale], label=scale)
     ax.set_xlabel("canister CO$_2$ ($\\mu$mol mol$^{-1}$)")
     ax.set_ylabel("assimilation in $\\mu$g\nrelative to 1 g (%)")
-    ax.legend(loc="center right", title="canopy scale", title_fontsize=6.8)
+    ax.legend(loc="center right", title="canopy scale", title_fontsize=6.8,
+              frameon=True, facecolor="white", edgecolor="none", framealpha=0.92)
     ax.set_ylim(-10.4, -3.6)
     ax.text(0.98, 0.03, "roughly flat across the whole range —\n"
                         "a persistent 5–9 % deficit",
@@ -132,10 +136,10 @@ def panel_d(ax) -> None:
                 fontweight="bold")
     ax.set_ylabel("largest predicted |log$_2$FC|\non a metabolite pool")
     ax.set_ylim(0, hard * 1.30)
-    ax.text(0.5, hard * 0.66, f"{hard / grav:.0f}$\\times$ larger — but it hits\n"
+    ax.text(0.40, hard * 0.66, f"{hard / grav:.0f}$\\times$ larger — but it hits\n"
                               "flight and ground alike, so it\ncancels out of the contrast",
             ha="center", va="center", fontsize=6.7, color=style.INK,
-            bbox=dict(boxstyle="round,pad=0.4", facecolor="white",
+            bbox=dict(boxstyle="round,pad=0.35", facecolor="white",
                       edgecolor=style.GREY_LIGHT, linewidth=0.6))
 
 
