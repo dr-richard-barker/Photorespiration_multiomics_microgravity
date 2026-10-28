@@ -52,9 +52,10 @@ fill them, and the manuscript will read as unfinished until they are cleared.
 - [ ] Archived release DOI for LunarLeaf-CFD (`lunarleaf` entry note)
 
 **References**
-- [ ] `osdr2025` — replace the corporate author with the full author list from the
-      publisher record
-- [ ] `kegg` — add the primary KEGG citation alongside the URL
+- [x] `osdr2025` — replace the corporate author with the full author list from the
+      publisher record (done; verified against CrossRef)
+- [x] `kegg` — add the primary KEGG citation alongside the URL (`kanehisa2000`; author
+      list from PubMed, since CrossRef carries only the first author)
 
 **Scientific decisions the author should confirm**
 - [ ] Whether to keep the hardware-confound framing as the headline, given the enclosure
