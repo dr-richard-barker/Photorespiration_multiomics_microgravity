@@ -39,7 +39,7 @@ predict_metabolome.py  metabolite pool log2 fold changes
 ```
 
 Only LunarLeaf-CFD is used for the gas transport. The sibling repository
-`spaceflight-plant-hardware-cfd` is **not** used — see `results/CFD_PROVENANCE_CONCERN.md`.
+`spaceflight-plant-hardware-cfd` is **not** used — see `methods/CFD_PROVENANCE_CONCERN.md`.
 
 ## The physical setting
 
