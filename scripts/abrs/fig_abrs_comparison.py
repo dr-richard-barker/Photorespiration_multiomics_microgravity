@@ -26,7 +26,7 @@ import pandas as pd
 sys.path.insert(0, os.path.normpath(os.path.join(os.path.dirname(__file__), "..")))
 sys.path.insert(0, os.path.normpath(os.path.join(os.path.dirname(__file__), "..", "figures")))
 import style  # noqa: E402
-from fvcb import LeafParams, solve_operating_point  # noqa: E402
+from fvcb import LeafParams, load_cfd_sweep, solve_operating_point  # noqa: E402
 from paths import ensure  # noqa: E402
 
 ABRS_TABLES = os.path.normpath(os.path.join(
@@ -44,9 +44,14 @@ def plot_panel_a(ax):
     ca_vals = np.logspace(np.log10(60), np.log10(4000), 100)
     p = LeafParams()
     A_ug, Vo_ug, phi_ug = [], [], []
+    # The micro-g rosette g_bl, read from the vendored LunarLeaf sweep with the same row rule
+    # as 03_predict_abrs_metabolome.py. It used to be typed in as 0.291, which went stale
+    # when the steady-state export replaced the old snapshot.
+    g_bl_ug = next(r["g_bl"] for r in load_cfd_sweep()
+                   if r["scale"] == "rosette" and r["gravity_g"] < 0.5)
 
     for ca in ca_vals:
-        sol = solve_operating_point(0.291, p, Ca=ca)  # micro-g rosette
+        sol = solve_operating_point(g_bl_ug, p, Ca=ca)  # micro-g rosette
         A_ug.append(sol["A"])
         Vo_ug.append(sol["Vo"])
         phi_ug.append(sol["phi"] * 100)

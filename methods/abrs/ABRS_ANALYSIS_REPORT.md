@@ -14,9 +14,10 @@
 >   "trapped ethylene" explanation for BRIC ER stress.
 > - **Airflow is not modelled.** ABRS operating points reuse the BRIC LunarLeaf g_bl
 >   rows; only C_a differs.
-> - **Its g_bl is the pre-update value.** `scripts/abrs/fig_abrs_comparison.py` hard-codes
->   the microgravity rosette g_bl as 0.291; the steady-state LunarLeaf T13 vendored on
->   2026-10-28 gives 0.272. The ABRS scripts were not re-run.
+> - *(Resolved 2026-10-28.)* `scripts/abrs/fig_abrs_comparison.py` used to hard-code the
+>   pre-update microgravity rosette g_bl of 0.291. It now reads 0.272 from the vendored
+>   steady-state LunarLeaf T13, `scripts/abrs/run_abrs.sh` was re-run, and the numbers
+>   below are from that run.
 > - **OSD-7 is Affymetrix.** `data/study_registry.tsv` excludes it from the six-study
 >   ladder because its log2 fold changes are not on the RNA-seq scale.
 > - **OSD-16 proteomics was never analysed**; OSDR holds only raw iTRAQ spectra.
@@ -48,7 +49,7 @@ By analyzing ABRS independently and comparing it directly to BRIC-LED, we can no
 
 ### ABRS Environmental Boundary Conditions
 - **Atmospheric Composition:** ISS cabin air, nominal $C_a \approx 3,500\text{ ppm}$ ($\approx 0.35\%\text{ CO}_2$).
-- **Flow Regime:** Forced convection via internal circulation fans ($g_{bl} \approx 0.540\text{ mol m}^{-2}\text{ s}^{-1}$ at $1g$; $0.291\text{ mol m}^{-2}\text{ s}^{-1}$ in $\mu g$).
+- **Flow Regime:** Forced convection via internal circulation fans ($g_{bl} \approx 0.540\text{ mol m}^{-2}\text{ s}^{-1}$ at $1g$; $0.272\text{ mol m}^{-2}\text{ s}^{-1}$ in $\mu g$).
 - **Trace Gases:** Catalytic ethylene scrubber active; VOCs scavenged.
 - **Thermal:** Active Peltier thermoelectric control ($23.0^\circ\text{C}$).
 
@@ -57,20 +58,20 @@ Under the Farquhar–von Caemmerer–Berry (FvCB) model coupled to LunarLeaf bou
 
 | Hardware / Condition | Gravity | $C_a$ (ppm) | $C_c$ (ppm) | $A$ ($\mu\text{mol m}^{-2}\text{ s}^{-1}$) | $V_o$ ($\mu\text{mol m}^{-2}\text{ s}^{-1}$) | $\phi$ ($V_o/V_c$) | Limiting Regime |
 |---|---|---|---|---|---|---|---|
-| **Sealed BRIC-LED** | micro-$g$ | 100 | 73.9 | 2.22 | 9.81 | 53.7% | Rubisco (CO₂-starved) |
+| **Sealed BRIC-LED** | micro-$g$ | 100 | 73.6 | 2.20 | 9.82 | 53.7% | Rubisco (CO₂-starved) |
 | **Earth Ambient Control** | $1g$ | 400 | 230.7 | 16.62 | 8.18 | 27.0% | Rubisco |
 | **Ventilated ABRS GC** | $1g$ | 3,500 | 3,206.0 | 28.87 | 0.82 | 2.6% | **RuBP-regeneration ($J$-limited)** |
-| **Ventilated ABRS FLT** | micro-$g$ | 3,500 | 3,160.5 | 28.85 | 0.83 | 2.6% | **RuBP-regeneration ($J$-limited)** |
+| **Ventilated ABRS FLT** | micro-$g$ | 3,500 | 3,153.6 | 28.85 | 0.83 | 2.6% | **RuBP-regeneration ($J$-limited)** |
 
 ### Mechanistic Implications
 1. **Substrate Saturation:** At $3,500\text{ ppm}$, Rubisco is fully saturated with CO₂. The plant operates strictly in the RuBP-regeneration (electron transport / light-limited) regime.
-2. **Photorespiratory Suppression:** The oxygenation fraction $\phi$ collapses from **53.7%** in sealed BRIC down to **2.6%** in ABRS. Photorespiration flux $V_o$ drops by **12-fold** ($9.81 \to 0.83\ \mu\text{mol m}^{-2}\text{ s}^{-1}$).
-3. **Disappearance of the Boundary-Layer Assimilation Penalty:** Because Rubisco is saturated, the small boundary-layer drop in chloroplastic CO₂ ($C_c$ from 3,206 to 3,160 ppm) has **zero impact on net assimilation** ($A = 28.87$ vs $28.85\ \mu\text{mol m}^{-2}\text{ s}^{-1}$, $\log_2\text{FC} = -0.0009$). The physical boundary layer remains thicker in microgravity, but biochemically it does not penalize carbon fixation when ambient CO₂ is elevated.
+2. **Photorespiratory Suppression:** The oxygenation fraction $\phi$ collapses from **53.7%** in sealed BRIC down to **2.6%** in ABRS. Photorespiration flux $V_o$ drops by **12-fold** ($9.82 \to 0.83\ \mu\text{mol m}^{-2}\text{ s}^{-1}$).
+3. **Disappearance of the Boundary-Layer Assimilation Penalty:** Because Rubisco is saturated, the small boundary-layer drop in chloroplastic CO₂ ($C_c$ from 3,206 to 3,154 ppm) has **zero impact on net assimilation** ($A = 28.87$ vs $28.85\ \mu\text{mol m}^{-2}\text{ s}^{-1}$, $\log_2\text{FC} = -0.0010$). The physical boundary layer remains thicker in microgravity, but biochemically it does not penalize carbon fixation when ambient CO₂ is elevated.
 4. **Cross-Hardware Contrast (ABRS vs BRIC in flight):**
-   - Photosynthetic Assimilation ($A$): **$+3.70\log_2\text{FC}$** (13× higher in ABRS)
-   - Photorespiratory Flux ($V_o$): **$-3.57\log_2\text{FC}$** (12× lower in ABRS)
+   - Photosynthetic Assimilation ($A$): **$+3.72\log_2\text{FC}$** (13× higher in ABRS)
+   - Photorespiratory Flux ($V_o$): **$-3.56\log_2\text{FC}$** (12× lower in ABRS)
    - RuBP Pool Accumulation: **$-5.42\log_2\text{FC}$** (active consumption in ABRS)
-   - Starvation Pool Accumulation: **$-3.70\log_2\text{FC}$** (no starvation in ABRS)
+   - Starvation Pool Accumulation: **$-3.72\log_2\text{FC}$** (no starvation in ABRS)
 
 ---
 
