@@ -69,9 +69,9 @@ def panel_b(ax) -> None:
     # column is empty for the two vented cases — a vented case has no closed volume to
     # average — so matplotlib drew nothing for them and the legend carried two entries
     # with no line, under an annotation saying they "both sit on zero". They do not: at
-    # the leaf surface VEGGIE falls to -0.112 and the open reference to -0.344. The
-    # surface mean is defined for all five cases and is what the FvCB coupling consumes,
-    # so it is what this panel shows.
+    # the leaf surface VEGGIE falls to -0.087 and the open reference to -0.344 (final
+    # values, LunarLeaf-CFD e298785). The surface mean is defined for all six cases and is
+    # what the FvCB coupling consumes, so it is what this panel shows.
     for case, g in df.groupby("case"):
         ax.plot(g["step"] / 1000.0, g["surf_co2_mean"],
                 label=case, color=HW_COLOUR.get(case, style.GREY),
