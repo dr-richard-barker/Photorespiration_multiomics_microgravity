@@ -80,9 +80,12 @@ def panel_b(ax) -> None:
                 zorder=3 if case == "VEGGIE vented" else 2)
     ax.set_xlabel("model step ($\\times10^3$)")
     ax.set_ylabel("leaf-surface CO$_2$ excess\n(model units)")
-    # The note about the enclosure-mean series belongs in the caption: every free corner of
-    ax.legend(loc="lower left", ncol=1, handlelength=1.6, fontsize=6.4,
-              frameon=True, facecolor="white", edgecolor=style.GREY_LIGHT, framealpha=0.92)
+    # The note about the enclosure-mean series belongs in the caption. The legend sits under
+    # the axes: inside, no free corner of this 1.5-inch panel is large enough, and the old
+    # lower-left box hid the first ~10 k steps of the three lit curves. groupby's order puts
+    # BRIC, CARA and the vented pair one per column.
+    ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.27), ncol=3, handlelength=1.6,
+              fontsize=6.4, columnspacing=1.0, handletextpad=0.5, frameon=False)
 
 
 def panel_c(ax) -> None:
@@ -134,9 +137,15 @@ def panel_d(ax) -> None:
 
 def main() -> None:
     style.apply()
-    fig = plt.figure(figsize=(7.5, 4.7))
+    # Panel b's legend hangs below its axes, so the figure grows by that much at the bottom
+    # and every axes keeps the size (in inches) it had at 4.7 in tall.
+    legend_room = 0.48
+    height = 4.7 + legend_room
+    fig = plt.figure(figsize=(7.5, height))
     gs = fig.add_gridspec(2, 3, height_ratios=[0.62, 1.0],
-                          hspace=0.46, wspace=0.44)
+                          hspace=0.46, wspace=0.44,
+                          bottom=(0.11 * 4.7 + legend_room) / height,
+                          top=(0.88 * 4.7 + legend_room) / height)
     panel_a(fig.add_subplot(gs[0, :]))
     panel_b(fig.add_subplot(gs[1, 0]))
     panel_c(fig.add_subplot(gs[1, 1]))
