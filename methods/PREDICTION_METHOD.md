@@ -31,7 +31,7 @@ test, and its result is reported whichever way it comes out.
 ## The chain
 
 ```
-LunarLeaf-CFD          validated D2Q9 LBM solver — g_bl(gravity), enclosure CO2 mass balance
+LunarLeaf-CFD          validated D2Q9 LBM solver — g_bl(gravity); 0-D models — enclosure CO2
    |                   results/tables/T7, T8, T10, T13
    v
 fvcb.py                Farquhar-von Caemmerer-Berry C3 model with the Rubisco oxygenation
@@ -46,7 +46,8 @@ Only LunarLeaf-CFD is used for the gas transport. The sibling repository
 ## The physical setting
 
 OSD-522 is BRIC-LED-001: Arabidopsis seedlings in a **sealed** canister, **illuminated**,
-on SpaceX-13/14. LunarLeaf-CFD's enclosure mass balance (T8) says a lit BRIC canister draws
+on SpaceX-13/14. LunarLeaf-CFD's zero-dimensional enclosure mass balance (T8; an assumed
+30 mL headspace, not the validated lattice-Boltzmann solver) says a lit BRIC canister draws
 CO₂ from 400 ppm to near zero in about **7 minutes** — photosynthesis self-limits — and T11
 puts BRIC's 12 h carbon gain at **1 %** of Earth's, against 90 % for CARA and 100 % for
 vented VEGGIE.

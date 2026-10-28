@@ -7,9 +7,10 @@ states the finding it rests on, so the reasoning can be checked or rejected.
 
 ## The finding these recommendations rest on
 
-A validated CFD solver and a Farquhar–von Caemmerer–Berry model, run without reference to
-any omics data, predicted the OSD-522 shoot response — and the real transcriptome and
-proteome then confirmed it:
+A validated CFD solver and a Farquhar–von Caemmerer–Berry model predicted the OSD-522
+shoot response, and the real transcriptome and proteome largely bore it out (the
+predictions and the tests entered the repository in the same commit, so the record cannot
+show the predictions came first; the proteome matched four of seven sets):
 
 | Prediction (model only) | Measured (OSD-522) | |
 |---|---|---|
@@ -21,6 +22,7 @@ proteome then confirmed it:
 | photorespiratory enzymes **not** induced | no shift, p = 0.09 | ✔ |
 | photorespiration above Rubisco | +0.239, p = 6.8e-3 (protein +0.285, p = 0.049) | ✔ |
 | no fermentation or hypoxia | no shift | ✔ |
+| whole glyoxylate/dicarboxylate map unchanged | median −0.102, p = 3.2e-4 | ✘ |
 
 And the modelling result that reframes it: in a **sealed** canister the enclosure effect on
 carbon metabolism is **25× the microgravity effect** — but it acts on the flight and ground
@@ -35,7 +37,8 @@ structurally blind to it.**
 
 The single highest-value change, and the cheapest.
 
-LunarLeaf-CFD's enclosure mass balance draws a lit BRIC canister from 400 ppm to near zero
+LunarLeaf-CFD's zero-dimensional enclosure mass balance (an assumed 30 mL headspace, not
+its validated lattice-Boltzmann solver) draws a lit BRIC canister from 400 ppm to near zero
 in about **7 minutes**, leaving the plants at the CO₂ compensation point for the rest of the
 photoperiod, with 12 h carbon gain at 1 % of Earth's. No BRIC-class experiment has ever
 logged the atmosphere its plants actually experienced. Every interpretation of those

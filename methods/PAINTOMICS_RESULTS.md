@@ -12,7 +12,7 @@ Two jobs were run on <https://paintomics.org> (Supercomputador Drago, CSIC), org
 
 | Omic | KEGG | MapMan |
 |---|---|---|
-| Gene expression (20,983) | 20,456 · 98% | 20,983 · 100% |
+| Gene expression (20,983) | 20,456 · 97% | 20,983 · 100% |
 | Proteomics (5,160) | 5,002 · 97% | 4,998 · 97% |
 | Metabolomics (21) | 21 · 100% | 21 · 100% |
 
@@ -34,7 +34,9 @@ photosynthesis and carbon supply fell. The enrichment table says exactly that.
 | Carbon fixation by Calvin cycle | 0.64351 | down ✘ (see below) |
 | **Glyoxylate and dicarboxylate metabolism** (photorespiration) | **0.99367** | no change ✔ |
 
-232 pathways tested; 32 significant at combined p < 0.05. **Photorespiration ranks 214th of
+232 pathways tested; 32 significant at uncorrected combined p < 0.05, and six of those survive
+Benjamini–Hochberg FDR < 0.05 (`fdr_bh` in T08), none of them a pathway the model made a
+claim about. **Photorespiration ranks 214th of
 232** — in the bottom 8 %, and the least enriched of any pathway the model made a claim
 about, which is the pathway it specifically predicted would not move. It is *not* last:
 eighteen pathways rank below it, nine of them at p = 1.
@@ -71,9 +73,11 @@ node:
 | 3-Phospho-D-glycerate | C00197 | 0.004 | 81 |
 | L-Glutamine | C00064 | 0.029 | 279 |
 
-**Not one of the eight C2 photorespiratory intermediates** — 2-phosphoglycolate, glycolate,
-glyoxylate, glycine, serine, hydroxypyruvate, glycerate, ammonia — is a significant hub,
-although all eight mapped. The branched-chain amino acids topping the list is the signature
+**The eight C2 photorespiratory intermediates** — 2-phosphoglycolate, glycolate,
+glyoxylate, glycine, serine, hydroxypyruvate, glycerate, ammonia — all mapped, but none
+entered the hub analysis: only the 13 compounds submitted as changed did (plus two glucose
+anomers PaintOmics added), and the C2 pools were predicted to barely move. The hub analysis
+therefore says nothing about them. The branched-chain amino acids topping the list is the signature
 of BCAA catabolism feeding the mitochondrial electron-transfer flavoprotein under carbon
 limitation: the classic carbon-starvation energy route.
 
@@ -103,7 +107,7 @@ circadian rhythm.
 
 | File | Contents |
 |---|---|
-| `results/tables/T08_paintomics_significant.tsv` | all 31 significant pathways, with per-omic p-values |
+| `results/tables/T08_paintomics_significant.tsv` | all 32 pathways at uncorrected p < 0.05, with per-omic p-values and BH FDR |
 | `results/tables/T09_paintomics_carbon.tsv` | the carbon pathways the model made claims about |
 | `results/tables/T10_metabolite_hubs.tsv` | all 15 ranked hub compounds |
 | `methods/PAINTOMICS_CLASS_ACTIVITY.md` | class test, with its circularity spelled out |

@@ -57,7 +57,8 @@ the GCI claim still exist somewhere.
 
 ## What was done instead
 
-This analysis uses **only** `cose-rollout/LunarLeaf-CFD`, which is genuinely validated: four
+This analysis uses **only** `LunarLeaf-CFD` (now at `~/Documents/LunarLeaf-CFD`), whose
+lattice-Boltzmann solver is genuinely validated: four
 passed validation gates (lid-driven cavity, cylinder shedding, natural convection to 0.18 %
 on Nu, erfc diffusion), a CI-verified build, and boundary-layer diagnostics reproduced by
 driving the deployed application. Its `results/tables/T7, T8, T10, T13` supply everything
