@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 import os, sys
 import pandas as pd
-import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 from matplotlib.patches import Patch
@@ -15,29 +14,13 @@ scores_file = "results/tables/T14_physiospace_scores.csv"
 registry_file = "data/study_registry.tsv"
 
 def main():
+    # No fallback. An earlier version of this script wrote a random "mock" score matrix
+    # (np.random.seed(42), with the expected sealed-hardware hypoxia shift added by hand)
+    # into results/tables/ whenever the R step had not run, and drew the heatmap from it.
+    # The scores must come from scripts/08_physiospace_projection.R or not at all.
     if not os.path.exists(scores_file):
-        print("Generating MOCK score matrix for visualization demonstration.")
-        reg = pd.read_csv(registry_file, sep='\t', comment='#')
-        included = reg[reg['include'] == 'yes']['accession'].tolist()
-        stresses = ['Heat', 'Cold', 'Drought', 'Salt', 'Oxidative', 'Wounding', 'Hypoxia', 'Pathogen', 'High_Light']
-        np.random.seed(42)
-        mock_data = {}
-        for acc in included:
-            is_sealed = 'OSD-522' in acc or 'OSD-38' in acc or 'OSD-321' in acc
-            is_vented = 'OSD-427' in acc
-            scores = []
-            for s in stresses:
-                val = np.random.normal(0, 0.5)
-                if s in ['Hypoxia', 'Oxidative']:
-                    if is_sealed: val += 1.5
-                    elif is_vented: val -= 0.5
-                if s == 'High_Light' and 'dark' in acc: val -= 1.0
-                scores.append(val)
-            mock_data[acc] = scores
-            
-        df_scores = pd.DataFrame(mock_data, index=stresses)
-        os.makedirs("results/tables", exist_ok=True)
-        df_scores.to_csv(scores_file)
+        sys.exit(f"error: {scores_file} not found. Run scripts/08_physiospace_projection.R "
+                 "first (needs the PhysioSpaceMethods and PlantPhysioSpace R packages).")
 
     df = pd.read_csv(scores_file, index_col=0)
     reg = pd.read_csv(registry_file, sep='\t', comment='#')

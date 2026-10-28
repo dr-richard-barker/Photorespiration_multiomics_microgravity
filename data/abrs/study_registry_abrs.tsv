@@ -1,12 +1,30 @@
+# ABRS / TAGES addendum to data/study_registry.tsv — documentation only.
+#
+# No script reads this file. scripts/abrs/07_abrs_hardware_comparison.py carries its own
+# organ list and enclosure values. The six RNA-seq studies of the hardware ladder are
+# described in data/study_registry.tsv, which is the sourced record; this file lists
+# only the ABRS studies the scripts/abrs/ extension added.
+#
+# Rewritten 2026-10-27. The earlier version was typed by hand, not read off OSDR: it
+# copied the six RNA-seq rows with a wrong OSD-522 DGE file name, invented contrast
+# strings for OSD-38/OSD-321 and a wrong OSD-38 genotype, and gave OSD-16 a "546 DE
+# proteins" count with no source.
+#
+# OSD-7 fields below were checked on 2026-10-27 against the OSDR sample sheet
+# (data/abrs/cache/isa/s_OSD-7.txt): hardware ABRS, light colour white, Variety
+# "60% WS, 40% Col-0 WT" for the dissected organs and "WS WT" for whole plants,
+# 5 v 5 replicates per organ (3 v 3 for whole plants).
+#
+# carbon_pct_earth = 100 for ABRS is an ASSUMPTION: it reuses the vented-class value of
+# LunarLeaf-CFD T11. No CFD run of ABRS exists.
+#
+# Open decision: data/study_registry.tsv EXCLUDES OSD-7, because Affymetrix log2 fold
+# changes are not on the same scale as the GeneLab RNA-seq ones. The ABRS extension
+# includes it in the ladder regardless.
+#
 accession	include	enclosure_class	carbon_pct_earth	hardware	project	tissue	genotype	light	platform	dge_file	contrast	reason
-OSD-522	yes	sealed	1	BRIC-LED	BRIC-LED-001	shoots	Col-0 Wild Type	light	RNA-seq	GLDS-522_rna_seq_differential_expression_rRNArm_GLbulkRNAseq.csv	Log2fc_(Col-0 & Space Flight & Shoot)v(Col-0 & Ground Control & Shoot)	Primary sealed illuminated study.
-OSD-38	yes	sealed	1	BRIC-PDFU	BRIC-20	seedlings (whole)	Col-0, Ler-0, WS	dark	RNA-seq	GLDS-38_rna_seq_differential_expression_GLbulkRNAseq.csv	Log2fc_(Space Flight)v(Ground Control)	Sealed dark study (internal control).
-OSD-321	yes	sealed	1	BRIC-PDFU	BRIC-22	seedlings (whole)	Col-0	dark	RNA-seq	GLDS-321_rna_seq_differential_expression_GLbulkRNAseq.csv	Log2fc_(Space Flight)v(Ground Control)	Sealed dark study (internal control).
-OSD-678-light	yes	tape	90	CARA square dish	CARA	leaves	Col-0 Wild Type	light	RNA-seq	GLDS-612_rna_seq_differential_expression_rRNArm_GLbulkRNAseq.csv	Log2fc_(Col-0 & Wild Type & Space Flight & Light Treatment)v(Col-0 & Wild Type & Ground Control & Light Treatment)	Intermediate enclosure (tape).
-OSD-678-dark	yes	tape	90	CARA square dish	CARA	leaves	Col-0 Wild Type	dark	RNA-seq	GLDS-612_rna_seq_differential_expression_rRNArm_GLbulkRNAseq.csv	Log2fc_(Col-0 & Wild Type & Space Flight & Dark Treatment)v(Col-0 & Wild Type & Ground Control & Dark Treatment)	Intermediate enclosure dark control.
-OSD-427	yes	vented	100	VEGGIE (VPS)	APEX-04	leaf	Wild Type	light	RNA-seq	GLDS-427_rna_seq_differential_expression.csv	Log2fc_(Wild Type & Space Flight & leaf)v(Wild Type & Ground control & leaf)	Vented illuminated arm (VEGGIE).
-OSD-7-shoot	yes	vented	100	ABRS	TAGES	shoots	WS-0, Col-0	light	microarray	GLDS-7_array_normalized_expression_probeset_GLmicroarray.csv	Shoot_FLT_vs_GC	Primary ventilated illuminated study with active airflow, ethylene scrubbing, and CO2 monitoring.
-OSD-7-root	organ_study	vented	100	ABRS	TAGES	roots	WS-0, Col-0	light	microarray	GLDS-7_array_normalized_expression_probeset_GLmicroarray.csv	Root_FLT_vs_GC	Organ-specific root response (evaluated in organ comparison panel).
-OSD-7-hypocotyl	organ_study	vented	100	ABRS	TAGES	hypocotyls	WS-0, Col-0	light	microarray	GLDS-7_array_normalized_expression_probeset_GLmicroarray.csv	Hypocotyl_FLT_vs_GC	Organ-specific hypocotyl response.
-OSD-7-whole_plant	organ_study	vented	100	ABRS	TAGES	whole plant	WS-0	light	microarray	GLDS-7_array_normalized_expression_probeset_GLmicroarray.csv	Whole_Plant_FLT_vs_GC	Organ-specific intact seedling response.
-OSD-16	qualitative_audit	vented	100	ABRS	TAGES	leaves & roots	WS-0 (TAGES)	light	proteomics (iTRAQ)	Ferl et al. 2015 Table 1	546 DE proteins (256 leaf, 358 root)	Proteomics companion to OSD-7; qualitative audit in T02 and cross-hardware comparison.
+OSD-7-shoot	yes	vented	100	ABRS	TAGES	Plant Shoots	60% WS, 40% Col-0 WT	light	microarray	GLDS-7_array_normalized_expression_probeset_GLmicroarray.csv	Shoot FLT vs GC, computed by scripts/abrs/01_dge_microarray.py	The OSD-7 organ that enters the extended hardware ladder (aerial tissue, white light).
+OSD-7-root	organ_study	vented	100	ABRS	TAGES	Plant Roots	60% WS, 40% Col-0 WT	light	microarray	GLDS-7_array_normalized_expression_probeset_GLmicroarray.csv	Root FLT vs GC, computed by scripts/abrs/01_dge_microarray.py	Organ comparison panel only; roots are outside the photosynthesis prediction.
+OSD-7-hypocotyl	organ_study	vented	100	ABRS	TAGES	hypocotyl	60% WS, 40% Col-0 WT	light	microarray	GLDS-7_array_normalized_expression_probeset_GLmicroarray.csv	Hypocotyl FLT vs GC, computed by scripts/abrs/01_dge_microarray.py	Organ comparison panel only.
+OSD-7-whole_plant	organ_study	vented	100	ABRS	TAGES	Whole Organism	WS WT	light	microarray	GLDS-7_array_normalized_expression_probeset_GLmicroarray.csv	Whole-plant FLT vs GC, computed by scripts/abrs/01_dge_microarray.py	Organ comparison panel only.
+OSD-16	no	vented	-	ABRS	TAGES	-	-	-	proteomics (iTRAQ, raw only)	-	-	EXCLUDED, not analysed anywhere in this repo. OSDR holds 16 files, all raw (14 iTRAQ archives, one MGF peak-list archive, ISA metadata; checked 2026-10-27), with no processed or differential table. The published table (Ferl et al. 2015) could not be retrieved: see scripts/abrs/02_prep_abrs_proteomics.py.

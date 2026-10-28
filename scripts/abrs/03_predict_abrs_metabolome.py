@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Predict the metabolite layer for ABRS (TAGES / OSD-7 / OSD-16).
+"""Predict the metabolite layer for ABRS (TAGES / OSD-7).
 
 In the ABRS flight hardware:
   - Active airflow ventilation sweeps the leaf boundary layer.

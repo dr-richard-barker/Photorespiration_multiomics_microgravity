@@ -8,6 +8,11 @@
 #
 # Output:
 #   results/tables/T14_physiospace_scores.csv
+#
+# STATUS (2026-10-27): this script has never run to completion. The packages are not
+# installed here, and `calculatePhysioScores` / `AT_Stress_Space` have not been checked
+# against the packages' real exports. Any T14 file that predates a real run is not output
+# of this script.
 
 library(dplyr)
 library(tidyr)
@@ -48,8 +53,9 @@ for (i in 1:nrow(included)) {
     }
 }
 
-if (length(all_data) == 0) {
-    stop("No data extracted. Check cache files.")
+missing <- setdiff(included$accession, names(all_data))
+if (length(missing) > 0) {
+    stop("No usable log2FC (ENTREZID + contrast column) for: ", paste(missing, collapse = ", "))
 }
 
 cat("Merging data...\n")

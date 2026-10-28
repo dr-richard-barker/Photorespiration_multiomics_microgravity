@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# run_abrs.sh — End-to-end pipeline for ABRS/TAGES (OSD-7 & OSD-16) analysis
+# run_abrs.sh — End-to-end pipeline for the ABRS/TAGES (OSD-7 transcriptome) analysis
 # and integrated comparison with the sealed BRIC-LED analysis.
 
 set -euo pipefail

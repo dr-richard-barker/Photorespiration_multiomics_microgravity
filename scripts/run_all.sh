@@ -45,16 +45,17 @@ python3 scripts/check_figures.py
 # the compiled PDF showing the old one — the exact drift the pre-publish check looks for.
 cp results/figures/fig*.pdf results/figures/supplementary/fig*.pdf manuscript/latex/figures/
 
-echo "== 8b. PhysioSpace Projection ================================================"
-# Note: Requires PlantPhysioSpace R packages to be installed
-if command -v Rscript &> /dev/null; then
-    Rscript scripts/08_physiospace_projection.R || echo "PhysioSpace R script failed/skipped. Make sure PlantPhysioSpace is installed."
+echo "== 8b. PhysioSpace projection + heatmap (optional) ==========================="
+# Needs the PhysioSpaceMethods and PlantPhysioSpace R packages. Without them the step is
+# skipped with a warning, and so is the heatmap: there is no fallback. An earlier version
+# swallowed the R failure here and fig09_physiospace.py then drew the heatmap from random
+# numbers. With the packages present, a failure in either script stops the run.
+if command -v Rscript &> /dev/null && Rscript -e 'quit(status = !all(c("PhysioSpaceMethods", "PlantPhysioSpace") %in% rownames(installed.packages())))' 2>/dev/null; then
+    Rscript scripts/08_physiospace_projection.R
+    python3 scripts/figures/fig09_physiospace.py
 else
-    echo "Rscript not found. Skipping PhysioSpace projection."
+    echo "WARNING: PhysioSpace SKIPPED (R packages not installed). No T14 scores and no PhysioSpace figure were made." >&2
 fi
-
-echo "== 8c. PhysioSpace Heatmap ==================================================="
-python3 scripts/figures/fig09_physiospace.py
 
 echo "== 9. site data + guards ====================================================="
 python3 scripts/export_site_data.py

@@ -5,12 +5,13 @@ Since the PMC HTML table has reCAPTCHA protection and the XML efetch doesn't
 include table bodies, we use the PMC BioC API to get the full text with
 annotations, then extract AGI IDs from the Table 1 section.
 
-If that also fails, falls back to extracting from the Paul et al. (2013) 
-supplementary data (OSD-7 companion study), which lists the same genes.
+It tries three routes (BioC, PMC OA XML, efetch XML) and exits 1 if none yields a
+table. There is no other fallback.
 
-As a final fallback, constructs the proteomics file from the intersection
-of identified proteins mentioned in the paper text with known Arabidopsis
-protein databases.
+STATUS (2026-10-27): all three routes fail, and OSDR holds only raw iTRAQ spectra for
+OSD-16, so T02_abrs_proteome.tsv has never been produced and no ABRS result uses
+proteomics. The files in data/abrs/cache/ named ferl2015* are a reCAPTCHA page, an
+"enable JavaScript" page saved as .pdf, and XML without the table body.
 """
 
 from __future__ import annotations

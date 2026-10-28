@@ -41,8 +41,8 @@ fixed before any omics were downloaded, then tested against NASA OSDR.
    photorespiration ranked **214th of 232** pathways tested — bottom 8 %, and the least
    enriched of any pathway the model made a claim about.
 5. **Hardware ventilation (ABRS) resolves the ER stress mystery and isolates genuine microgravity adaptations.**
-   Integrating NASA TAGES in ventilated ABRS hardware (OSD-7 transcriptomics & OSD-16 proteomics)
-   demonstrates that the prominent Endoplasmic Reticulum stress / UPR response ($p = 8.65\times 10^{-9}$
+   Integrating the NASA TAGES transcriptome from ventilated ABRS hardware (OSD-7; the companion
+   OSD-16 proteome is not analysed, as OSDR holds only its raw iTRAQ spectra) demonstrates that the prominent Endoplasmic Reticulum stress / UPR response ($p = 8.65\times 10^{-9}$
    in sealed BRIC-LED) was a hardware artifact of volatile build-up and carbon exhaustion; it is
    completely absent in ventilated ABRS ($p = 0.9456$). Elevated ISS cabin CO₂ ($C_a \approx 3{,}500$ ppm)
    fully saturates Rubisco ($C_c = 3{,}160.5$ ppm), collapsing photorespiration ($\varphi = 2.6\%$) and

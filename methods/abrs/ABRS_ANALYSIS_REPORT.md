@@ -5,7 +5,7 @@
 
 ## Executive Summary
 
-This report delivers a complete multi-omics analysis of the NASA TAGES mission flown in the **Advanced Biological Research System (ABRS)** hardware ([OSD-7](https://osdr.nasa.gov/bio/repo/data/studies/OSD-7) transcriptomics and [OSD-16](https://osdr.nasa.gov/bio/repo/data/studies/OSD-16) proteomics), followed by an integrated cross-hardware synthesis with the previous sealed **BRIC-LED** ([OSD-522](https://osdr.nasa.gov/bio/repo/data/studies/OSD-522)) analysis.
+This report delivers a complete multi-omics analysis of the NASA TAGES mission flown in the **Advanced Biological Research System (ABRS)** hardware ([OSD-7](https://osdr.nasa.gov/bio/repo/data/studies/OSD-7) transcriptomics), followed by an integrated cross-hardware synthesis with the previous sealed **BRIC-LED** ([OSD-522](https://osdr.nasa.gov/bio/repo/data/studies/OSD-522)) analysis.
 
 ### The Central Discovery
 The previous investigation showed that sealed BRIC-LED canisters carbon-starve plants within minutes ($C_a \sim 100\text{ ppm}$), inducing massive stress that cancels out in the $\text{Flight vs Ground}$ contrast while masking true microgravity phenomena. 
@@ -158,7 +158,7 @@ All code, data, tables, and figures have been produced inside the workspace:
 ### Scripts
 - `scripts/abrs/00_fetch_abrs.py` — Automated fetcher for OSD-7 microarray expression & ISA metadata.
 - `scripts/abrs/01_dge_microarray.py` — Organ-resolved differential expression (Welch's $t$-test + BH FDR).
-- `scripts/abrs/02_prep_abrs_proteomics.py` — Qualitative proteomics extraction from Ferl et al. (2015).
+- `scripts/abrs/02_prep_abrs_proteomics.py` — Attempted to extract the OSD-16 proteome from Ferl et al. (2015). Every route failed (reCAPTCHA and JavaScript-blocked pages, no table body in the PMC XML), and OSDR holds only raw iTRAQ spectra for OSD-16, so no ABRS proteome table exists and nothing in this report uses one.
 - `scripts/abrs/03_predict_abrs_metabolome.py` — FvCB operating points & 21-metabolite pool predictions for ABRS.
 - `scripts/abrs/04_validate_abrs_upload.py` — Strict PaintOmics file format validator.
 - `scripts/abrs/05_submit_abrs_paintomics.py` — Automated PaintOmics multipart submitter & payload recovery.
