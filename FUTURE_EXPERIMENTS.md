@@ -25,7 +25,7 @@ show the predictions came first; the proteome matched four of seven sets):
 | whole glyoxylate/dicarboxylate map unchanged | median −0.102, p = 3.2e-4 | ✘ |
 
 And the modelling result that reframes it: in a **sealed** canister the enclosure effect on
-carbon metabolism is **25× the microgravity effect** — but it acts on the flight and ground
+carbon metabolism is **22× the microgravity effect** — but it acts on the flight and ground
 arms alike, so it very nearly cancels out of the contrast the experiment is able to see.
 
 **The plants were carbon-starved by their hardware, in both arms, and the experiment was
@@ -71,7 +71,7 @@ separated them **by measurement**.
 The experiment: one genotype, one duration, one harvest protocol, flown simultaneously in
 sealed BRIC-class canisters and in vented VEGGIE- or APH-class chambers, with transcriptome
 and metabolome from both. The model predicts the two will diverge far more from each other
-than either diverges from its own ground control — a 25× ratio is a large enough target to
+than either diverges from its own ground control — a 22× ratio is a large enough target to
 survive considerable error in the estimate.
 
 If that prediction holds, a substantial part of the published "spaceflight plant response"
@@ -124,4 +124,4 @@ Stated so the argument is falsifiable rather than merely consistent:
 - a measured metabolome showing photorespiratory intermediates strongly changed between
   flight and ground, where the model predicts +0.003 log2;
 - a sealed-versus-vented contrast no larger than the flight-versus-ground contrast, against
-  the predicted 25×.
+  the predicted 22×.

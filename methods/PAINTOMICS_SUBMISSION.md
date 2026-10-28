@@ -61,7 +61,7 @@ Same organism and databases, one omic:
 |---|---|---|
 | Metabolomics | `metabolomics_hardware_values.tab` | `metabolomics_hardware_relevant.tab` |
 
-This is the sealed-BRIC versus vented-hardware comparison — the effect that is 25× the
+This is the sealed-BRIC versus vented-hardware comparison — the effect that is 22× the
 gravity effect but cancels out of the flight-versus-ground contrast. It cannot be a fourth
 column of job 1, because the gene and protein layers have no counterpart for it.
 

@@ -2,7 +2,7 @@
 """Figure 3 — the metabolite layer OSDR does not contain, and where it comes from.
 
 a  the 21 compounds, grouped by the modelled flux that drives them
-b  the same compounds under the hardware contrast, which is 25x larger
+b  the same compounds under the hardware contrast, which is ~22x larger
 c  what the model does NOT predict, and why
 
 Every value here is model output. Nothing on this figure was measured.
@@ -60,13 +60,14 @@ def main():
 
     ax1 = fig.add_subplot(gs[0, 0])
     bars(ax1, df, "log2FC_FLT_vs_GC", "Flight vs ground (sealed)", "a")
-    ax1.set_xlim(-0.16, 0.16)
+    xa, xb = 0.16, 3.4
+    ax1.set_xlim(-xa, xa)
 
     ax2 = fig.add_subplot(gs[0, 1])
     d2 = bars(ax2, df, "log2FC_BRIC_vs_VENTED", "Sealed vs vented hardware", "b")
     ax2.set_yticklabels([])
-    ax2.set_xlim(-3.4, 3.4)
-    ax2.text(0.5, -0.115, "note the axis: 25$\\times$ wider than panel a",
+    ax2.set_xlim(-xb, xb)
+    ax2.text(0.5, -0.115, f"note the axis: {xb / xa:.0f}$\\times$ wider than panel a",
              transform=ax2.transAxes, ha="center", va="top", fontsize=6.6,
              color=style.VERMILION)
 

@@ -35,12 +35,13 @@ unenclosed control; at a drawn-down 100\,ppm, an assumed value, the Rubisco oxyg
 fraction rises from 28\,\% to 54\,\% at saturating light. Because that drawdown is a mass balance,
 it occurs in the ground control as well as in flight. It therefore does not bias the
 flight-versus-ground contrast every such experiment reports --- it changes what that contrast
-is \emph{about}. We estimate the enclosure effect on metabolite pools to be 25 times the
+is \emph{about}. We estimate the enclosure effect on metabolite pools to be 22 times the
 microgravity effect, which means the spaceflight response is being measured in plants their
 own hardware has already carbon-starved.
 Contrary to our own starting hypothesis, the microgravity boundary-layer penalty does not
-amplify as CO$_2$ falls; it converges, leaving a persistent 5--9\,\% assimilation deficit at
-saturating light and under 3\,\% at the experiment's own light level.
+amplify as CO$_2$ falls; it converges, leaving a persistent assimilation deficit at
+saturating light of 5--9\,\% at leaf and rosette scale and 26--29\,\% in a dense canopy, and
+under 3\,\% at leaf and rosette scale at the experiment's own light level.
 We tested these predictions against OSD-522 (BRIC-LED), where the model called eight of
 nine transcriptome gene-set responses and four of seven in the proteome, and against four
 further OSDR studies, six flight-versus-ground contrasts in all. On the
@@ -104,7 +105,7 @@ Feeding the boundary-layer conductance into a Farquhar--von Caemmerer--Berry mod
 \citep{farquhar1980} with in-vivo Rubisco kinetics \citep{bernacchi2001,bernacchi2003}, solved
 at saturating irradiance (1{,}000\,\textmu mol m$^{-2}$\,s$^{-1}$), moves
 the leaf along its CO$_2$ response curve: oxygenation fraction rises from
-28.3\,\% in ventilated hardware at ambient CO$_2$ to 53.7\,\% in a drawn-down canister
+28.5\,\% in ventilated hardware at ambient CO$_2$ to 53.7\,\% in a drawn-down canister
 (Fig.~\ref{fig:fvcb}a, Table~\ref{tab:operating}). The canister value is an assumption: the
 sealed arms are placed at 100\,ppm, whereas at this light the compensation point is 54\,ppm,
 where the fraction would be 61\,\%.
@@ -113,8 +114,8 @@ We began from the hypothesis that CO$_2$ starvation would \emph{amplify} the mic
 boundary-layer penalty. The model says the opposite (Fig.~\ref{fig:fvcb}b). As assimilation
 falls toward the compensation point, the flux through the boundary layer falls with it, so
 the CO$_2$ drop across that layer, $A/g_{bl}$, tends to zero and the two gravities converge.
-What survives is a persistent proportional assimilation deficit of about 5\,\% at leaf scale,
-7\,\% at rosette scale and 9\,\% in a dense canopy, nearly independent of where in the
+What survives is a persistent proportional assimilation deficit of 5--7\,\% at leaf scale,
+7--9\,\% at rosette scale and 26--29\,\% in a dense canopy, nearly independent of where in the
 drawdown the plant sits (Fig.~\ref{fig:fvcb}c). That insensitivity is the prediction's
 strength: it does not require knowing the canister CO$_2$, which nobody measured. Both the
 size of the deficit and its insensitivity hold at saturating light only; at the light level
@@ -122,7 +123,7 @@ of the experiments tested below the deficit is smaller and does depend on CO$_2$
 Limitations).
 
 Propagating both contrasts to metabolite pools makes the asymmetry explicit. The
-sealed-versus-ventilated hardware effect is 25 times the flight-versus-ground effect
+sealed-versus-ventilated hardware effect is 22 times the flight-versus-ground effect
 (Fig.~\ref{fig:fvcb}d) --- and because it acts on both arms, it cancels.
 
 \subsection{A metabolite layer that does not exist}
@@ -166,7 +167,8 @@ $+0.030$, $p = 0.82$).
 \subsection{Pathway integration puts photorespiration in the bottom 8\,\%}
 
 Submitting all three layers to PaintOmics \citep{paintomics4} against KEGG and MapMan
-(Fig.~\ref{fig:paintomics}), 97--100\,\% of genes, 97\,\% of proteins and all 21 predicted
+(Fig.~\ref{fig:paintomics}; the metabolite layer submitted predates the current
+boundary-layer conductances, see Limitations), 97--100\,\% of genes, 97\,\% of proteins and all 21 predicted
 compounds mapped. Of 232 pathways tested, 32 reached combined Fisher $p<0.05$ uncorrected,
 including photosynthesis ($p = 0.008$), photosynthesis antenna proteins ($p = 0.022$) and
 starch and sucrose metabolism ($p = 0.019$). Six survive Benjamini--Hochberg correction at
@@ -237,9 +239,11 @@ entered the repository in the same commit, so the record cannot show that the pr
 were fixed first. Pathway enrichment is reported at uncorrected $p$; after FDR correction six
 of 232 pathways remain, none of them one the model made a claim about. The enclosure drawdown
 and carbon-gain figures rest on an assumed headspace volume and tape permeance, and OSDR does
-not describe how the CARA plates were sealed. The boundary-layer conductances come from a
-LunarLeaf-CFD export that predates its steady-state re-run, which lowered microgravity
-$g_{bl}$ at every scale; the 5--9\,\% deficit has not been recomputed with it. The intended ventilated proteome arm does not exist, because OSD-16 has no processed
+not describe how the CARA plates were sealed. The PaintOmics jobs were run before the
+boundary-layer conductances were updated to LunarLeaf-CFD's steady-state export, on a
+predicted metabolite layer with a flight-versus-ground photosynthate log$_2$FC of $-0.114$
+against $-0.131$ now; the same thirteen compounds pass the submission threshold, but the
+jobs have not been re-run on the current values. The intended ventilated proteome arm does not exist, because OSD-16 has no processed
 files, so the two-layer comparison is confined to sealed hardware. The metabolite layer is
 predicted throughout, and the metabolite class-activity test is close to circular because it
 tests our own predicted list; the hub analysis is not, and is reported as the informative one.
@@ -247,8 +251,8 @@ The photosynthesis model is solved at saturating irradiance, 1{,}000\,\textmu mo
 m$^{-2}$\,s$^{-1}$, whereas OSD-522 was grown at 60. At 60 the same calculation puts the
 oxygenation fraction at 18\,\% in ventilated hardware at ambient CO$_2$ and 46\,\% at
 100\,ppm, which at that light is the compensation point, and the microgravity assimilation
-deficit at under 3\,\% at every canopy scale, growing as CO$_2$ falls rather than holding
-flat. The direction of each prediction is unchanged, but the magnitudes in
+deficit at under 3\,\% at leaf and rosette scale and up to 11\,\% in a dense canopy,
+growing as CO$_2$ falls rather than holding flat. The direction of each prediction is unchanged, but the magnitudes in
 Table~\ref{tab:operating} and Fig.~\ref{fig:fvcb} are saturating-light values
 (\texttt{results/tables/T13\_light\_sensitivity.tsv}).
 Finally, $V_{cmax}$, $J_{max}$, $R_d$, $g_s$ and $g_m$ remain literature values for
@@ -273,7 +277,8 @@ manuscript. Study selection, including each exclusion and its reason, is in
 \texttt{data/study\_registry.tsv}.
 
 \textbf{Gas transport.} Boundary-layer conductance was taken from the lattice-Boltzmann
-solver in LunarLeaf-CFD \citep{lunarleaf}, and the enclosure drawdown time and 12\,h carbon
+solver in LunarLeaf-CFD \citep{lunarleaf}, from its steady-state export (commit
+\texttt{e298785}, regenerated with \texttt{validation/export\_cfd.ts}), and the enclosure drawdown time and 12\,h carbon
 gain from its zero-dimensional models (\texttt{validation/hardware\_analysis.py},
 \texttt{validation/feedback\_0d.py}), which assume a 30\,mL dish headspace and a tape
 permeance; all were vendored into this repository.
@@ -341,8 +346,8 @@ effectively the same place because both are placed in a drawn-down canister, at 
 Arm & $g_{bl}$ & $C_a$ & $C_c$ & $\varphi$ (\%) & $A$ \\
 \midrule
 Ground control (sealed)   & 0.540 & 100 & 75.5  & 53.1 & 2.40 \\
-Flight (sealed)           & 0.291 & 100 & 73.9  & 53.7 & 2.22 \\
-Ventilated (ambient)      & 0.291 & 400 & 216.9 & 28.3 & 15.56 \\
+Flight (sealed)           & 0.272 & 100 & 73.6  & 53.7 & 2.20 \\
+Ventilated (ambient)      & 0.272 & 400 & 215.0 & 28.5 & 15.40 \\
 \botrule
 \end{tabular}
 \footnotetext{$g_{bl}$ in mol m$^{-2}$ s$^{-1}$; $C_a$ and $C_c$ in \textmu mol mol$^{-1}$;

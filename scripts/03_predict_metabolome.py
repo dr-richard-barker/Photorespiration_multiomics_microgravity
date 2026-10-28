@@ -22,7 +22,7 @@ Two contrasts are produced, and they are very different in size:
               PaintOmics job alongside the real gene and protein layers.
 
   BRIC_vs_VENTED  The same plant in sealed BRIC versus vented hardware holding ambient
-              CO2. This is the hardware effect. It is roughly forty times larger than the
+              CO2. This is the hardware effect. It is roughly twenty times larger than the
               gravity effect — but because it hits flight and ground alike, it cancels
               almost entirely out of FLT_vs_GC.
 
@@ -31,7 +31,8 @@ boundary-layer difference between 1 g and microgravity does NOT amplify. As assi
 falls toward the CO2 compensation point the flux through the boundary layer falls with it,
 so the CO2 drop across that layer (A/g_bl) tends to zero and the two gravities converge on
 oxygenation fraction. What survives is a persistent proportional assimilation penalty of
-about 5-9 % that is nearly independent of where in the drawdown the plant sits.
+about 5-9 % at leaf and rosette scale (26-29 % in a dense canopy) that is nearly
+independent of where in the drawdown the plant sits.
 """
 
 from __future__ import annotations

@@ -8,12 +8,13 @@ c  the archive gap this analysis ran into
 from __future__ import annotations
 import os, sys
 import matplotlib.pyplot as plt
+import pandas as pd
 from matplotlib.patches import FancyArrowPatch, FancyBboxPatch
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import style  # noqa: E402
-from paths import FIGURES  # noqa: E402
+from paths import FIGURES, TABLES  # noqa: E402
 
 
 def box(ax, x, y, w, h, label, fc, ec, fontsize=6.9):
@@ -22,8 +23,20 @@ def box(ax, x, y, w, h, label, fc, ec, fontsize=6.9):
     ax.text(x + w / 2, y + h / 2, label, ha="center", va="center", fontsize=fontsize)
 
 
+def model_numbers() -> tuple[float, dict]:
+    """Hardware/gravity ratio (T06) and the deficit range per light and scale (T13)."""
+    t06 = pd.read_csv(os.path.join(TABLES, "T06_predicted_compounds.tsv"), sep="\t", comment="#")
+    ratio = t06["log2FC_BRIC_vs_VENTED"].abs().max() / t06["log2FC_FLT_vs_GC"].abs().max()
+    t13 = pd.read_csv(os.path.join(TABLES, "T13_light_sensitivity.tsv"), sep="\t", comment="#")
+    d = t13[t13["quantity"] == "deficit"]
+    deficit = {(int(r.Q_umol_m2_s), r.scale): (r.deficit_min_percent, r.deficit_max_percent)
+               for r in d.itertuples()}
+    return ratio, deficit
+
+
 def panel_a(ax):
     style.panel(ax, "a", "What the standard contrast cannot see")
+    ratio, deficit = model_numbers()
     ax.set_xlim(0, 10); ax.set_ylim(0, 6.4); ax.axis("off"); ax.grid(False)
     box(ax, 0.3, 4.25, 4.3, 1.4, "FLIGHT\nsealed, lit, $\\mu$g", "#FBD5BC", "#8C5A3C", fontsize=6.8)
     box(ax, 0.3, 2.05, 4.3, 1.4, "GROUND CONTROL\nsealed, lit, 1 $g$", "#E4E7EB", "#5A6169", fontsize=6.8)
@@ -35,14 +48,16 @@ def panel_a(ax):
         style.INK, fontsize=6.8)
     ax.text(2.45, 6.05, "CO$_2$ drawn down in BOTH arms", ha="center", fontsize=7.2,
             color=style.VERMILION, fontweight="bold")
-    ax.text(7.85, 2.65, "hardware effect\nsubtracts out —\n25$\\times$ the gravity\n"
-                        "effect, invisible", ha="center", va="top", fontsize=6.6,
+    ax.text(7.85, 2.65, "hardware effect\nsubtracts out —\n"
+                        f"{ratio:.0f}$\\times$ the gravity\neffect, invisible",
+            ha="center", va="top", fontsize=6.6,
             color=style.VERMILION)
-    ax.text(0.3, 1.55, "What survives is a persistent ~5–9 %\n"
-                       "assimilation penalty at saturating light\n"
-                       "(under 3 % at OSD-522's), and downstream\n"
-                       "of it a carbon-starvation signature —\n"
-                       "which is what the omics show.",
+    hi, lo = deficit[(1000, "rosette")], deficit[(60, "rosette")]
+    ax.text(0.3, 1.55, f"What survives is a persistent ~{hi[0]:.0f}–{hi[1]:.0f} %\n"
+                       "rosette assimilation penalty at saturating\n"
+                       f"light (under {lo[1]:.1f} % at OSD-522's), and\n"
+                       "downstream of it a carbon-starvation\n"
+                       "signature — which is what the omics show.",
             fontsize=6.7, va="top", color=style.INK)
 
 

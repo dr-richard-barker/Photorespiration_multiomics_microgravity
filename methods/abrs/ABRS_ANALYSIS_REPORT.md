@@ -14,6 +14,9 @@
 >   "trapped ethylene" explanation for BRIC ER stress.
 > - **Airflow is not modelled.** ABRS operating points reuse the BRIC LunarLeaf g_bl
 >   rows; only C_a differs.
+> - **Its g_bl is the pre-update value.** `scripts/abrs/fig_abrs_comparison.py` hard-codes
+>   the microgravity rosette g_bl as 0.291; the steady-state LunarLeaf T13 vendored on
+>   2026-10-28 gives 0.272. The ABRS scripts were not re-run.
 > - **OSD-7 is Affymetrix.** `data/study_registry.tsv` excludes it from the six-study
 >   ladder because its log2 fold changes are not on the RNA-seq scale.
 > - **OSD-16 proteomics was never analysed**; OSDR holds only raw iTRAQ spectra.

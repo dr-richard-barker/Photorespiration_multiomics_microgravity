@@ -18,7 +18,7 @@ from paths import DOCS, REPO  # noqa: E402
 TOL = 1e-6
 GRID = [
     dict(g_bl=g, Ca=ca, TleafC=t, Q=q)
-    for g in (1.0, 0.54, 0.291, 0.109)
+    for g in (0.997, 0.54, 0.272, 0.058)
     for ca in (400.0, 250.0, 150.0, 100.0, 70.0)
     for t in (20.0, 25.0, 30.0)
     for q in (400.0, 1000.0, 1500.0)

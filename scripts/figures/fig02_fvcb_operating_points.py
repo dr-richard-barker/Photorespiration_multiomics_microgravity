@@ -86,19 +86,22 @@ def panel_a(ax, gbl, p) -> None:
 
 def panel_b(ax, gbl, p) -> None:
     style.panel(ax, "b", "The gravity gap shrinks, it does not amplify")
+    top = 0.0
     for scale in SCALES:
         earth, ug = gbl[scale]
         d = (sweep(ug, p)["phi"].values - sweep(earth, p)["phi"].values) * 100
         ax.plot(CA_GRID, d, color=SCALE_COLOUR[scale], label=scale)
+        top = max(top, float(np.nanmax(d)))
     ax.axhline(0, color=style.GREY, linewidth=0.8)
     ax.set_xlabel("canister CO$_2$ ($\\mu$mol mol$^{-1}$)")
     ax.set_ylabel("$\\varphi$ in $\\mu$g $-$ $\\varphi$ at 1 g\n(percentage points)")
     ax.legend(loc="upper left", title="canopy scale", title_fontsize=6.8,
               bbox_to_anchor=(0.0, 1.02), frameon=True, facecolor="white", edgecolor="none", framealpha=0.9)
-    ax.set_ylim(-0.12, 1.95)
+    # Limits follow the CFD export: the canopy gap tripled when LunarLeaf re-ran to steady state.
+    ax.set_ylim(-0.06 * top, 1.12 * top)
     ax.annotate("as CO$_2$ runs out, so does the flux\nthrough the boundary layer —\n"
                 "the two gravities converge",
-                xy=(78, 0.06), xytext=(175, 0.42), fontsize=6.6, color=style.INK,
+                xy=(78, 0.03 * top), xytext=(175, 0.42 * top), fontsize=6.6, color=style.INK,
                 arrowprops=dict(arrowstyle="-|>", color=style.INK, linewidth=0.7),
                 bbox=dict(boxstyle="round,pad=0.2", facecolor="white", edgecolor="none", alpha=0.85))
     ax.text(0.98, 0.02, "we expected this to widen", transform=ax.transAxes,
@@ -107,20 +110,26 @@ def panel_b(ax, gbl, p) -> None:
 
 def panel_c(ax, gbl, p) -> None:
     style.panel(ax, "c", "The penalty that does survive")
+    span = {}
     for scale in SCALES:
         earth, ug = gbl[scale]
         a_e, a_u = sweep(earth, p)["A"].values, sweep(ug, p)["A"].values
         with np.errstate(divide="ignore", invalid="ignore"):
             pen = np.where(a_e > 0.05, (a_u - a_e) / a_e * 100, np.nan)
         ax.plot(CA_GRID, pen, color=SCALE_COLOUR[scale], label=scale)
+        span[scale] = (float(np.nanmin(np.abs(pen))), float(np.nanmax(np.abs(pen))))
     ax.set_xlabel("canister CO$_2$ ($\\mu$mol mol$^{-1}$)")
     ax.set_ylabel("assimilation in $\\mu$g\nrelative to 1 g (%)")
     ax.legend(loc="center right", title="canopy scale", title_fontsize=6.8,
               frameon=True, facecolor="white", edgecolor="none", framealpha=0.92)
-    ax.set_ylim(-10.4, -3.6)
-    ax.text(0.98, 0.03, "roughly flat across the whole range —\n"
-                        "a persistent 5–9 % deficit",
-            transform=ax.transAxes, ha="right", va="bottom", fontsize=6.6, color=style.INK)
+    lo = max(v[1] for v in span.values())
+    hi = min(v[0] for v in span.values())
+    ax.set_ylim(-1.08 * lo, -0.7 * hi)
+    # The same numbers as T13_light_sensitivity.tsv (Q = 1000 rows), computed here from the
+    # curves just drawn so the label cannot drift from them.
+    ax.text(0.03, 0.5, "roughly flat across the whole range —\n" + "\n".join(
+                f"{s} {span[s][0]:.0f}–{span[s][1]:.0f} %" for s in SCALES),
+            transform=ax.transAxes, ha="left", va="center", fontsize=6.6, color=style.INK)
 
 
 def panel_d(ax) -> None:

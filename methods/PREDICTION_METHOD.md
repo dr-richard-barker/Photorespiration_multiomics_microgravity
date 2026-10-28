@@ -55,7 +55,7 @@ vented VEGGIE.
 The step that matters for interpreting OSD-522: **that drawdown is a sealed-box mass
 balance, so it happens in the ground control too.** Both arms of the experiment sit near
 the CO₂ compensation point. What differs between them is the boundary-layer conductance:
-LunarLeaf-CFD T13 gives `g_bl` 0.540 → 0.291 mol m⁻² s⁻¹ (Earth → microgravity, rosette).
+LunarLeaf-CFD T13 gives `g_bl` 0.540 → 0.272 mol m⁻² s⁻¹ (Earth → microgravity, rosette).
 
 ## The result we did not expect
 
@@ -64,30 +64,36 @@ boundary-layer penalty. The model says the opposite, and the model is right:
 
 | Canister CO₂ (µmol/mol) | log2FC[A] flight/ground | log2FC[Vo] flight/ground |
 |---:|---:|---:|
-| 400 | −0.0959 | +0.0213 |
-| 250 | −0.1049 | +0.0126 |
-| 150 | −0.1110 | +0.0063 |
-| 100 | −0.1140 | +0.0031 |
-|  70 | −0.1158 | +0.0011 |
+| 400 | −0.1100 | +0.0243 |
+| 250 | −0.1203 | +0.0144 |
+| 150 | −0.1271 | +0.0072 |
+| 100 | −0.1305 | +0.0035 |
+|  70 | −0.1326 | +0.0012 |
+
+(Printed by `python3 scripts/03_predict_metabolome.py --sensitivity`, rosette scale, Q = 1000.)
 
 As assimilation falls toward the compensation point, the flux through the boundary layer
 falls with it, so the CO₂ drop across that layer (`A/g_bl`) tends to **zero** and the two
 gravities *converge* on oxygenation fraction. The gravity effect on photorespiratory
 partitioning shrinks rather than amplifying.
 
-What survives is a **persistent proportional assimilation penalty** — about 5 % at leaf
-scale, 7 % at rosette, 9 % at canopy — that barely moves across the whole CO₂ range. That
+What survives is a **persistent proportional assimilation penalty** — 5–7 % at leaf
+scale, 7–9 % at rosette, 26–29 % at canopy (`T13_light_sensitivity.tsv`, Q = 1000) — that
+barely moves across the whole CO₂ range. That
 robustness is the prediction's strength: it does not depend on knowing the canister's exact
 steady-state CO₂, which nobody measured.
 
-## Two contrasts, differing by a factor of 25
+## Two contrasts, differing by a factor of about 22
 
 | | log2FC photosynthate | log2FC photorespiratory | what it is |
 |---|---:|---:|---|
-| `FLT_vs_GC` | −0.114 | +0.003 | what OSD-522 measured; goes into the joint PaintOmics job |
-| `BRIC_vs_VENTED` | −2.808 | +0.242 | the hardware effect; a metabolome-only second job |
+| `FLT_vs_GC` | −0.131 | +0.003 | what OSD-522 measured; goes into the joint PaintOmics job |
+| `BRIC_vs_VENTED` | −2.811 | +0.239 | the hardware effect; a metabolome-only second job |
 
-The hardware effect is **25× larger** than the gravity effect — but it hits flight and
+The PaintOmics jobs were run on the layer predicted before the steady-state CFD update
+(−0.114 / +0.003 and −2.808 / +0.242); see `methods/PAINTOMICS_RESULTS.md`.
+
+The hardware effect is **22× larger** than the gravity effect — but it hits flight and
 ground alike, so it very nearly cancels out of the contrast the experiment can see. This is
 the central claim of the analysis: the sealed canister dominates the plant's carbon
 metabolism, and the experiment is structurally blind to it.
@@ -146,8 +152,8 @@ Stated so that the omissions read as decisions rather than oversights.
 - The 21-compound set is small by metabolomics standards. It is confined to compounds
   reachable from a modelled flux; breadth was traded for defensibility.
 - **The prediction has only four distinct values.** Because every pool in a block inherits
-  the same flux ratio, all eight C2 intermediates carry +0.0031, all six photosynthate
-  pools −0.1140, and so on. That is a faithful statement of what the model knows — it
+  the same flux ratio, all eight C2 intermediates carry +0.0035, all six photosynthate
+  pools −0.1305, and so on. That is a faithful statement of what the model knows — it
   resolves fluxes, not individual pool kinetics — but it has two consequences worth
   anticipating. PaintOmics' metabolite **class activity** test may behave degenerately on
   it, and the **hub analysis** will rank compounds by their gene neighbourhoods rather than

@@ -17,7 +17,7 @@ photorespiratory quantities:
     Rp / A     photorespiration relative to net assimilation
 
 The scientific point: as gravity -> 0 the buoyant convection that sweeps the leaf
-boundary layer collapses, g_bl falls (LunarLeaf-CFD: leaf 1.0 -> 0.49 mol m-2 s-1
+boundary layer collapses, g_bl falls (LunarLeaf-CFD: leaf 0.997 -> 0.443 mol m-2 s-1
 from 1 g to microgravity), the 1/g_bl resistance term grows, Cc drops, Gamma*/Cc
 rises, and Rubisco tips toward oxygenation -> more photorespiration. The effect
 amplifies leaf -> rosette -> canopy exactly as g_bl falls further at denser scales.
@@ -163,7 +163,8 @@ def solve_operating_point(g_bl: float, p: LeafParams, Ca: float = 400.0,
 # The gravity/geometry sweep is read from a CSV the CFD produces (its export_cfd.ts
 # writes results/tables/T13_boundary_layer.csv; a snapshot is vendored under data/).
 # Required columns: scenario, scale, gravity_g, g_bl_mol_m2_s, o2_excess_ppm.
-# Any extra columns (delta_mm, Sherwood, dC_CO2_mean) are carried through for display.
+# Any extra columns (delta_mm, Sherwood, dC_CO2_mean, gbl_drift_pct_last_5s) are ignored
+# or carried through for display.
 DEFAULT_CFD_CSV = os.path.join(
     os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
     "data", "lunarleaf_gbl_sweep.csv"

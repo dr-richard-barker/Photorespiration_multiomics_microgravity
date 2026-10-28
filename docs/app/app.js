@@ -108,7 +108,7 @@ const path = (pts, { X, Y }) =>
 const SLIDERS = [
   { k: "Ca", label: "canister CO₂", unit: "µmol mol⁻¹", min: 60, max: 420, step: 5, val: 100 },
   { k: "g_bl", label: "boundary layer g_bl", unit: "mol m⁻² s⁻¹",
-    min: 0.05, max: 1.2, step: 0.001, val: 0.291 },
+    min: 0.05, max: 1.2, step: 0.001, val: 0.272 },
   { k: "Q", label: "light (PPFD)", unit: "µmol m⁻² s⁻¹", min: 0, max: 2000, step: 25, val: 1000 },
   { k: "TleafC", label: "leaf temperature", unit: "°C", min: 10, max: 40, step: 0.5, val: 25 },
   { k: "Vcmax25", label: "Vcmax at 25 °C", unit: "µmol m⁻² s⁻¹", min: 20, max: 180, step: 1,
@@ -124,8 +124,8 @@ const SLIDERS = [
 const PRESETS = {
   vented:          { Ca: 400, g_bl: 0.540, Q: 1000 },
   "sealed-ground": { Ca: 100, g_bl: 0.540, Q: 1000 },
-  "sealed-flight": { Ca: 100, g_bl: 0.291, Q: 1000 },
-  "canopy-ug":     { Ca: 100, g_bl: 0.109, Q: 1000 },
+  "sealed-flight": { Ca: 100, g_bl: 0.272, Q: 1000 },
+  "canopy-ug":     { Ca: 100, g_bl: 0.058, Q: 1000 },
 };
 
 const state = Object.fromEntries(SLIDERS.map((s) => [s.k, s.val]));
@@ -225,14 +225,14 @@ function drawGap() {
   clear(svg);
   const w = 560, h = 210, pad = { l: 52, r: 16, t: 14, b: 40 };
   const gaps = CA_GRID.map((ca) =>
-    [ca, (solveAt(0.291, ca).phi - solveAt(0.540, ca).phi) * 100]);
+    [ca, (solveAt(0.272, ca).phi - solveAt(0.540, ca).phi) * 100]);
   const ymax = Math.max(0.6, ...gaps.map((d) => d[1])) * 1.25;
   const ax = axes(svg, { w, h, pad, xlim: [60, 420], ylim: [0, ymax], yticks: 4,
                          xlabel: "canister CO₂ (µmol mol⁻¹)",
                          ylabel: "φ(µg) − φ(1 g)  (pp)" });
   svg.append(el("path", { d: path(gaps, ax), fill: "none", stroke: C.accent,
                           "stroke-width": 2.2 }));
-  const here = (solveAt(0.291, state.Ca).phi - solveAt(0.540, state.Ca).phi) * 100;
+  const here = (solveAt(0.272, state.Ca).phi - solveAt(0.540, state.Ca).phi) * 100;
   svg.append(el("circle", { cx: ax.X(state.Ca), cy: ax.Y(here), r: 5,
                             fill: C.accent, stroke: C.bg, "stroke-width": 1.5 }));
   const anchorRight = state.Ca > 280;

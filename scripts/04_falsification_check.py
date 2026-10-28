@@ -5,7 +5,7 @@ metabolome/predict_metabolome.py makes a specific, falsifiable claim about Space
 vs Ground Control inside a sealed BRIC-LED canister:
 
   * photorespiratory flux Vo is essentially UNCHANGED   (log2FC ~ +0.003)
-  * net assimilation A is DOWN about 7-8 %              (log2FC ~ -0.114)
+  * net assimilation A is DOWN about 9 %                (log2FC ~ -0.131)
   * therefore carbon-starvation responses should be UP, and photorespiratory
     gene/protein expression should NOT be induced
 

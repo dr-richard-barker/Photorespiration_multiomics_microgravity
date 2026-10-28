@@ -8,6 +8,15 @@ Two jobs were run on <https://paintomics.org> (Supercomputador Drago, CSIC), org
 | 1 | `m1z16Qg3DK` | transcriptome + proteome (real, OSDR) + metabolome (predicted) | <https://paintomics.org/?jobID=m1z16Qg3DK> |
 | 2 | `EVFahRGk7T` | predicted metabolome only, sealed vs vented hardware | <https://paintomics.org/?jobID=EVFahRGk7T> |
 
+**Both jobs used the metabolite layer predicted before the 2026-10-28 CFD update.** That
+layer came from a LunarLeaf-CFD export older than its steady-state re-run (`e298785`); the
+values submitted are the ones in the saved job records under `results/paintomics_raw/`
+(job 1 photosynthate log2FC −0.113996, job 2 −2.808339). The layer the pipeline now writes to
+`data/paintomics_upload/` comes from the steady-state export (−0.130520 and −2.810755;
+`results/tables/T06_predicted_compounds.tsv`). The same thirteen compounds pass the
+relevant-features threshold in job 1 and all 21 in job 2, so the submitted lists are
+unchanged, but the jobs have not been re-run on the current values.
+
 ## Identifier mapping — all three layers landed cleanly
 
 | Omic | KEGG | MapMan |
@@ -100,7 +109,7 @@ circadian rhythm.
   prediction was built. Not evidence for the model.
 - **Job 2, the hardware contrast** (`methods/PAINTOMICS_JOB2_OUTCOME.md`) returned 57 KEGG
   pathways, **0 significant**, no MapMan hits and no hub analysis. A metabolome-only
-  submission cannot use PaintOmics' best tools. The 25× hardware effect stands as a model
+  submission cannot use PaintOmics' best tools. The 22× hardware effect stands as a model
   result; this job adds nothing to it.
 
 ## Files here

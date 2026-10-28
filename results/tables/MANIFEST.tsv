@@ -13,4 +13,4 @@ T09_paintomics_carbon.tsv	1817	scripts/06_paintomics_tables.py (job m1z16Qg3DK)	
 T10_metabolite_hubs.tsv	1528	scripts/06_paintomics_tables.py (job m1z16Qg3DK)	PaintOmics metabolite hub analysis: predicted compounds ranked by REAL DE genes nearby	results/paintomics_raw/job1_m1z16Qg3DK_full.json.gz
 T11_hardware_ladder.tsv	7457	scripts/07_hardware_ladder.py	Six OSDR studies x ten gene sets: median shift, Mann-Whitney p, model prediction	data/study_registry.tsv + GeneLab DGE tables
 T12_ladder_contrasts.tsv	2136	scripts/07_hardware_ladder.py	Set-vs-set separations per study — the illumination test and the enclosure test	data/study_registry.tsv + GeneLab DGE tables
-T13_light_sensitivity.tsv	973	scripts/09_light_sensitivity.py	Table 1 operating points, the lit-canister compensation point, and the Fig. 2c microgravity deficit at Q = 1000 (used everywhere else) and Q = 60 (OSD-522 light)	LunarLeaf-CFD T13 + fvcb.py
+T13_light_sensitivity.tsv	976	scripts/09_light_sensitivity.py	Table 1 operating points, the lit-canister compensation point, and the Fig. 2c microgravity deficit at Q = 1000 (used everywhere else) and Q = 60 (OSD-522 light)	LunarLeaf-CFD T13 + fvcb.py
