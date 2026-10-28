@@ -66,7 +66,7 @@ def lay_out(nodes, floor=0.006):
 
 def panel_a(ax, sk):
     style.panel(ax, "a", f"Transcript bin to protein bin to pathway "
-                         f"(top {TOP_N} of 28)")
+                         f"(top {TOP_N} of {sum(not q['broad'] for q in sk['pathways'])})")
     view = sk["views"]["core"]
     paths = [p for p in sk["pathways"] if not p["broad"]][:TOP_N]
     keep = {p["name"] for p in paths}

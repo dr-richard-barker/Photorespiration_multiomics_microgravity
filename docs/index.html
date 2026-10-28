@@ -14,45 +14,15 @@ spaceflight growth-hardware gas transport, with the OSDR omics that test it.">
       data-cose-doc="off"
       data-brand-logo="https://dr-richard-barker.github.io/Plant_response_to_radiation/cose/cose-logo.png">
 
-
-<div style="position: absolute; top: 20px; right: 20px;">
-  <button id="theme-toggle" class="btn" style="padding: 6px 12px; font-size: 14px; border-radius: 6px; cursor: pointer;">
-    ◐ Theme
-  </button>
-</div>
-<script>
-  (function() {
-    const html = document.documentElement;
-    const btn = document.getElementById('theme-toggle');
-    const lsKey = 'barker.theme';
-    
-    // Set initial theme
-    const saved = localStorage.getItem(lsKey);
-    if (saved) {
-      html.setAttribute('data-theme', saved);
-    } else {
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      html.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
-    }
-    
-    // Toggle on click
-    btn.addEventListener('click', () => {
-      const current = html.getAttribute('data-theme');
-      const next = current === 'dark' ? 'light' : 'dark';
-      html.setAttribute('data-theme', next);
-      localStorage.setItem(lsKey, next);
-    });
-  })();
-</script>
 <header class="hero">
-
   <p class="eyebrow">CoSE · plant spaceflight biology</p>
   <h1>A gas-transport model predicts the <em>Arabidopsis</em> spaceflight
-      transcriptome, and illumination separates six flight experiments</h1>
+      transcriptome, and illumination separates six flight contrasts</h1>
   <p class="lede">
     Plants flown on the ISS grow inside enclosures, and almost nobody measures the atmosphere
-    inside them. A validated gas-transport model says an illuminated sealed canister draws
-    itself down to the CO<sub>2</sub> compensation point within minutes — in the ground
+    inside them. A simple mass balance, with an assumed canister headspace, says an
+    illuminated sealed canister draws itself down toward the CO<sub>2</sub> compensation point
+    within minutes — in the ground
     control as much as in flight, which is exactly why it disappears from the contrast that
     gets published.
   </p>
@@ -76,8 +46,7 @@ spaceflight growth-hardware gas transport, with the OSDR omics that test it.">
   <button role="tab" data-tab="enclosure">Enclosures</button>
   <button role="tab" data-tab="omics">Omics</button>
   <button role="tab" data-tab="pathways">Pathways</button>
-  <button role="tab" data-tab="ladder">Six studies</button>
-  <button role="tab" data-tab="abrs">ABRS Validation</button>
+  <button role="tab" data-tab="ladder">Six contrasts</button>
 </nav>
 
 <!-- ────────────────────────────────────────────────────────── MODEL -->
@@ -147,7 +116,8 @@ spaceflight growth-hardware gas transport, with the OSDR omics that test it.">
   <div id="retention" class="cards wide"></div>
   <p class="note">
     The seven-minute drawdown in a lit BRIC canister is a mass balance between photosynthetic
-    uptake and enclosure volume. It is therefore essentially gravity-independent — it happens
+    uptake and enclosure volume, with an assumed 30 mL headspace; it comes from a
+    zero-dimensional model in LunarLeaf-CFD, not from the lattice-Boltzmann runs above. It is therefore essentially gravity-independent — it happens
     in the ground control too, and cancels out of flight-versus-ground.
   </p>
 </section>
@@ -175,7 +145,7 @@ spaceflight growth-hardware gas transport, with the OSDR omics that test it.">
     a fold change but no adjusted <em>p</em>. The caption says when that happens.
   </p>
 
-  <h3>Gene-set response across the six flight experiments</h3>
+  <h3>Gene-set response across the six flight contrasts</h3>
   <p class="note">
     Median shift against all other genes, per set, per study. Blue is down in flight, red is
     up, white is no change. <strong>Click any row to highlight that set in the volcano
@@ -187,7 +157,7 @@ spaceflight growth-hardware gas transport, with the OSDR omics that test it.">
            aria-label="Gene set by study heatmap of median shift"></svg>
     </div>
     <figcaption>
-      Columns are ordered illuminated first, then dark, matching Figure 7. Values come from
+      Columns are grouped illuminated first, then dark, as in Figure 7d. Values come from
       <span class="mono">results/tables/T11_hardware_ladder.tsv</span>.
     </figcaption>
   </figure>
@@ -231,10 +201,11 @@ spaceflight growth-hardware gas transport, with the OSDR omics that test it.">
 
 <!-- ───────────────────────────────────────────────────────── LADDER -->
 <section id="ladder" class="panel" role="tabpanel">
-  <h2>Six studies, and the axis that separates them</h2>
+  <h2>Six contrasts from five studies, and the axis that separates them</h2>
   <p class="note">
-    The model predicted an ordering across enclosure types. Illumination separated the studies
-    perfectly; the enclosure gradient did not. Both are shown.
+    The model predicted an ordering across enclosure types. Illumination separated the six
+    contrasts completely on starvation over photosynthesis, though not on every contrast; the
+    enclosure gradient did not hold. Both are shown.
   </p>
   <div class="preset-row">
     <span class="preset-label">Contrast</span>
@@ -251,99 +222,22 @@ spaceflight growth-hardware gas transport, with the OSDR omics that test it.">
   <div class="tablewrap"><table id="studytable"></table></div>
 </section>
 
-<!-- ─────────────────────────────────────────────────────────── ABRS -->
-<section id="abrs" class="panel" role="tabpanel">
-  <h2>Hardware Ventilation: Sealed BRIC-LED vs Ventilated ABRS</h2>
-  <p class="note">
-    Direct comparison between sealed canisters (BRIC-LED, OSD-522) and actively ventilated flight chambers (ABRS, OSD-7 transcriptomics) on the International Space Station. Active ventilation with cabin air resolves genuine microgravity adaptations from enclosed hardware artifacts. The ABRS companion proteome (OSD-16) is not analysed: OSDR holds only its raw iTRAQ spectra, so the ABRS side of every comparison here is transcriptome-only.
-  </p>
-
-  <div class="cards wide">
-    <div class="card">
-      <h4>Rubisco Saturated (<i>C</i><sub>a</sub> &asymp; 3,500 ppm)</h4>
-      <p>Elevated ISS cabin CO<sub>2</sub> saturates Rubisco (<i>C</i><sub>c</sub> = 3,160.5 ppm), collapsing the photorespiratory oxygenation fraction from <strong>53.7%</strong> down to <strong>2.6%</strong> and dropping photorespiratory flux 12-fold (9.81 &rarr; 0.83 &micro;mol m<sup>&minus;2</sup> s<sup>&minus;1</sup>).</p>
-    </div>
-    <div class="card">
-      <h4>ER Stress / UPR is a Hardware Artifact</h4>
-      <p><em>Protein processing in endoplasmic reticulum</em>, the top enriched pathway in sealed BRIC-LED (<i>p</i> = 8.65 &times; 10<sup>&minus;9</sup>), disappears completely in ventilated ABRS (<i>p</i> = 0.9456). The unfolded protein response is triggered by trapped volatiles, ethylene, and CO<sub>2</sub> starvation in sealed canisters.</p>
-    </div>
-    <div class="card">
-      <h4>Conserved Spaceflight Core</h4>
-      <p><strong>Biotic Stress</strong> (<i>p</i> = 0.0151 in ABRS; <i>p</i> = 2.10 &times; 10<sup>&minus;4</sup> in BRIC-LED), <strong>Raffinose oligosaccharide metabolism</strong> (<i>p</i> = 0.0081), and light-harvesting complex repression (<i>p</i> = 6.58 &times; 10<sup>&minus;6</sup>) are robustly conserved across sealed and ventilated hardware.</p>
-    </div>
-    <div class="card">
-      <h4>7-Study Ladder Parity</h4>
-      <p>Across 7 independent flight experiments, both ventilated platforms—VEGGIE RNA-seq and ABRS microarray—converge on an identical separation from dark controls: &Delta;<sub>VEGGIE</sub> = +0.4142 vs &Delta;<sub>ABRS</sub> = +0.4146.</p>
-    </div>
-  </div>
-
-  <figure style="margin: 2rem 0;">
-    <img src="assets/fig09_abrs_comparison.png" alt="Cross-hardware validation: Sealed BRIC-LED vs Ventilated ABRS" style="width: 100%; border-radius: 8px; border: 1px solid var(--line); display: block;">
-    <figcaption style="margin-top: 0.75rem; font-size: 0.9rem; color: var(--ink-soft);">
-      <strong>Figure 9 | Ventilated flight hardware (ABRS) resolves true microgravity responses from sealed canister artifacts.</strong>
-      <strong>a</strong>, FvCB photosynthesis assimilation curves (<i>A</i> vs <i>C</i><sub>a</sub>). Elevated ISS cabin CO<sub>2</sub> drives ABRS into the RuBP-regeneration (<i>J</i>-limited) plateau (<i>A</i> &asymp; 28.85 &micro;mol m<sup>&minus;2</sup> s<sup>&minus;1</sup>), eliminating boundary-layer penalties.
-      <strong>b</strong>, Cross-hardware pathway comparison showing complete elimination of ER stress (<i>p</i> = 0.9456) and preservation of biotic stress (<i>p</i> = 0.0151) and raffinose metabolism (<i>p</i> = 0.0081).
-      <strong>c</strong>, Organ-specific transcriptomics in ABRS across leaves, roots, hypocotyls, and whole shoots.
-      <strong>d</strong>, Extended 7-study hardware ladder placing ABRS alongside VEGGIE at the ventilated, illuminated apex.
-    </figcaption>
-  </figure>
-
-  <h3>Cross-Hardware Pathway Comparison (Table S1)</h3>
-  <div class="tablewrap">
-    <table>
-      <thead>
-        <tr>
-          <th>DB</th>
-          <th>Pathway</th>
-          <th>BRIC-LED <i>p</i></th>
-          <th>ABRS <i>p</i></th>
-          <th>ABRS Dir</th>
-          <th>Classification</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td>KEGG</td><td>Protein processing in endoplasmic reticulum</td><td>8.65e-9</td><td>0.9456</td><td>Flat</td><td>Hardware artifact (volatiles / starvation)</td></tr>
-        <tr><td>MapMan</td><td>Cellular response overview</td><td>2.33e-6</td><td>0.6111</td><td>Down</td><td>Hardware artifact</td></tr>
-        <tr><td>MapMan</td><td><strong>Biotic Stress</strong></td><td>2.10e-4</td><td>0.0151</td><td>Up</td><td><span class="tag sig">Conserved microgravity response</span></td></tr>
-        <tr><td>KEGG</td><td>Glucosinolate biosynthesis</td><td>6.02e-4</td><td>0.8453</td><td>Up</td><td>Hardware artifact</td></tr>
-        <tr><td>KEGG</td><td>Plant hormone signal transduction</td><td>0.0011</td><td>0.0516</td><td>Up</td><td>Borderline conserved</td></tr>
-        <tr><td>KEGG</td><td>Photosynthesis</td><td>0.0080</td><td>0.8512</td><td>Down</td><td>Hardware-modulated</td></tr>
-        <tr><td>KEGG</td><td>MAPK signaling pathway</td><td>0.0094</td><td>0.2322</td><td>Up</td><td>Hardware-modulated</td></tr>
-        <tr><td>KEGG</td><td>Starch and sucrose metabolism</td><td>0.0186</td><td>0.5428</td><td>Down</td><td>Hardware-modulated</td></tr>
-        <tr><td>KEGG</td><td>Photosynthesis - antenna proteins</td><td>0.0217</td><td>1.0000</td><td>Down</td><td>Hardware-modulated</td></tr>
-        <tr><td>MapMan</td><td><strong>Raffinose metabolism</strong></td><td>0.0274</td><td>0.0081</td><td>Up</td><td><span class="tag sig">Conserved microgravity response</span></td></tr>
-        <tr><td>KEGG</td><td>Carbon fixation by Calvin cycle</td><td>0.1420</td><td>0.0074</td><td>Up</td><td>ABRS-specific (CO<sub>2</sub> saturated)</td></tr>
-        <tr><td>KEGG</td><td>Cysteine and methionine metabolism</td><td>0.2110</td><td>0.0015</td><td>Down</td><td>ABRS-specific</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="callout" style="margin-top: 2rem;">
-    <h3>Manuscript &amp; Supplementary Downloads</h3>
-    <p>The complete manuscript and supplementary information incorporating both BRIC-LED and ABRS analyses are available in both PDF and Word (.docx) formats:</p>
-    <div class="btns" style="margin-top: 1rem;">
-      <a class="btn primary" href="Photorespiration_multiomics_microgravity.pdf">Manuscript (PDF)</a>
-      <a class="btn" href="Photorespiration_multiomics_microgravity.docx">Manuscript (Word DOCX)</a>
-      <a class="btn" href="Photorespiration_multiomics_microgravity_SI.pdf">Supplementary Info (PDF)</a>
-      <a class="btn" href="Photorespiration_multiomics_microgravity_SI.docx">Supplementary Info (Word DOCX)</a>
-    </div>
-  </div>
-</section>
-
 <footer>
   <p>
     Model and analysis code:
     <a href="https://github.com/dr-richard-barker/Photorespiration_multiomics_microgravity">GitHub</a>.
     Primary data: NASA Open Science Data Repository (OSD-522, OSD-38, OSD-321, OSD-678,
-    OSD-427, OSD-7). Gas transport: LunarLeaf-CFD.
+    OSD-427). Gas transport: LunarLeaf-CFD.
   </p>
   <p class="warn">
     The metabolite layer throughout this site is <strong>model output, never measured</strong>.
-    OSDR contains no plant metabolome — 0 of 66 plant studies.
+    OSDR contains no plant metabolome: none of its twelve metabolite-profiling studies is of a plant.
   </p>
 </footer>
 
 <script type="module" src="app/app.js"></script>
+<script src="https://dr-richard-barker.github.io/Plant_response_to_radiation/cose/sites.js"></script>
+<script src="https://dr-richard-barker.github.io/Plant_response_to_radiation/cose/theme.js"></script>
   <script defer src="https://visitor-analytics.astrobotany.workers.dev/a.js"></script>
 </body>
 </html>

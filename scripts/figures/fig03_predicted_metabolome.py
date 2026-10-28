@@ -93,7 +93,7 @@ def main():
                  fontsize=11, fontweight="bold", x=0.008, ha="left", y=0.985)
     fig.subplots_adjust(top=0.88, bottom=0.30, left=0.16, right=0.985)
     style.predicted_note(fig, "EVERY VALUE ON THIS FIGURE IS MODEL OUTPUT. Nothing here was "
-                              "measured. 0 of 66 OSDR plant studies has a metabolome.")
+                              "measured. No OSDR plant study has a metabolome.")
     style.save(fig, "fig03_predicted_metabolome", FIGURES)
 
 

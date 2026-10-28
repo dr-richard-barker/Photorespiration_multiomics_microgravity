@@ -158,7 +158,8 @@ def main() -> None:
     fig.suptitle("A drawn-down enclosure, not microgravity, is what reaches Rubisco",
                  fontsize=11, fontweight="bold", x=0.008, ha="left", y=0.985)
     style.predicted_note(fig, "Farquhar–von Caemmerer–Berry model with Bernacchi (2001, 2003) "
-                              "kinetics, driven by LunarLeaf-CFD boundary-layer conductance.")
+                              "kinetics, driven by LunarLeaf-CFD boundary-layer conductance. "
+                              "All panels at saturating light, 1000 umol m-2 s-1.")
     style.save(fig, "fig02_fvcb_operating_points", FIGURES)
 
 

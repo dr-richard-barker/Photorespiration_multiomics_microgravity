@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
-"""Figure 7 — six spaceflight studies, and the axis that actually separates them.
+"""Figure 7 — six flight contrasts from five studies, and the axis that separates them.
 
 a  the studies, laid out by enclosure and illumination
 b  THE RESULT: starvation-over-photosynthesis separation, lit versus dark
 c  the same six studies against the enclosure gradient the model predicted — which fails
 d  gene-set responses per study, the whole matrix
 
-The model made two predictions. Illumination separates the studies perfectly. The enclosure
-gradient does not, and panel c shows the failure rather than hiding it.
+The model made two predictions. Illumination separates the contrasts completely on
+starvation over photosynthesis, though not on every contrast. The enclosure gradient does not, and panel c shows the failure rather than hiding it.
 """
 
 from __future__ import annotations
@@ -39,7 +39,7 @@ def short(acc: str) -> str:
 
 
 def panel_a(ax, t12) -> None:
-    style.panel(ax, "a", "The six studies")
+    style.panel(ax, "a", "Five studies, six contrasts")
     ax.set_xlim(-0.4, 2.6); ax.set_ylim(-0.6, 1.7)
     ax.set_xticks(range(3)); ax.set_xticklabels(["sealed\nBRIC", "tape\nCARA", "vented\nVEGGIE"])
     ax.set_yticks([0, 1]); ax.set_yticklabels(["dark", "lit"])
@@ -86,7 +86,7 @@ def panel_b(ax, t12) -> None:
     _u, p = stats.mannwhitneyu(lit, dark, alternative="greater")
     # Short enough to sit in the empty positive-x space beside the dark bars; the full
     # statement of the test belongs in the caption, not stacked on top of the data.
-    ax.text(0.99, 0.03, f"every lit $>$ every dark\nMann–Whitney $p$ = {p:.2f}",
+    ax.text(0.99, 0.03, f"every lit $>$ every dark\none-sided $p$ = {p:.2f}",
             transform=ax.transAxes, ha="right", va="bottom", fontsize=6.4,
             color=style.INK, linespacing=1.35)
 
@@ -120,7 +120,7 @@ def panel_c(ax, t12) -> None:
 
 
 def panel_d(ax, t11) -> None:
-    style.panel(ax, "d", "Every gene set, every study")
+    style.panel(ax, "d", "Every gene set, every contrast")
     pivot = t11.pivot_table(index="set", columns="accession", values="shift")
     order = [s for s in SET_ORDER if s in pivot.index]
     lit_first = [c for c in pivot.columns if "light" in c or c in ("OSD-522", "OSD-427")]
@@ -165,7 +165,7 @@ def main() -> None:
     panel_c(fig.add_subplot(gs[0, 2]), t12)
     panel_d(fig.add_subplot(gs[1, :]), t11)
 
-    fig.suptitle("Illumination, not sealing, is what orders the spaceflight response",
+    fig.suptitle("Illumination, not enclosure class, separates the six contrasts",
                  fontsize=11, fontweight="bold", x=0.008, ha="left", y=0.988)
     style.predicted_note(fig, "Six matched flight-vs-ground contrasts from NASA OSDR; "
                               "gene sets from KEGG. Study selection in data/study_registry.tsv.")

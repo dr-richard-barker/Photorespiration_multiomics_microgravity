@@ -7,12 +7,12 @@ response is being measured in plants their own hardware has already carbon-starv
 
 [**Interactive model and data explorer**](https://dr-richard-barker.github.io/Photorespiration_multiomics_microgravity/)
 · [manuscript PDF](https://dr-richard-barker.github.io/Photorespiration_multiomics_microgravity/Photorespiration_multiomics_microgravity.pdf)
-· [manuscript Word DOCX](https://dr-richard-barker.github.io/Photorespiration_multiomics_microgravity/Photorespiration_multiomics_microgravity.docx)
+· [manuscript DOCX](https://dr-richard-barker.github.io/Photorespiration_multiomics_microgravity/Photorespiration_multiomics_microgravity.docx)
 · [supplementary PDF](https://dr-richard-barker.github.io/Photorespiration_multiomics_microgravity/Photorespiration_multiomics_microgravity_SI.pdf)
-· [supplementary Word DOCX](https://dr-richard-barker.github.io/Photorespiration_multiomics_microgravity/Photorespiration_multiomics_microgravity_SI.docx)
+· [supplementary DOCX](https://dr-richard-barker.github.io/Photorespiration_multiomics_microgravity/Photorespiration_multiomics_microgravity_SI.docx)
 · [figures](results/figures) · [tables](results/tables)
 
-![The blind test](results/figures/fig05_blind_test.png)
+![The model against the measurement](results/figures/fig05_blind_test.png)
 
 ---
 
@@ -21,46 +21,53 @@ response is being measured in plants their own hardware has already carbon-starv
 A validated lattice-Boltzmann model of leaf boundary-layer gas transport
 ([LunarLeaf-CFD](https://github.com/dr-richard-barker/LunarLeaf-CFD)) coupled to a
 Farquhar–von Caemmerer–Berry model of C₃ photosynthesis, used to ask what spaceflight
-*growth hardware* — not gravity — does to the CO₂ reaching Rubisco. The predictions were
-fixed before any omics were downloaded, then tested against NASA OSDR.
+*growth hardware* — not gravity — does to the CO₂ reaching Rubisco. Its predictions are
+tested against NASA OSDR. The predictions and the tests entered the repository in the same
+commit, so the record cannot show that the predictions came first.
 
-### The five key findings
+### The four findings
 
 1. **A lit sealed canister is a CO₂-starvation chamber.** 400 ppm to near zero in about
    seven minutes; 12 h carbon gain at **1 %** of an unenclosed control, against 90 % under
-   micropore tape and 100 % when vented.
+   gas-permeable tape and 100 % when vented. These come from LunarLeaf-CFD's
+   zero-dimensional enclosure models, with an assumed 30 mL headspace and tape permeance,
+   not from its validated lattice-Boltzmann solver.
 2. **That effect is ~25× the microgravity effect, and invisible.** Because the drawdown is a
    mass balance it happens in the ground control too, so it subtracts out of
    flight-versus-ground.
 3. **Our own starting hypothesis was wrong.** We expected CO₂ starvation to *amplify* the
    microgravity boundary-layer penalty. It converges instead: with no assimilation there is
    no flux across the boundary layer for gravity to impede. What survives is a persistent
-   5–9 % assimilation deficit.
-4. **The model predicted the measurement.** Blind, it called **eight of nine** gene-set
-   responses in OSD-522. In PaintOmics, photosynthesis pathways were enriched and
-   photorespiration ranked **214th of 232** pathways tested — bottom 8 %, and the least
-   enriched of any pathway the model made a claim about.
-5. **Hardware ventilation (ABRS) resolves the ER stress mystery and isolates genuine microgravity adaptations.**
-   Integrating the NASA TAGES transcriptome from ventilated ABRS hardware (OSD-7; the companion
-   OSD-16 proteome is not analysed, as OSDR holds only its raw iTRAQ spectra) demonstrates that the prominent Endoplasmic Reticulum stress / UPR response ($p = 8.65\times 10^{-9}$
-   in sealed BRIC-LED) was a hardware artifact of volatile build-up and carbon exhaustion; it is
-   completely absent in ventilated ABRS ($p = 0.9456$). Elevated ISS cabin CO₂ ($C_a \approx 3{,}500$ ppm)
-   fully saturates Rubisco ($C_c = 3{,}160.5$ ppm), collapsing photorespiration ($\varphi = 2.6\%$) and
-   dropping photorespiratory flux 12-fold ($9.81 \to 0.83\ \mu\mathrm{mol\,m^{-2}\,s^{-1}}$).
-   Crucially, **Biotic Stress** ($p = 0.0151$) and **Raffinose metabolism** ($p = 0.0081$) are conserved
-   across sealed and ventilated hardware, forming the verified core spaceflight response. In addition,
-   the 7-study extended hardware ladder confirms that both independent ventilated flight platforms
-   (VEGGIE RNA-seq, OSD-427, and ABRS microarray, OSD-7) show identical separation from dark controls
-   ($\Delta_{\mathrm{VEGGIE}} = +0.4142$ vs $\Delta_{\mathrm{ABRS}} = +0.4146$).
+   5–9 % assimilation deficit at saturating light, which is what the model is solved at; at
+   OSD-522's own 60 µmol m⁻² s⁻¹ it is under 3 %
+   ([`T13_light_sensitivity.tsv`](results/tables/T13_light_sensitivity.tsv)).
+4. **The model predicted much of the measurement.** It called **eight of nine** transcriptome
+   gene-set responses in OSD-522, three of them by predicting no change, and four of seven in
+   the proteome. In PaintOmics, photosynthesis pathways reached uncorrected *p* < 0.05 (none
+   survives FDR, and the Calvin cycle, predicted down, did not move) and photorespiration
+   ranked **214th of 232** pathways tested — bottom 8 %, and the least enriched of any
+   pathway the model made a claim about.
 
-### Caveats and boundary conditions
+### And what did not work
 
-- **The predicted enclosure gradient does not hold** across all passive vessels (Spearman ρ = −0.50, *p* = 0.67).
-  Sealed and vented fall the right way round but micropore tape sits highest. What *does* separate
-  flight studies is **illumination and active ventilation**, which is mechanistically what the model says.
-- **OSDR has no plant metabolome.** Of 567 studies, six are metabolite profiling and every
-  one is mouse, human, rat or microbial; **0 of 66 plant studies**. The third omic layer had
-  to be predicted, and is labelled as model output everywhere it appears.
+- **The predicted enclosure gradient does not hold** (Spearman ρ = −0.50, *p* = 0.67). Sealed
+  and vented fall the right way round but the CARA plates (modelled as taped; OSDR does not
+  say how they were sealed) sit highest, and three contrasts cannot rank three classes. What
+  *does* separate the six contrasts, from five studies, is **illumination**, on the
+  starvation-over-photosynthesis contrast though not on every contrast. That fits the model,
+  since drawdown requires photosynthesis, but the model predicted no signal in the dark, not
+  the inversion seen, and OSD-678's lit arm grew in only 4–6 µmol m⁻² s⁻¹ of cabin light.
+- **Most pathway results do not survive correction.** 32 of 232 pathways reach uncorrected
+  *p* < 0.05; six survive FDR, and none is a pathway the model made a claim about.
+- **The strongest signal in the data is one this model does not explain**: protein processing
+  in the endoplasmic reticulum, *p* = 8.6 × 10⁻⁹, the unfolded protein response.
+- **OSDR has no plant metabolome.** Of 567 studies, twelve are metabolite profiling and every
+  one is mouse, human, rat or microbial
+  ([`T03`](results/tables/T03_osdr_metabolomics_census.tsv)); **none is a plant**. The third
+  omic layer had to be predicted, and is labelled as model output everywhere it appears.
+- **The boundary-layer numbers come from an older LunarLeaf-CFD export.** Its steady-state
+  re-run lowered microgravity g_bl at every scale, and the 5–9 % has not been recomputed;
+  see [`data/lunarleaf/PROVENANCE.md`](data/lunarleaf/PROVENANCE.md).
 
 ---
 
@@ -72,6 +79,8 @@ data/                 inputs only
   lunarleaf/            vendored CFD tables + provenance
   mapman/               vendored MapMan diagrams + gene-to-bin mapping + provenance
   paintomics_upload/    the validated submission bundle
+  paintomics_*.tsv      curation joined into T09/T10 (which pathways and compounds the model claimed)
+  abrs/                 ABRS / OSD-7 inputs (unreviewed; see below)
   cache/                OSDR + KEGG downloads (git-ignored, regenerated on demand)
 scripts/              every executable, numbered in pipeline order
   fvcb.py               the model core, importable
@@ -79,7 +88,8 @@ scripts/              every executable, numbered in pipeline order
   mapman.py             MapMan pathway membership, rebuilt from the diagram layouts
   figures/              one script per figure + the shared visual system
   run_all.sh            regenerates everything from a cold cache
-results/tables/       T01…T12 + MANIFEST.tsv (fails if a table lacks provenance)
+results/tables/       T01…T13 + MANIFEST.tsv (fails if a table lacks provenance)
+results/abrs/, scripts/abrs/, methods/abrs/   the ABRS extension (unreviewed; see below)
 results/figures/      eight figures, PNG at 300 dpi and PDF vector
 manuscript/latex/     npj Microgravity style, compiles locally and in CI
   main.tex              the manuscript; supplementary.tex is a separate document
@@ -118,13 +128,13 @@ python3 scripts/05_submit_paintomics.py --job 1
 | Model coupling (CFD → FvCB) | **done** — six physical self-checks pass |
 | Predicted metabolite layer | **done** — 21 compounds, KEGG ids from the REST API |
 | OSD-522 transcriptome + proteome | **done** — PyDESeq2, 1,795 DE genes; 5,160 proteins |
-| Blind falsification test | **done** — 8 of 9 gene sets |
+| Falsification test | **done** — 8 of 9 transcriptome gene sets; 4 of 7 in the proteome |
 | PaintOmics integration | **done** — jobs `m1z16Qg3DK` and `EVFahRGk7T` |
-| Cross-study ladder (6 studies) | **done** — illumination separates; enclosure gradient does not |
+| Cross-study ladder (6 contrasts, 5 studies) | **done** — illumination separates; enclosure gradient does not |
 | Eight-figure set | **done** |
-| npj manuscript | **compiles** — 12 pages, no unresolved references; author block is placeholders |
+| npj manuscript | **compiles** — 13 pages, no unresolved references; author block is placeholders |
 | Supplementary information | **compiles** — 2 pages, one figure, cross-referenced to the manuscript |
-| Interactive site | **done** — model, enclosures, omics (volcano, heatmap, Sankey), pathways, six studies |
+| Interactive site | **done** — model, enclosures, omics (volcano, heatmap, Sankey), pathways, six contrasts |
 | FAIR packaging | **done** — manifest, CITATION.cff, .zenodo.json, MIT |
 | Zenodo deposit | **pending** — needs the author fields below |
 
@@ -138,7 +148,9 @@ Nothing here was invented to fill a gap, so these remain visibly open:
 - **A framing decision — partly settled.** The title now claims the mechanism (photosynthesis
   depletes its own enclosure) and its consequence (the response is read out in carbon-starved
   plants), rather than an enclosure gradient the data did not support. Still worth your call:
-  whether to lead instead with the blind-prediction result, which is the safest claim here.
+  whether to lead instead with the prediction result.
+- **Whether to re-run on the current LunarLeaf-CFD export**, which would change the
+  5–9 % deficit and the operating points.
 - **The ER / unfolded-protein-response result** currently gets one paragraph. It is the
   largest signal in the data and this model says nothing about it.
 
@@ -154,7 +166,7 @@ Nothing here was invented to fill a gap, so these remain visibly open:
 - **A three-arm design** (flight sealed, ground sealed, ground vented). Two arms confound
   hardware with gravity; three separate them, and the third arm never leaves the ground.
 - **More studies**, if the tissue constraint can be relaxed defensibly — the ladder is
-  currently three lit and three dark, which is too few to rank enclosure classes.
+  currently three lit and three dark contrasts, which is too few to rank enclosure classes.
 
 Full reasoning in [`FUTURE_EXPERIMENTS.md`](FUTURE_EXPERIMENTS.md).
 
@@ -171,15 +183,17 @@ This project has a few standing rules, and they are load-bearing:
   constraint: root studies are excluded because a photosynthesis prediction says nothing
   about roots.
 - **Contrasts are matched.** OSD-678 offers 36 flight-versus-ground contrasts but only six
-  are matched on genotype, ecotype and light; the rest compare flown Col-0 against
-  ground-control *phyD*.
+  are matched on genotype, ecotype and light; the rest also differ in genotype, ecotype or
+  light (flown Col-0 against ground-control *phyD*, for example).
 - **Gene sets come from KEGG, not memory.** An earlier hand-written list here put PGLP1 at
   the wrong locus, and *Arabidopsis* reuses the symbols CAT2 and SEN1 for unrelated genes.
 - **MapMan membership is a reconstruction and is labelled as one.** PaintOmics publishes
   enrichment results but not the gene lists behind them, and MapMan has no REST API, so the
   13 MapMan pathways are rebuilt from the diagram layouts by PaintOmics' own rules. It
   matches PaintOmics' feature count exactly or within three for 9 of the 13 and runs larger
-  for the four whole-ontology overview maps; the site shows both numbers on every node
+  for the four largest. PaintOmics matches bin codes anywhere in a gene's bin, not only
+  from the start, so its diagrams hold more than their names suggest: *photosynthesis* has
+  1,722 measured loci this way, 488 matched from the start. The site shows both counts on every node
   rather than picking one, and
   [`data/mapman/PROVENANCE.md`](data/mapman/PROVENANCE.md) says what is not recoverable.
 - **References were verified against the publisher record**, never recalled.
@@ -187,6 +201,19 @@ This project has a few standing rules, and they are load-bearing:
   [`methods/CFD_PROVENANCE_CONCERN.md`](methods/CFD_PROVENANCE_CONCERN.md).
 - **The metabolite class-activity test is close to circular** and is reported as such; the
   hub analysis is not, and is the one to read.
+
+## In the repository but not in the paper
+
+- **ABRS / TAGES (OSD-7) extension**: `scripts/abrs/`, `results/abrs/`,
+  `methods/abrs/`, `data/abrs/`. **Unreviewed.** Its scripts run, but its conclusions do
+  not hold as written: no ABRS PaintOmics job was run, so its pathway p-values are a
+  different statistic from the BRIC-LED ones they are compared with. The banner at the top
+  of [`methods/abrs/ABRS_ANALYSIS_REPORT.md`](methods/abrs/ABRS_ANALYSIS_REPORT.md) lists
+  what is wrong. Nothing from it appears in the manuscript or on the site.
+- **PhysioSpace projection**: `scripts/08_physiospace_projection.R` has never been run.
+  `run_all.sh` skips it unless the R packages are installed, and the heatmap script has no
+  fallback. An earlier version drew that heatmap from random numbers; the table and figure
+  it made have been deleted.
 
 ## Data sources
 

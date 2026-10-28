@@ -10,11 +10,13 @@ NASA OSDR has no plant metabolomics. That is not an impression — it was checke
 exhaustively on 2026-09-08 by pulling all **567** OSDR studies through the search API and
 cross-tabulating organism against `Study Assay Measurement Type`:
 
-- **6** studies are `metabolite profiling`: OSD-108, OSD-116, OSD-343, OSD-360, OSD-417,
-  OSD-571 (a further handful carry metabolomics only in their protocol text: OSD-138,
-  OSD-145, OSD-734, OSD-832, OSD-833, OSD-834).
+- **12** studies list `metabolite profiling` among their assay measurement types: OSD-108,
+  OSD-116, OSD-138, OSD-145, OSD-343, OSD-360, OSD-417, OSD-571, OSD-734, OSD-832, OSD-833,
+  OSD-834. (An earlier count here gave 6 and put the other six down to protocol text only;
+  all twelve list it as an assay measurement type.) `scripts/osdr_census.py` writes the list to
+  `results/tables/T03_osdr_metabolomics_census.tsv`.
 - Every one is **mouse, human, rat or microbial**.
-- **Zero of the 66 plant studies** has a metabolome, of any kind, from any hardware.
+- **No plant study** has a metabolome, of any kind, from any hardware.
 
 So a three-omic plant PaintOmics job cannot be assembled from OSDR alone. The third layer
 is either predicted or absent.

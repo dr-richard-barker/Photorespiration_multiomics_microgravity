@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Predict the metabolite layer OSDR does not contain, for OSD-522 (BRIC-LED-001).
 
-NASA OSDR holds no plant metabolomics at all — of 567 studies only 6 are metabolite
+NASA OSDR holds no plant metabolomics at all — of 567 studies only 12 are metabolite
 profiling, and every one is mouse, human, rat or microbial (checked exhaustively via the
-OSDR search API, 2026-09-08). None of the 66 plant studies has a metabolome. So the third
+OSDR search API, 2026-09-08; see scripts/osdr_census.py). No plant study has a metabolome. So the third
 omic layer for a PaintOmics run cannot be downloaded; it has to be predicted.
 
 THIS LAYER IS MODEL OUTPUT. IT WAS NEVER MEASURED. Every row of every output file says so.

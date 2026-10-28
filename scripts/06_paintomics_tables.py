@@ -84,9 +84,17 @@ def pvalue(v) -> str:
     return f"{mant}e{int(exp)}"
 
 
+def bh(p: pd.Series) -> pd.Series:
+    """Benjamini-Hochberg adjusted p over every pathway the job tested."""
+    n = len(p)
+    order = p.sort_values().index
+    q = (p.loc[order] * n / range(1, n + 1))[::-1].cummin()[::-1].clip(upper=1.0)
+    return q.reindex(p.index)
+
+
 def fmt(df: pd.DataFrame) -> pd.DataFrame:
     out = df.copy()
-    for c in list(OMIC) + ["p_combined_fisher"]:
+    for c in list(OMIC) + ["p_combined_fisher", "fdr_bh"]:
         out[c] = [pvalue(v) for v in out[c]]
     return out
 
@@ -103,15 +111,20 @@ def main() -> int:
     ensure(TABLES)
     job = load_job()
     paths = pathway_frame(job)
+    # "Significant" below is UNCORRECTED combined p, as PaintOmics reports it. The BH
+    # column is added so nobody has to recompute how few survive correction.
+    paths["fdr_bh"] = bh(paths["p_combined_fisher"])
     total = len(paths)
     sig = paths[paths["p_combined_fisher"] < ALPHA]
+    n_fdr = int((paths["fdr_bh"] < ALPHA).sum())
 
     cols = ["db", "pathway", "features", "unique_metabolites",
-            "p_gene", "p_protein", "p_metabolite", "p_combined_fisher"]
+            "p_gene", "p_protein", "p_metabolite", "p_combined_fisher", "fdr_bh"]
     write(os.path.join(TABLES, "T08_paintomics_significant.tsv"),
           fmt(sig)[cols],
-          [f"# {total} pathways tested, {len(sig)} significant at combined Fisher "
-           f"p < {ALPHA}. Sorted by combined p.",
+          [f"# {total} pathways tested, {len(sig)} significant at UNCORRECTED combined "
+           f"Fisher p < {ALPHA}; {n_fdr} survive Benjamini-Hochberg FDR < {ALPHA} "
+           f"(fdr_bh, over all {total}). Sorted by combined p.",
            "# Derived from results/paintomics_raw/ by scripts/06_paintomics_tables.py."])
 
     # --- T09: the pathways the model made a prior claim about, significant or not -----
@@ -150,12 +163,19 @@ def main() -> int:
            [["compound", "kegg_id", "FDR", "DE_neighbours", "best_at_step", "block"]])
     t10["FDR"] = t10["FDR"].round(3)
     n_sig = int((t10["FDR"] < ALPHA).sum())
+    # Only compounds submitted as changed (metabolomics_relevant.tab) enter the hub test,
+    # and PaintOmics maps D-glucose onto its anomers as well. The header used to call all
+    # of these "of the 21 predicted", which counted the anomers as predictions.
+    predicted = set(pd.read_csv(os.path.join(TABLES, "T06_predicted_compounds.tsv"),
+                                sep="\t", comment="#")["kegg_id"])
+    extra = t10.loc[~t10["kegg_id"].isin(predicted), "compound"].tolist()
     write(os.path.join(TABLES, "T10_metabolite_hubs.tsv"), t10,
           [f"# PaintOmics metabolite hub analysis (KEGG network): which metabolites have "
            f"differentially",
-           f"# expressed genes concentrated around them. {len(t10)} of the 21 predicted "
-           f"compounds entered",
-           f"# the analysis; {n_sig} reach FDR < {ALPHA}. The DE genes counted are REAL; "
+           f"# expressed genes concentrated around them. {len(t10)} compounds entered the "
+           f"analysis: {len(t10) - len(extra)} of the 21 predicted (those submitted as "
+           f"changed) plus {len(extra)} PaintOmics added ({'; '.join(extra)}).",
+           f"# {n_sig} reach FDR < {ALPHA}. The DE genes counted are REAL; "
            f"the compounds are model output.",
            "# Derived from results/paintomics_raw/ by scripts/06_paintomics_tables.py."])
 

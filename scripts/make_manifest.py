@@ -45,6 +45,13 @@ DESCRIBED = {
  "T12_ladder_contrasts.tsv": ("scripts/07_hardware_ladder.py",
    "Set-vs-set separations per study — the illumination test and the enclosure test",
    "data/study_registry.tsv + GeneLab DGE tables"),
+ "T13_light_sensitivity.tsv": ("scripts/09_light_sensitivity.py",
+   "Table 1 operating points, the lit-canister compensation point, and the Fig. 2c "
+   "microgravity deficit at Q = 1000 (used everywhere else) and Q = 60 (OSD-522 light)",
+   "LunarLeaf-CFD T13 + fvcb.py"),
+ "T03_osdr_metabolomics_census.tsv": ("scripts/osdr_census.py",
+   "Every OSDR study with a metabolite-profiling assay, and its organism: none is a plant",
+   "OSDR bulk study search, cached by scripts/probe_studies.py"),
 }
 
 

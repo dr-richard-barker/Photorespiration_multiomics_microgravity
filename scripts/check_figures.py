@@ -33,6 +33,11 @@ FIGDIR = os.path.join(HERE, "figures")
 sys.path.insert(0, HERE)
 sys.path.insert(0, FIGDIR)
 
+# Figures drawn only by an optional pipeline step (run_all.sh step 8b). They are checked
+# when their input exists and skipped, visibly, when it does not; they have no fallback.
+OPTIONAL = {"fig09_physiospace.py": os.path.join(os.path.dirname(HERE), "results", "tables",
+                                                 "T14_physiospace_scores.csv")}
+
 
 def finite_points(artist) -> int:
     """How many points of this artist would actually appear."""
@@ -113,6 +118,9 @@ def main() -> int:
     print(f"Figure completeness — {len(scripts)} figure scripts\n")
     failures: list[str] = []
     for f in scripts:
+        if f in OPTIONAL and not os.path.exists(OPTIONAL[f]):
+            print(f"  skip {f}  (optional; {os.path.basename(OPTIONAL[f])} not present)")
+            continue
         found = check_module(os.path.join(FIGDIR, f))
         print(f"  {'FAIL' if found else 'ok  '} {f}")
         for p in found:

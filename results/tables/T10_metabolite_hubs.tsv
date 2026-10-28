@@ -2,8 +2,8 @@
 # organism ath; databases KEGG + MapMan; AI interpretation off
 # 3 omics: gene expression (real, OSDR), proteomics (real, OSDR), metabolomics (PREDICTED, model output)
 # PaintOmics metabolite hub analysis (KEGG network): which metabolites have differentially
-# expressed genes concentrated around them. 15 of the 21 predicted compounds entered
-# the analysis; 7 reach FDR < 0.05. The DE genes counted are REAL; the compounds are model output.
+# expressed genes concentrated around them. 15 compounds entered the analysis: 13 of the 21 predicted (those submitted as changed) plus 2 PaintOmics added (beta-D-Glucopyranose; alpha-D-Glucose).
+# 7 reach FDR < 0.05. The DE genes counted are REAL; the compounds are model output.
 # Derived from results/paintomics_raw/ by scripts/06_paintomics_tables.py.
 compound	kegg_id	FDR	DE_neighbours	best_at_step	block
 L-Glutamate	C00025	0.003	215	3	carbon starvation

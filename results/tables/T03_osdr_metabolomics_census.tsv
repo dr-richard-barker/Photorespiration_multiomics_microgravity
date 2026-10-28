@@ -1,0 +1,15 @@
+# OSDR bulk study search (cached data/cache/osdr_all_studies.json): 567 studies, 12 with a metabolite-profiling assay.
+# Derived by scripts/osdr_census.py.
+accession	organism	measurement_types	title
+OSD-108	Mus musculus	metabolite profiling	STS-135 Liver Metabolomics
+OSD-116	Mus musculus	metabolite profiling     transcription profiling	Biological and Metabolic Response in STS-135 Space-flown Mouse Skin
+OSD-138	Not Applicable     Bacillus subtilis	protein expression profiling     metabolite profiling     transcription profiling     metabolite profiling	BRIC-23 GeneLab Process Verification Test: Bacillus subtilis transcriptomic, proteomic, and metabolomic data
+OSD-145	Staphylococcus aureus	protein expression profiling     metabolite profiling     metabolite profiling     transcription profiling	BRIC-23 GeneLab Process Verification Test: Staphylococcus aureus transcriptomic, proteomic, and metabolomic data
+OSD-343	Mus musculus	metabolite profiling	Comprehensive multi-omics analysis reveals mitochondrial stress as a central biological hub for spaceflight impact
+OSD-360	Mus musculus	metabolite profiling	Effects of low dose space radiation exposures on the splenic metabolome
+OSD-417	Mus musculus     Microbiota	Amplicon Sequencing     Amplicon Sequencing     Metagenomic sequencing     metabolite profiling	Specific Host Metabolite and Gut Microbiome Alterations Are Associated with Bone-loss During Spaceflight
+OSD-571	Homo sapiens	protein expression profiling     protein expression profiling     metabolite profiling     genome sequencing     transcription profiling	SpaceX Inspiration4 Plasma Profiling: Proteomics, EVPs, Metabolomics, cfDNA Sequencing and cfRNA Sequencing
+OSD-734	Microbiota     Not Applicable	Amplicon Sequencing     Metagenomic sequencing     metabolite profiling     metabolite profiling	The International Space Station Has a Unique and Extreme Microbial and Chemical Environment Driven by Use Patterns
+OSD-832	Homo sapiens     Not Applicable     Rattus norvegicus	metabolite profiling	Effects of 5-Ion Beam Irradiation and Hindlimb Unloading on Metabolic Pathways in Plasma and Brain of Behaviorally Tested WAG/Rij Rats - Plasma data
+OSD-833	Homo sapiens     Not Applicable     Rattus norvegicus	metabolite profiling	Effects of 5-Ion Beam Irradiation and Hindlimb Unloading on Metabolic Pathways in Plasma and Brain of Behaviorally Tested WAG/Rij Rats - Hippocampus data
+OSD-834	Homo sapiens     Not Applicable     Rattus norvegicus	metabolite profiling	Effects of 5-Ion Beam Irradiation and Hindlimb Unloading on Metabolic Pathways in Plasma and Brain of Behaviorally Tested WAG/Rij Rats - Cortex data

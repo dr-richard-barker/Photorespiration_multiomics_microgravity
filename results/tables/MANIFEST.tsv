@@ -3,12 +3,14 @@
 file	bytes	generating_script	description	source_data
 T01_osd522_transcriptome.tsv	1542037	scripts/01_dge_rnaseq.py	OSD-522 shoot transcriptome, flight vs ground: log2FC, p, FDR per AGI locus	NASA OSDR OSD-522 RSEM counts
 T02_osd522_proteome.tsv	733332	scripts/02_prep_proteomics.py	OSD-522 shoot proteome, flight vs ground: deposited S/G log2 ratio and adjusted p	NASA OSDR OSD-522 shoot SOL + MEM proteomics reports
+T03_osdr_metabolomics_census.tsv	2642	scripts/osdr_census.py	Every OSDR study with a metabolite-profiling assay, and its organism: none is a plant	OSDR bulk study search, cached by scripts/probe_studies.py
 T04_photorespiration_vs_gravity.csv	1652	scripts/fvcb.py	FvCB operating point across the CFD gravity/scale sweep: Cc, phi, A, Rp, Rp/A	data/lunarleaf_gbl_sweep.csv
 T05_operating_points.tsv	253	scripts/03_predict_metabolome.py	The four modelled arms (flight, ground, sealed, vented): g_bl, Ca, Cc, phi, A, Vo, Vc	LunarLeaf-CFD T13 + fvcb.py
 T06_predicted_compounds.tsv	3541	scripts/03_predict_metabolome.py	21 PREDICTED metabolite pools with KEGG id, driver flux, tier and both contrasts. MODEL OUTPUT, NEVER MEASURED.	fvcb.py fluxes; KEGG ids from rest.kegg.jp
 T07_falsification_osd522.tsv	2327	scripts/04_falsification_check.py	Blind prediction vs measurement on OSD-522: gene-set shifts, Mann-Whitney p, verdicts	T01, T02, KEGG gene sets
-T08_paintomics_significant.tsv	2455	scripts/06_paintomics_tables.py (job m1z16Qg3DK)	All 32 pathways significant at combined Fisher p < 0.05, with per-omic p-values	results/paintomics_raw/job1_m1z16Qg3DK_full.json.gz
-T09_paintomics_carbon.tsv	1600	scripts/06_paintomics_tables.py (job m1z16Qg3DK)	The carbon pathways the model made claims about, significant or not	results/paintomics_raw/job1_m1z16Qg3DK_full.json.gz
-T10_metabolite_hubs.tsv	1431	scripts/06_paintomics_tables.py (job m1z16Qg3DK)	PaintOmics metabolite hub analysis: predicted compounds ranked by REAL DE genes nearby	results/paintomics_raw/job1_m1z16Qg3DK_full.json.gz
+T08_paintomics_significant.tsv	2798	scripts/06_paintomics_tables.py (job m1z16Qg3DK)	All 32 pathways significant at combined Fisher p < 0.05, with per-omic p-values	results/paintomics_raw/job1_m1z16Qg3DK_full.json.gz
+T09_paintomics_carbon.tsv	1817	scripts/06_paintomics_tables.py (job m1z16Qg3DK)	The carbon pathways the model made claims about, significant or not	results/paintomics_raw/job1_m1z16Qg3DK_full.json.gz
+T10_metabolite_hubs.tsv	1528	scripts/06_paintomics_tables.py (job m1z16Qg3DK)	PaintOmics metabolite hub analysis: predicted compounds ranked by REAL DE genes nearby	results/paintomics_raw/job1_m1z16Qg3DK_full.json.gz
 T11_hardware_ladder.tsv	7457	scripts/07_hardware_ladder.py	Six OSDR studies x ten gene sets: median shift, Mann-Whitney p, model prediction	data/study_registry.tsv + GeneLab DGE tables
 T12_ladder_contrasts.tsv	2136	scripts/07_hardware_ladder.py	Set-vs-set separations per study — the illumination test and the enclosure test	data/study_registry.tsv + GeneLab DGE tables
+T13_light_sensitivity.tsv	973	scripts/09_light_sensitivity.py	Table 1 operating points, the lit-canister compensation point, and the Fig. 2c microgravity deficit at Q = 1000 (used everywhere else) and Q = 60 (OSD-522 light)	LunarLeaf-CFD T13 + fvcb.py

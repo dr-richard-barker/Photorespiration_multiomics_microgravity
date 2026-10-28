@@ -48,8 +48,9 @@ BRIC-derived spaceflight transcriptomes.
 
 ## 2. Measure a plant metabolome in space — any plant metabolome
 
-There is not one. Of 567 OSDR studies, 6 are metabolite profiling, and all 6 are mouse,
-human, rat or microbial; of 66 plant studies, none has a metabolome. This is why the third
+There is not one. Of 567 OSDR studies, 12 are metabolite profiling, and all 12 are mouse,
+human, rat or microbial; no plant study has a metabolome
+(`results/tables/T03_osdr_metabolomics_census.tsv`). This is why the third
 layer of this PaintOmics job had to be predicted rather than downloaded.
 
 The gap does not need a new flight to start closing. A **targeted GC-MS or LC-MS panel of

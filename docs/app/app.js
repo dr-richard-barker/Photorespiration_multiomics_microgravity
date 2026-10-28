@@ -308,16 +308,17 @@ function drawEnclosure() {
     };
     cap.textContent = key === "surface"
       ? `CO₂ excess at the leaf surface, the quantity the photosynthesis model consumes. `
-        + `All five cases are defined here. By the end of the run the lit sealed canister `
+        + `All six cases are defined here. By the end of the run the lit sealed canister `
         + `is lowest (${final("BRIC light").toFixed(3)}), the open reference and taped `
-        + `canister are close behind (${final("open (ref)").toFixed(3)} and `
+        + `CARA dish are close behind (${final("open (ref)").toFixed(3)} and `
         + `${final("CARA light").toFixed(3)}), VEGGIE is the shallowest drawdown `
-        + `(${final("VEGGIE vented").toFixed(3)}), and the dark canister rises `
-        + `(${final("BRIC dark").toFixed(3)} and ${final("CARA dark").toFixed(3)}) because respiration has no uptake to offset it.`
-      : `CO₂ excess averaged over the enclosure volume. Only the three closed cases have `
+        + `(${final("VEGGIE vented").toFixed(3)}), and the two dark enclosures rise `
+        + `(BRIC ${final("BRIC dark").toFixed(3)}, CARA ${final("CARA dark").toFixed(3)}) `
+        + `because respiration has no uptake to offset it.`
+      : `CO₂ excess averaged over the enclosure volume. Only the four closed cases have `
         + `one: a vented case has no closed volume to average, so VEGGIE and the open `
         + `reference are absent here rather than flat. Switch to the leaf surface to see `
-        + `all five.`;
+        + `all six.`;
   }
 }
 
@@ -588,7 +589,7 @@ function drawLadderFig() {
   const clean = lit.length && dark.length && Math.min(...lit) > Math.max(...dark);
   svg.append(el("text", { x: pad.l, y: 15, "font-size": 10.5,
                           fill: clean ? C.soft : C.vermilion },
-                         clean ? "every lit study sits above every dark study"
+                         clean ? "every lit contrast sits above every dark one"
                                : "lit and dark overlap on this contrast"));
 
   const cap = document.getElementById("laddercap");
@@ -777,8 +778,8 @@ async function buildSankey() {
   sankeyData = await json("sankey.json");
   const sel = document.getElementById("sankeyN");
   if (sel) {
-    sel.innerHTML = [6, 8, 10, 14, 20, 31]
-      .filter((n) => n <= sankeyData.pathways.length)
+    sel.innerHTML = [6, 8, 10, 14, 20, sankeyData.pathways.length]
+      .filter((n, i, a) => n <= sankeyData.pathways.length && a.indexOf(n) === i)
       .map((n) => `<option value="${n}"${n === sankeyN ? " selected" : ""}>` +
                   `top ${n} pathways</option>`).join("");
     sel.addEventListener("change", () => { sankeyN = +sel.value; drawSankey(); });
@@ -958,11 +959,11 @@ function drawSankey() {
       `pathways in this view (${nk} KEGG, ${nm} MapMan), out of the ` +
       `${d.n_pathways_total} PaintOmics called significant; the pathway column draws the ` +
       `${paths.length} most significant of them. Transcript and protein columns conserve ` +
-      `loci exactly; the pathway column counts memberships, so the ` +
-      `${(v.n_memberships - v.n_genes).toLocaleString()} loci sitting in more than one ` +
-      `pathway are counted more than once. KEGG membership comes from the KEGG REST API; ` +
+      `loci exactly; the pathway column counts memberships, so a locus in more than one ` +
+      `pathway is counted more than once (${(v.n_memberships - v.n_genes).toLocaleString()} ` +
+      `extra memberships). KEGG membership comes from the KEGG REST API; ` +
       `MapMan publishes none, so it is reconstructed from the diagram layouts — matching ` +
-      `PaintOmics' own feature count for 9 of the 13 MapMan maps and running larger on the ` +
+      `PaintOmics' own feature count to within three for 9 of the 13 MapMan maps and running larger on the ` +
       `other 4, with both numbers in every node's tooltip. ` +
       (sankeyBroad
         ? `Whole-ontology maps are included: ${hidden.join(", ")} each cover more than ` +

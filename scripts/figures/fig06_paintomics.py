@@ -130,8 +130,8 @@ def panel_c(ax):
     ax.set_xlim(0, float(vals.max()) * 1.75)
     # Right-aligned at 0.99 the old three-line wrap ran left past the axis and over the
     # bottom compound labels. Narrower lines keep it clear of them.
-    ax.text(0.99, 0.02, "not one of the eight C2\nphotorespiratory\nintermediates is a\n"
-                        "significant hub —\nthough all eight mapped",
+    ax.text(0.99, 0.02, "the eight C2\nphotorespiratory\nintermediates were\n"
+                        "not submitted as\nchanged, so were\nnever tested",
             transform=ax.transAxes, ha="right", va="bottom", fontsize=6.4,
             color=style.INK)
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Figure 5 — the model's blind prediction against the OSD-522 measurement.
+"""Figure 5 — the model's prediction against the OSD-522 measurement.
 
-a  gene-set responses, with what the model predicted before seeing any data
+a  gene-set responses, with what the model predicted
 b  set-vs-set contrasts, which are immune to the global metabolic depression
 
 The model was built from gas transport and photosynthesis alone. It never saw the omics.
@@ -80,10 +80,10 @@ def main():
     panel_a(axes[0], tx)
     panel_b(axes[1], df)
     fig.subplots_adjust(top=0.84, bottom=0.20, left=0.155, right=0.985)
-    fig.suptitle("A model that never saw the data called eight of nine gene sets",
+    fig.suptitle("The model called eight of nine transcriptome gene sets",
                  fontsize=11, fontweight="bold", x=0.008, ha="left", y=0.985)
-    style.predicted_note(fig, "Predictions fixed before any omics were downloaded; "
-                              "gene sets from KEGG pathway membership and descriptions.")
+    style.predicted_note(fig, "Gene sets from KEGG pathway membership and descriptions. "
+                              "Proteome: four of seven testable sets.")
     style.save(fig, "fig05_blind_test", FIGURES)
 
 

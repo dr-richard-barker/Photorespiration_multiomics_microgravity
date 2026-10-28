@@ -39,7 +39,8 @@ def panel_a(ax):
                         "effect, invisible", ha="center", va="top", fontsize=6.6,
             color=style.VERMILION)
     ax.text(0.3, 1.55, "What survives is a persistent ~5–9 %\n"
-                       "assimilation penalty, and downstream\n"
+                       "assimilation penalty at saturating light\n"
+                       "(under 3 % at OSD-522's), and downstream\n"
                        "of it a carbon-starvation signature —\n"
                        "which is what the omics show.",
             fontsize=6.7, va="top", color=style.INK)
@@ -74,10 +75,10 @@ def panel_c(ax):
     style.panel(ax, "c", "The gap this ran into")
     ax.set_xlim(0, 10); ax.set_ylim(0, 6.4); ax.axis("off"); ax.grid(False)
     items = [
-        ("0 of 66", "OSDR plant studies with a metabolome", style.VERMILION),
-        ("6 of 567", "OSDR studies that are metabolite profiling,\n"
-                     "all mouse, human, rat or microbial", style.INK),
-        ("0", "in-canister CO$_2$ logs, any BRIC-class flight", style.VERMILION),
+        ("0 of 12", "OSDR metabolomics studies that are of a plant", style.VERMILION),
+        ("12 of 567", "OSDR studies that are metabolite profiling,\n"
+                      "all mouse, human, rat or microbial", style.INK),
+        ("0 known", "in-canister CO$_2$ logs, any BRIC-class flight", style.VERMILION),
     ]
     y = 6.0
     for big, small, colour in items:

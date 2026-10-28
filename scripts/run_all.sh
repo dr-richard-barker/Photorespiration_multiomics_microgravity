@@ -20,6 +20,10 @@ python3 scripts/02_prep_proteomics.py
 echo "== 4. model: FvCB sweep + predicted metabolome ==============================="
 python3 scripts/fvcb.py
 python3 scripts/03_predict_metabolome.py --sensitivity
+# All of the above is at saturating light; this records what changes at OSD-522's 60.
+python3 scripts/09_light_sensitivity.py
+# The "no plant metabolome in OSDR" census.
+python3 scripts/osdr_census.py
 
 echo "== 5. blind test against OSD-522 ============================================="
 python3 scripts/04_falsification_check.py --quiet-resolution
@@ -36,7 +40,11 @@ echo "== 7b. PaintOmics result tables ==========================================
 python3 scripts/06_paintomics_tables.py
 
 echo "== 8. figures ================================================================"
-for f in scripts/figures/fig*.py; do python3 "$f"; done
+# fig09_physiospace.py is drawn in step 8b, only when its R step has run.
+for f in scripts/figures/fig*.py; do
+    [ "$f" = scripts/figures/fig09_physiospace.py ] && continue
+    python3 "$f"
+done
 # Fails if any figure carries a legend entry it never draws. Figure 1b shipped for weeks
 # with five legend entries over three lines, because the column it plotted is empty for
 # the two vented cases and matplotlib draws an all-NaN series as nothing, silently.
