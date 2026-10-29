@@ -69,7 +69,8 @@ def plot_panel_a(ax):
 
     # Mark ABRS operating point (3500 ppm)
     ax.axvline(3500, color=style.BLUE, ls="--", alpha=0.7, lw=1.5)
-    ax.text(3200, 12, "Ventilated ABRS\n(~3500 ppm ISS cabin)", color=style.BLUE, fontsize=8.5, weight="bold", ha="right")
+    # y = 5.5 keeps the label clear of the legend above it and of the V_o curve below it.
+    ax.text(3200, 5.5, "Ventilated ABRS\n(~3500 ppm ISS cabin)", color=style.BLUE, fontsize=8.5, weight="bold", ha="right")
 
     ax.set_xscale("log")
     ax.set_xlabel(r"Canister $CO_2$ ($C_a$, $\mu$mol mol$^{-1}$)", fontsize=9.5)
@@ -115,7 +116,8 @@ def plot_panel_b(ax):
     ax.set_ylabel(r"Median Shift ($\log_2$FC vs background)", fontsize=9.5)
     ax.set_title("B. ABRS Organ-Specific Transcriptome Remodeling", fontsize=10, weight="bold", loc="left")
     ax.set_ylim(-0.45, 0.42)
-    ax.legend(loc="upper left", frameon=False, fontsize=8)
+    # Upper left sat on the shoot and hypocotyl bars; nothing reaches below -0.15 there.
+    ax.legend(loc="lower left", frameon=False, fontsize=8)
 
 
 def plot_panel_c(ax):
