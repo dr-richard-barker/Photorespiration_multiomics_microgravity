@@ -90,8 +90,9 @@ steady-state CO₂, which nobody measured.
 | `FLT_vs_GC` | −0.131 | +0.003 | what OSD-522 measured; goes into the joint PaintOmics job |
 | `BRIC_vs_VENTED` | −2.811 | +0.239 | the hardware effect; a metabolome-only second job |
 
-The PaintOmics jobs were run on the layer predicted before the steady-state CFD update
-(−0.114 / +0.003 and −2.808 / +0.242); see `methods/PAINTOMICS_RESULTS.md`.
+The PaintOmics jobs were first run on the layer predicted before the steady-state CFD update
+(−0.114 / +0.003 and −2.808 / +0.242) and resubmitted on these values on 2026-10-29, with
+identical pathway and hub results; see `methods/PAINTOMICS_RESULTS.md`.
 
 The hardware effect is **22× larger** than the gravity effect — but it hits flight and
 ground alike, so it very nearly cancels out of the contrast the experiment can see. This is

@@ -5,17 +5,29 @@ Two jobs were run on <https://paintomics.org> (Supercomputador Drago, CSIC), org
 
 | Job | ID | Contents | Link |
 |---|---|---|---|
-| 1 | `m1z16Qg3DK` | transcriptome + proteome (real, OSDR) + metabolome (predicted) | <https://paintomics.org/?jobID=m1z16Qg3DK> |
-| 2 | `EVFahRGk7T` | predicted metabolome only, sealed vs vented hardware | <https://paintomics.org/?jobID=EVFahRGk7T> |
+| 1 | `oK2h66740Q` | transcriptome + proteome (real, OSDR) + metabolome (predicted) | <https://paintomics.org/?jobID=oK2h66740Q> |
+| 2 | `tnZU3q2Ie2` | predicted metabolome only, sealed vs vented hardware | <https://paintomics.org/?jobID=tnZU3q2Ie2> |
 
-**Both jobs used the metabolite layer predicted before the 2026-10-28 CFD update.** That
-layer came from a LunarLeaf-CFD export older than its steady-state re-run (`e298785`); the
-values submitted are the ones in the saved job records under `results/paintomics_raw/`
-(job 1 photosynthate log2FC −0.113996, job 2 −2.808339). The layer the pipeline now writes to
-`data/paintomics_upload/` comes from the steady-state export (−0.130520 and −2.810755;
-`results/tables/T06_predicted_compounds.tsv`). The same thirteen compounds pass the
-relevant-features threshold in job 1 and all 21 in job 2, so the submitted lists are
-unchanged, but the jobs have not been re-run on the current values.
+**These are resubmissions, run 2026-10-29.** The first two jobs, `m1z16Qg3DK` and `EVFahRGk7T`
+(2026-09-08), used the metabolite layer predicted from a LunarLeaf-CFD export older than its
+steady-state re-run (`e298785`): photosynthate log2FC −0.113996 in job 1 and −2.808339 in
+job 2. The resubmissions use the current layer, −0.130520 and −2.810755
+(`results/tables/T06_predicted_compounds.tsv`). Both were run the same way as the first: the
+bundle posted to `/pa_step1` by `scripts/05_submit_paintomics.py`, *Next step* clicked on the
+job page with PaintOmics' defaults, and the finished job saved with `POST /pa_recover_job`.
+
+Nothing downstream moved. The relevant-feature lists are identical (13 compounds in job 1,
+all 21 in job 2), and comparing the two job 1 records (`python3
+scripts/compare_paintomics_jobs.py`), every one of the 232 pathways has the
+same combined, gene, protein and metabolite p-value, and the hub analysis and the metabolite
+class-activity classes are identical. Job 2 again found 57 KEGG pathways, none significant,
+and no MapMan pathway.
+
+The records are the durable copy: PaintOmics deletes guest jobs after 7 days, so the links
+above stop working, and `EVFahRGk7T` was already gone when the resubmission was made. The
+new records are `results/paintomics_raw/job1_oK2h66740Q_full.json.gz` and
+`job2_tnZU3q2Ie2_full.json.gz`; the first job 1 record and both first-run status files are
+in `results/paintomics_raw/superseded/`.
 
 ## Identifier mapping — all three layers landed cleanly
 
@@ -53,7 +65,7 @@ eighteen pathways rank below it, nine of them at p = 1.
 *This corrects an earlier reading of this table.* "Last of 231" was written from the web
 interface and was wrong in both numbers. The full job record, recovered afterwards with
 `POST /pa_recover_job` and vendored at
-`results/paintomics_raw/job1_m1z16Qg3DK_full.json.gz`, carries 232 pathway records, all
+`results/paintomics_raw/superseded/job1_m1z16Qg3DK_full.json.gz`, carries 232 pathway records, all
 with matched features, and puts glyoxylate and dicarboxylate metabolism at p = 0.99367,
 rank 214. The p-value itself was transcribed correctly; the rank and the total were not.
 

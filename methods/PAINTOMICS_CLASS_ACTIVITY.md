@@ -1,4 +1,6 @@
-# Metabolite class activity analysis — job m1z16Qg3DK
+# Metabolite class activity analysis — job oK2h66740Q
+
+(Resubmission of `m1z16Qg3DK`; every class row below is identical in both job records.)
 
 It ran despite no experimental-design file: with no replicates PaintOmics falls back to a
 **binomial test of the relevant list against the threshold you declared** (p₀ = 0.05),
@@ -13,8 +15,13 @@ rather than the replicate-based class test.
 | Carboxylic acids | Organic acids | 0/1 | 1.0000 |
 
 "1 of 5 classes at level 2 pass BH < 0.05 · 4 with fewer than 3 members (descriptive)."
-10 of the 21 compounds fall in no class — all matched a KEGG compound, but 10 are not in
-KEGG BRITE.
+Eight of the 21 compounds fall in no class — all matched a KEGG compound, but these eight are
+not in KEGG BRITE: 2-phosphoglycolate, glycolate, hydroxypyruvate, D-glycerate, ammonia,
+3-phospho-D-glycerate, RuBP and starch. PaintOmics' own `excluded.unclassified` list is longer
+(10 names in the first run, 11 in this one) because it also carries capitalised duplicates —
+Glyoxylate, Maltose and, this time, D-Glucose — of compounds it classifies under their
+lower-case names. An earlier version of this note counted that list as 10 unclassified
+compounds.
 
 ## Read this one with care
 

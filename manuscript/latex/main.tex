@@ -167,8 +167,7 @@ $+0.030$, $p = 0.82$).
 \subsection{Pathway integration puts photorespiration in the bottom 8\,\%}
 
 Submitting all three layers to PaintOmics \citep{paintomics4} against KEGG and MapMan
-(Fig.~\ref{fig:paintomics}; the metabolite layer submitted predates the current
-boundary-layer conductances, see Limitations), 97--100\,\% of genes, 97\,\% of proteins and all 21 predicted
+(Fig.~\ref{fig:paintomics}), 97--100\,\% of genes, 97\,\% of proteins and all 21 predicted
 compounds mapped. Of 232 pathways tested, 32 reached combined Fisher $p<0.05$ uncorrected,
 including photosynthesis ($p = 0.008$), photosynthesis antenna proteins ($p = 0.022$) and
 starch and sucrose metabolism ($p = 0.019$). Six survive Benjamini--Hochberg correction at
@@ -239,11 +238,7 @@ entered the repository in the same commit, so the record cannot show that the pr
 were fixed first. Pathway enrichment is reported at uncorrected $p$; after FDR correction six
 of 232 pathways remain, none of them one the model made a claim about. The enclosure drawdown
 and carbon-gain figures rest on an assumed headspace volume and tape permeance, and OSDR does
-not describe how the CARA plates were sealed. The PaintOmics jobs were run before the
-boundary-layer conductances were updated to LunarLeaf-CFD's steady-state export, on a
-predicted metabolite layer with a flight-versus-ground photosynthate log$_2$FC of $-0.114$
-against $-0.131$ now; the same thirteen compounds pass the submission threshold, but the
-jobs have not been re-run on the current values. The intended ventilated proteome arm does not exist, because OSD-16 has no processed
+not describe how the CARA plates were sealed. The intended ventilated proteome arm does not exist, because OSD-16 has no processed
 files, so the two-layer comparison is confined to sealed hardware. The metabolite layer is
 predicted throughout, and the metabolite class-activity test is close to circular because it
 tests our own predicted list; the hub analysis is not, and is reported as the informative one.
@@ -297,7 +292,10 @@ flight-versus-ground contrasts selected by pattern and recorded in the registry.
 fetched live \citep{kanehisa2000,kegg}, never typed from memory.
 
 \textbf{Pathway integration.} PaintOmics \citep{paintomics4}, organism \texttt{ath}, KEGG and
-MapMan, with the optional AI interpretation disabled. PaintOmics reports enrichment but not
+MapMan, with the optional AI interpretation disabled. The jobs were first run on a metabolite
+layer predicted from an earlier LunarLeaf-CFD export (photosynthate log$_2$FC $-0.114$ against
+$-0.131$ now) and resubmitted on the current one; every pathway, per-omic and hub $p$-value was
+identical. PaintOmics reports enrichment but not
 the gene lists behind it, and MapMan has no equivalent of the KEGG REST API, so the gene
 membership used in the accompanying data explorer was reconstructed from GoMapMan's
 Araport11 gene-to-bin mapping and the MapMan diagram layouts, by PaintOmics' own inclusion

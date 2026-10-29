@@ -1,0 +1,5 @@
+{
+ "message": "Your job is not on the queue anymore. Check your job list, if it's not there the process stopped and you must resend the data again.",
+ "status": "failed",
+ "success": false
+}

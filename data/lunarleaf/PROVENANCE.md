@@ -51,8 +51,10 @@ That file replaced both `T13_boundary_layer.csv` here and `../lunarleaf_gbl_swee
 Every `g_bl`-dependent number in the repository now comes from this export: the operating
 points (`T04`, `T05`), the irradiance sensitivity and assimilation deficits (`T13`), and the
 predicted metabolite layer (`T06`, `data/paintomics_upload/metabolomics_*values.tab`).
-**The PaintOmics jobs (`m1z16Qg3DK`, `EVFahRGk7T`) were run before this update**, on the layer
-predicted from the `87b81cf` snapshot; see `methods/PAINTOMICS_RESULTS.md`.
+The PaintOmics jobs, first run on the layer predicted from the `87b81cf` snapshot
+(`m1z16Qg3DK`, `EVFahRGk7T`), were resubmitted on the current layer on 2026-10-29
+(`oK2h66740Q`, `tnZU3q2Ie2`) with identical pathway and hub results; see
+`methods/PAINTOMICS_RESULTS.md`.
 
 ### T7 and T10 — re-vendored 2026-10-28
 

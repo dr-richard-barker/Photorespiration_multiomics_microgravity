@@ -22,7 +22,8 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import style  # noqa: E402
 from paths import FIGURES, TABLES  # noqa: E402
 
-# Mapping counts as reported by PaintOmics on job m1z16Qg3DK, recorded in methods/.
+# Mapping counts as reported by PaintOmics on job oK2h66740Q (identical to the first run,
+# m1z16Qg3DK): results/paintomics_raw/job1_status.json, recorded in methods/.
 MAPPING = pd.DataFrame({
     "omic": ["Gene expression", "Gene expression", "Proteomics", "Proteomics",
              "Metabolomics", "Metabolomics"],
@@ -145,7 +146,7 @@ def main():
     fig.subplots_adjust(top=0.83, bottom=0.24, left=0.085, right=0.985)
     fig.suptitle("PaintOmics: photosynthesis enriched, photorespiration near the bottom",
                  fontsize=11, fontweight="bold", x=0.008, ha="left", y=0.985)
-    style.predicted_note(fig, "Job m1z16Qg3DK, organism ath, KEGG + MapMan, AI interpretation "
+    style.predicted_note(fig, "Job oK2h66740Q, organism ath, KEGG + MapMan, AI interpretation "
                               "off. Hub analysis counts REAL differentially expressed genes.")
     style.save(fig, "fig06_paintomics", FIGURES)
 

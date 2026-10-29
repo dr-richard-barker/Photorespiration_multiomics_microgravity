@@ -1,4 +1,4 @@
-# PaintOmics AI job m1z16Qg3DK — OSD-522 (BRIC-LED-001) Arabidopsis shoots, Space Flight vs Ground Control
+# PaintOmics AI job oK2h66740Q — OSD-522 (BRIC-LED-001) Arabidopsis shoots, Space Flight vs Ground Control
 # organism ath; databases KEGG + MapMan; AI interpretation off
 # 3 omics: gene expression (real, OSDR), proteomics (real, OSDR), metabolomics (PREDICTED, model output)
 # 232 pathways tested, 32 significant at UNCORRECTED combined Fisher p < 0.05; 6 survive Benjamini-Hochberg FDR < 0.05 (fdr_bh, over all 232). Sorted by combined p.

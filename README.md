@@ -66,11 +66,6 @@ commit, so the record cannot show that the predictions came first.
   one is mouse, human, rat or microbial
   ([`T03`](results/tables/T03_osdr_metabolomics_census.tsv)); **none is a plant**. The third
   omic layer had to be predicted, and is labelled as model output everywhere it appears.
-- **The PaintOmics jobs predate the current boundary-layer conductances.** Both jobs were
-  run on a metabolite layer predicted from an older LunarLeaf-CFD export (flight-versus-ground
-  photosynthate log₂FC −0.114; now −0.131). The same thirteen compounds pass the submission
-  threshold, but the jobs have not been re-run on the current values; see
-  [`data/lunarleaf/PROVENANCE.md`](data/lunarleaf/PROVENANCE.md).
 
 ---
 
@@ -132,7 +127,7 @@ python3 scripts/05_submit_paintomics.py --job 1
 | Predicted metabolite layer | **done** — 21 compounds, KEGG ids from the REST API |
 | OSD-522 transcriptome + proteome | **done** — PyDESeq2, 1,795 DE genes; 5,160 proteins |
 | Falsification test | **done** — 8 of 9 transcriptome gene sets; 4 of 7 in the proteome |
-| PaintOmics integration | **done** — jobs `m1z16Qg3DK` and `EVFahRGk7T`, on the pre-update metabolite layer |
+| PaintOmics integration | **done** — jobs `oK2h66740Q` and `tnZU3q2Ie2`, resubmitted 2026-10-29 on the current metabolite layer; results identical to the first run |
 | Cross-study ladder (6 contrasts, 5 studies) | **done** — illumination separates; enclosure gradient does not |
 | Eight-figure set | **done** |
 | npj manuscript | **compiles** — 14 pages, no unresolved references; author block is placeholders |
@@ -152,8 +147,6 @@ Nothing here was invented to fill a gap, so these remain visibly open:
   depletes its own enclosure) and its consequence (the response is read out in carbon-starved
   plants), rather than an enclosure gradient the data did not support. Still worth your call:
   whether to lead instead with the prediction result.
-- **Whether to resubmit the PaintOmics jobs** on the metabolite layer regenerated from the
-  current LunarLeaf-CFD export (the submitted layer is the older one; see above).
 - **The ER / unfolded-protein-response result** currently gets one paragraph. It is the
   largest signal in the data and this model says nothing about it.
 

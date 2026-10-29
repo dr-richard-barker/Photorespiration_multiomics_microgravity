@@ -1,6 +1,7 @@
 # Job 2 (hardware contrast) — a negative result, reported as one
 
-**Job `EVFahRGk7T`** · organism `ath` · KEGG + MapMan · AI interpretation off
+**Job `tnZU3q2Ie2`** (2026-10-29; resubmission of `EVFahRGk7T`, same outcome) · organism `ath` · KEGG + MapMan · AI interpretation off
+Record: `results/paintomics_raw/job2_tnZU3q2Ie2_full.json.gz`.
 Input: `metabolomics_hardware_values.tab` only — 21 predicted compounds, `BRIC_vs_VENTED`.
 
 ## What came back

@@ -4,11 +4,11 @@
 These three tables used to be transcribed by hand from the PaintOmics web interface, and
 MANIFEST.tsv credited them to `05_submit_paintomics.py`, which only submits a job and
 saves its acknowledgement. Nothing in the repository could regenerate or check them, and
-`check_job_status` is one-shot — the saved `job1_status.json` is the
-"not on the queue anymore" reply, with no results in it.
+`check_job_status` is one-shot — the first run's saved `job1_status.json` (now under
+`superseded/`) is the "not on the queue anymore" reply, with no results in it.
 
-The full result was recovered afterwards from `POST /pa_recover_job` with the job id, and
-is vendored at `results/paintomics_raw/job1_m1z16Qg3DK_full.json.gz`. Everything measured
+The full result is recovered after the job finishes with `POST /pa_recover_job` and the job
+id, and is vendored at `results/paintomics_raw/job1_<JOB_ID>_full.json.gz`. Everything measured
 in these tables now comes from that file. What cannot come from it — which pathways the
 model made a prior claim about, and which metabolic block each hub compound belongs to —
 is curation, and lives in two small files under `data/` that this script joins in and
@@ -31,7 +31,10 @@ import pandas as pd
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from paths import DATA, REPO, TABLES, ensure  # noqa: E402
 
-JOB_ID = "m1z16Qg3DK"
+# Resubmitted 2026-10-29 on the metabolite layer predicted from LunarLeaf-CFD's steady-state
+# export. The first job, m1z16Qg3DK (2026-09-08), is kept under paintomics_raw/superseded/;
+# every pathway, per-omic and hub p-value in it is identical to this one.
+JOB_ID = "oK2h66740Q"
 RAW = os.path.join(REPO, "results", "paintomics_raw", f"job1_{JOB_ID}_full.json.gz")
 ALPHA = 0.05
 OMIC = {"p_gene": "Gene expression", "p_protein": "Proteomics",
