@@ -48,7 +48,7 @@ fill them, and the manuscript will read as unfinished until they are cleared.
 
 **Availability**
 - [ ] Zenodo DOI for this repository, in Data availability and Code availability
-- [ ] Repository URL in Code availability
+- [x] Repository URL in Code availability
 - [ ] Archived release DOI for LunarLeaf-CFD (`lunarleaf` entry note)
 
 **References**
