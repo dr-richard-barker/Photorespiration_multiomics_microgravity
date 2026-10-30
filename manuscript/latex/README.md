@@ -39,17 +39,24 @@ Every item below is a placeholder in `main.tex` or `references.bib`. Nothing was
 fill them, and the manuscript will read as unfinished until they are cleared.
 
 **Authorship and front matter**
-- [ ] Co-author list (`\author[1]{\fnm{[TODO}\sur{ co-author]}}`)
+- [x] Co-author list: none, sole author (Richard, 2026-10-30); placeholder removed from both files
 - [ ] Affiliation, city, country
-- [ ] ORCID identifiers
+- [x] ORCID: 0000-0001-5681-9857, checked on orcid.org and added to `.zenodo.json`. sn-jnl's
+      `\orcid` needs `Orcidlogo.eps`, which the template did not ship, so enter it at submission
 - [ ] Acknowledgements
-- [ ] Author contributions statement
+- [x] Author contributions statement (sole-author form)
+- [ ] Competing interests: the text says none. Confirm, given CoSE develops plant-growth
+      hardware and the paper argues for in-enclosure CO₂ measurement
+- [ ] AI-assistance statement: decide whether and where to state it, per the target journal's
+      policy
 - [ ] Funding statement
 
 **Availability**
-- [ ] Zenodo DOI for this repository, in Data availability and Code availability
+- [ ] Zenodo DOI for this repository, in Data availability and Code availability (Richard
+      deposits; `.zenodo.json` is ready)
 - [x] Repository URL in Code availability
-- [ ] Archived release DOI for LunarLeaf-CFD (`lunarleaf` entry note)
+- [ ] Archived release DOI for LunarLeaf-CFD (`lunarleaf` entry note; Richard deposits, and the
+      repo has no GitHub release yet)
 
 **References**
 - [x] `osdr2025` — replace the corporate author with the full author list from the
@@ -58,10 +65,10 @@ fill them, and the manuscript will read as unfinished until they are cleared.
       list from PubMed, since CrossRef carries only the first author)
 
 **Scientific decisions the author should confirm**
-- [ ] Whether to keep the hardware-confound framing as the headline, given the enclosure
-      gradient did not hold (only illumination did)
-- [ ] Whether the ER/unfolded-protein-response result, which this model does not explain,
-      deserves more than the paragraph it currently has
+- [x] Keep the hardware-confound framing as the headline, although the enclosure gradient did
+      not hold (only illumination did): kept as is (Richard, 2026-10-30)
+- [x] The ER/unfolded-protein-response result, which this model does not explain, keeps its
+      one paragraph (Richard, 2026-10-30)
 
 ## Figures
 
