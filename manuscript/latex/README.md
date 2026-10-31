@@ -40,16 +40,18 @@ fill them, and the manuscript will read as unfinished until they are cleared.
 
 **Authorship and front matter**
 - [x] Co-author list: none, sole author (Richard, 2026-10-30); placeholder removed from both files
-- [ ] Affiliation, city, country
+- [x] Affiliation: independent researcher (Richard, 2026-10-30)
+- [ ] City and country for the affiliation
 - [x] ORCID: 0000-0001-5681-9857, checked on orcid.org and added to `.zenodo.json`. sn-jnl's
       `\orcid` needs `Orcidlogo.eps`, which the template did not ship, so enter it at submission
 - [ ] Acknowledgements
 - [x] Author contributions statement (sole-author form)
-- [ ] Competing interests: the text says none. Confirm, given CoSE develops plant-growth
-      hardware and the paper argues for in-enclosure CO₂ measurement
-- [ ] AI-assistance statement: decide whether and where to state it, per the target journal's
-      policy
-- [ ] Funding statement
+- [x] Competing interests: none, in the journal's wording (Richard, 2026-10-30, asked with
+      CoSE's plant-growth hardware named)
+- [x] AI-assistance statement: npj Microgravity's submission guidelines say LLM use should be
+      documented in Methods, so it is the last Methods subsection (wording approved by Richard,
+      2026-10-30)
+- [x] Funding statement: none, in the journal's wording (Richard, 2026-10-30)
 
 **Availability**
 - [ ] Zenodo DOI for this repository, in Data availability and Code availability (Richard
